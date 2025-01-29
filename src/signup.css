@@ -1,0 +1,174 @@
+/* SignupPage.css */
+.signup-container {
+    position: relative; /* Ensure relative positioning */
+    padding: 2.5%; /* Adjusted to percentage */
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+  
+.signup-header {
+    text-align: left;
+}
+  
+.signup-header h2 {
+    font-size: 300%; /* Adjusted to percentage */
+    margin-bottom: 2.5%; /* Adjusted to percentage */
+    vertical-align: middle;
+}
+  
+.signup-form .form-group {
+    margin-bottom: 2.5%; /* Adjusted to percentage */
+}
+  
+.signup-form input[type="text"],
+.signup-form input[type="password"],
+.signup-form input[type="date"] {
+    width: 100%; /* Adjusted to percentage */
+    padding: 1.25%; /* Adjusted to percentage */
+    border: 0.125% solid #ddd; /* Adjusted to percentage */
+    border-radius: 0.625%; /* Adjusted to percentage */
+    font-size: 150%; /* Adjusted to percentage */
+}
+  
+.signup-form .gender-group {
+    margin-bottom: 200%; /* Adjusted to percentage */
+}
+  
+.signup-form .gender-group input[type="radio"] {
+    margin-right: 1.25%; /* Adjusted to percentage */
+}
+  
+.signup-form .terms {
+    font-size: 200%; /* Adjusted to percentage */
+    margin-bottom: 2.5%; /* Adjusted to percentage */
+}
+  
+.signup-form .signup-btn {
+    width: 100%; /* Adjusted to percentage */
+    padding: 1.25%; /* Adjusted to percentage */
+    background-color: green;
+    color: #fff;
+    border: none;
+    border-radius: 0.625%; /* Adjusted to percentage */
+    font-size: 200%; /* Adjusted to percentage */
+    cursor: pointer;
+}
+  
+.signup-form .signup-btn:hover {
+    background-color: green;
+}
+  
+
+.close-button {
+    position: absolute;
+    top: 0.625%; /* Adjusted to percentage */
+    right: 3.125%; /* Adjusted to percentage */
+    width: 3.75%; /* Adjusted to percentage */
+    height: 3.75%; /* Adjusted to percentage */
+    background-color: transparent;
+    color: #888;
+    border: none;
+    font-size: 250%; /* Adjusted to percentage */
+    line-height: 1; /* Ensure proper alignment */
+    cursor: pointer;
+    z-index: 9999; /* Ensure it's above other elements */
+}
+
+.close-button:hover {
+    color: #555;
+}
+.close-button:active {
+    /* No color change on button press */
+    color: inherit;
+}
+
+/* Override focus styles */
+.signup-form input:focus {
+    outline: none; /* Remove default focus outline */
+}
+
+.error-message {
+    color: red;
+    font-size: 150%; /* Adjusted to percentage */
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+    padding-left: 3.75%; /* Adjusted to percentage */
+}
+
+.form-group input[type="text"].error,
+.form-group input[type="password"].error {
+    border: 0.125% solid red; /* Adjusted to percentage */
+}
+
+.error-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.625%; /* Adjusted to percentage */
+    transform: translateY(-50%);
+    color: red;
+}
+
+.input-error {
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjz0Xl2KuZqvdVooOk7j8FBkVw4MtCId7mjA&usqp=CAU');
+    background-repeat: no-repeat;
+    background-position: right 0.625% top 50%; /* Adjusted to percentage */
+    padding-left: 3.75%; /* Adjusted to percentage */
+    background-size: 4%; /* Adjusted to percentage */
+}
+
+/* Add this CSS to handle error state */
+.signup-form input[type="text"].input-error,
+.signup-form input[type="password"].input-error {
+    border-color: red; /* Red border for error state */
+}
+
+/* Style for error message */
+.error-message {
+    color: red;
+    font-size: 100%; /* Adjusted to percentage */
+}
+
+.signup-form .terms {
+    font-size: 70%; /* Adjusted to percentage */
+    margin-bottom: 2.5%; /* Adjusted to percentage */
+    text-align: left; /* Align the terms text to the left */
+}
+
+.password-requirement {
+    font-size: 80%; /* Adjusted to percentage */
+}
+
+.upload-btn,
+.take-picture-btn {
+    width: auto; /* Set width to auto to adjust based on content */
+    min-width: 10%; /* Adjusted to percentage */
+    background-color: #ccc; /* Gray button color */
+    color: #333; /* Dark text color */
+    border: none;
+    padding: 0.375% 1%; /* Adjusted to percentage */
+    font-size: 100%; /* Adjusted to percentage */
+    border-radius: 0.625%; /* Adjusted to percentage */
+    cursor: pointer;
+    margin-right: 1.25%; /* Adjusted to percentage */
+}
+
+.upload-btn:hover,
+.take-picture-btn:hover {
+    background-color: #bbb; /* Lighter gray color on hover */
+}
+/* CSS to limit the image size */
+.preview img {
+    max-width: 50%; /* Maximum width */
+    max-height: 50%; /* Maximum height */
+    position: center;
+    
+}

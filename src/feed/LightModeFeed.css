@@ -1,0 +1,190 @@
+html {
+    background-color: #EBEDF0;
+}
+
+#root {
+    background-color: #EBEDF0;
+}
+
+.LeftAlign {
+    text-align: left;
+}
+
+.TopBar {
+    top: 1%;
+}
+
+.CenterAlign {
+    text-align: center;
+}
+
+.RightAlign {
+    text-align: right;
+}
+
+.container {
+    display: flex; /* Use flexbox layout */
+}
+
+.column {
+    flex: 1;
+    margin-top: 1vh;
+    height: 92vh;
+    overflow-y: auto;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.MainColumn {
+    flex: 2;
+    padding-right: 10%;
+    padding-left: 10%;
+}
+
+.MainScreen {
+    display: flex;
+}
+
+.HiddenButton {
+    padding: 4% 10px;
+    font-size: 20px;
+    border: 10px black;
+
+    border-radius: 5%;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+
+.HiddenButton:hover {
+    background-color: lightgray;
+}
+
+.search {
+
+}
+
+.input {
+    flex: 2;
+    padding: 10px;
+    font-size: 14px;
+    width: 100%;
+    resize: none;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.image {
+    max-width: 100%;
+    /*display: none;*/
+}
+
+#imageInput {
+    flex: 1;
+}
+
+.post-image {
+    max-width: 100%;
+}
+
+.post-username-container {
+    display: flex;
+}
+
+.post-username {
+    flex: 1;
+}
+
+.time {
+    flex: 1;
+    text-align: end;
+}
+
+#Logo {
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.Logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.TopBarContainer {
+    background-color: white;
+    display: flex;
+    max-height: 7vh;
+    box-shadow: 0px 0px 50px 5px #DADDE1;
+}
+
+.uploadPost {
+    cursor: pointer;
+    margin-top: 5px;
+    background-color: white;
+    /*display: flex;*/
+    box-shadow: 0px 0px 10px 3px #DADDE1
+}
+
+.uploadBtn {
+
+}
+
+.modalBody {
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+.message-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.user-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.comment-body {
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.post-container {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    padding: 2%;
+    margin-top: 3%;
+    border-radius: 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-header {
+    display: flex;
+    align-items: center;
+}
+
+.right-header {
+    margin-left: auto;
+}
