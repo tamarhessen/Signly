@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ce1aa1cd-dc67-4b6e-9365-c94d1d72503a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Signup.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Signup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/feed/Comment.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/feed/Comment.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/feed/Comments.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/feed/Comments.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/feed/LightModeFeed.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/feed/LightModeFeed.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/feed/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/feed/Post.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/feed/Posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/feed/Posts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/feed/Posts.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/feed/Posts.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2cOmTNw6hg6TyH4NDBQuuPDzvCC" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/daniellifshitz/Documents/GitHub/Ex2-web",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "/Users/daniellifshitz/Documents/GitHub/Ex2-web/node_modules/react-scripts",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/tests" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Jest.Signup (1)">
+    <configuration name="Authentication" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/App.test.js" />
+      <test-names>
+        <test-name value="Authentication" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Signup (1)" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/SignUp.test.js" />
+      <test-names>
+        <test-name value="Signup" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Signup" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/App.test.js" />
+      <test-names>
+        <test-name value="Signup" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Signup.shows the correct message when signing up with a password less than 8 characters" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/App.test.js" />
+      <test-names>
+        <test-name value="Signup" />
+        <test-name value="shows the correct message when signing up with a password less than 8 characters" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Signup.successfully signs up with correct input" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/App.test.js" />
+      <test-names>
+        <test-name value="Signup" />
+        <test-name value="successfully signs up with correct input" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Jest.Signup (1)" />
+        <item itemvalue="Jest.Authentication" />
+        <item itemvalue="Jest.Signup" />
+        <item itemvalue="Jest.Signup.successfully signs up with correct input" />
+        <item itemvalue="Jest.Signup.shows the correct message when signing up with a password less than 8 characters" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ce1aa1cd-dc67-4b6e-9365-c94d1d72503a" name="Changes" comment="" />
+      <created>1707991005321</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1707991005321</updated>
+      <workItem from="1707991006513" duration="14006000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

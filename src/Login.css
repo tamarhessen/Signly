@@ -1,0 +1,126 @@
+body {
+  background-color: #ebe7e7; /* Light gray background color */
+}
+
+.sign-in-container {
+  width: 20%; /* Adjust the width */
+  height: 45%; /* Adjust the height to make it a square */
+  margin-top: -13%; /* Adjust the top margin to align with the welcome text */
+  margin-left: auto; /* Position on the right side of the screen */
+  margin-right: 20%; /* Adjust the right margin for spacing */
+  padding: 1.5%;
+  border: 2% solid #ccc; /* Adjust the border width and color */
+  border-radius: 5%;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items:stretch;
+  position: relative;
+}
+/* Override Bootstrap modal close button style */
+
+
+.welcome-text {
+  font-style: normal;
+  text-align: left;
+  font-size: 250%;
+  color: #2b8bf9;
+  position: relative;
+  margin-top: 15%; /* Adjust the top position */
+  left: 20%; /* Adjust the left position */
+}
+.welcome-text h2 {
+  font-size: 250%; /* Adjust the font size as needed */
+}
+
+.additional-info {
+  text-align: justify;
+  font-size: 200%;
+  position:relative;
+  margin-top: 1%; /* Adjust the top position */
+  left: 20%; /* Adjust the left position */
+}
+
+.additional-info p {
+  margin-top: 2%;
+  line-height: 0;
+}
+
+.login-form {
+  margin-top: 50%;
+  margin-left: -50%;
+}
+
+.form-group {
+  margin-bottom: 10%;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+  width: 100%; /* Adjust the width relative to the container's width */
+  padding: 5%;
+  border-radius: 10px; /* Adjust the border radius */
+  position: relative;
+}
+
+
+button {
+  width: 100%;
+  padding: 5%;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3%;
+  cursor: pointer;
+  font-size: 100%;
+  margin-left: 0%;
+  position: relative;
+}
+
+.blue-button {
+  width: 100%;
+  margin-bottom: 100%;
+}
+
+.green-button {
+  width: 70%;
+  padding: 3%;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 10px; /* Adjust the border radius */
+  cursor: pointer;
+  font-size: 100%;
+  margin-left: 15%;
+  margin-top: 40%;
+}
+.modal-content .close {
+  color: #888;
+}
+.modal-content .close:hover {
+  color: #555;
+}
+button:hover {
+  background-color: #0056b3;
+}
+
+.green-button:hover {
+  background-color: #1a7830;
+}
+
+
+.forgot-password {
+  width: 100%;
+  margin-top: 0px; /* Adjust the top margin for vertical centering */
+  text-align: center;
+  margin-left: 0%; /* Center the text horizontally */
+}
+
+.forgot-password a {
+  text-decoration: none; /* Remove underline by default */
+}
+
+.forgot-password a:hover {
+  text-decoration: underline; /* Add underline only on hover */
+}
