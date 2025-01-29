@@ -1,37 +1,54 @@
-
-import React, {useState, useRef, useEffect, useCallback} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal } from 'bootstrap';
 import './Login.css';
 import Signup from './Signup';
 import { useNavigate } from 'react-router-dom';
-import { authenticateUser, getDisplayName, getProfilePicture } from './Users';
+import { getProfilePicture } from './Users'; // Import getProfilePicture function
 
-function Login({setLoggedIn}) {
+function Login({ setLoggedIn }) {
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [displayName, setDisplayName] = useState('');
-  const [profilePicture, setProfilePicture] = useState('');
   const [loginError, setLoginError] = useState('');
   const modalRef = useRef(null);
   const navigate = useNavigate();
+  const [profilePictureURL, setProfilePictureURL] = useState(null);
 
- 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
- 
-    const isUserAuthenticated = authenticateUser(username, password);
-    
-    if (isUserAuthenticated) {
-  
-    // Retrieve the display name and profile picture from the registered user's data
-  const displayNameValue=getDisplayName(username);
-  setLoggedIn(true);
-  console.log("setloggedin", setLoggedIn)
-  const profilePictureValue=getProfilePicture(username);
-    // Navigate to the feed screen
-    navigate('/feed', { state: { displayName: displayNameValue, profilePicture: profilePictureValue} });
+
+    const data = {
+      username: username,
+      password: password
+    };
+
+    // check if user exists - if it exists, get the token.
+    const res = await fetch('http://localhost:5000/api/Tokens', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (res.status === 200) { // OK - user exists
+      const token = await res.text();
+      console.log(token);
+      // get user info.
+      const res2 = await fetch('http://localhost:5000/api/Users/' + username, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': "bearer " + token,
+        }
+      });
+      const json2 = await res2.json();
+      const displayNameValue = json2.displayName;
+const profilePictureValue=json2.profilePic;
+      setLoggedIn(true);
+      navigate('/feed', { state: { username:username,displayName: displayNameValue, profilePictureURL: profilePictureValue,token: token  } });
+
     } else {
       setLoginError('Invalid username or password');
     }
@@ -49,7 +66,7 @@ function Login({setLoggedIn}) {
     }
     setShowSignupModal(false); // Update the state to reflect the modal being closed
   };
-  
+
   useEffect(() => {
     modalRef.current = new Modal(document.getElementById('signupModal'), {});
   }, []);
@@ -60,6 +77,23 @@ function Login({setLoggedIn}) {
     }
   }, [showSignupModal]);
 
+  // Fetch profile picture URL when the component mounts or when username changes
+  useEffect(() => {
+    const fetchProfilePicture = async () => {
+      if (username) {
+        try {
+          const profilePictureValue = await getProfilePicture(username); // Assuming getProfilePicture fetches the picture URL based on the username
+          setProfilePictureURL(profilePictureValue);
+        } catch (error) {
+          console.error("Error fetching profile picture:", error);
+          // Handle error here, e.g., set a default profile picture or show an error message
+        }
+      }
+    };
+  
+    fetchProfilePicture();
+  }, [username]);
+  
   return (
     <div className='login-page'>
       <div className="welcome-text">

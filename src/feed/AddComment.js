@@ -4,10 +4,12 @@ function AddComment({username, onAddComment}) {
     const [commentInput, setCommentInput] = useState('');
 
     const handleCommentInputChange = (e) => {
+        console.log("gdsfdf")
         setCommentInput(e.target.value);
     };
 
     const handleAddComment = () => {
+        console.log("asdadasd", commentInput)
         if (commentInput.trim() !== '') {
             onAddComment(commentInput);
             setCommentInput('');

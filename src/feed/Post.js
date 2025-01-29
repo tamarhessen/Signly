@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import AddComment from "./AddComment";
 import Comments from "./Comments";
 import Dropdown from "react-bootstrap/Dropdown";
+import React, { useState, useEffect } from 'react';
+import {useNavigate} from "react-router-dom";
+
 
 function Share() {
     return (
@@ -23,7 +26,8 @@ function Share() {
     );
 }
 
-function Post({ id, text, liked, likes, time, _comments, image, onLike, onRemove, onAddComment, onEdit, username, userImage, account, mode, onDeleteComment }) {
+function Post({ id, text, PeopleLiked, time, _comments, image, onLike, onRemove, onAddComment,displayName, onEdit, username, userImage, account, mode, onDeleteComment, token, creatorUsername }) {
+    console.log(_comments)
     let modeName = "";
     if (mode) {
         modeName = "light-mode"
@@ -35,12 +39,17 @@ function Post({ id, text, liked, likes, time, _comments, image, onLike, onRemove
     const [shiftDown, setShiftDown] = useState(false);
     const [editImg, setEditImg] = useState(image);
     const [show, setShow] = useState(false);
-    const [comments, setComments] = useState(_comments);
+    const [comments, setComments] = useState(_comments || []);
     const handleClose = () => setShow(false);
-
+    const [liked, setLiked] = useState(false); 
     const handleShow = () => { setShow(true) };
-
+    const [likes,setLikes] = useState(0);
+    const navigate = useNavigate()
+    console.log("commsdasadmmm",comments, _comments)
     const handleEdit = () => { setEditMode(true); };
+    useEffect(() => {
+        setComments(_comments || []);
+    }, [_comments]);
 
     const handleSaveEdit = () => {
         onEdit(editText, editImg);
@@ -62,15 +71,63 @@ function Post({ id, text, liked, likes, time, _comments, image, onLike, onRemove
                 newComments.push(_comment);
             }
         });
+        console.log("sadsdasdasd")
         setComments(newComments)
         return newComments;
     }
-    return (
+    console.log(username);
+    useEffect(() => {
+        // Check if the current user has liked the post
+        setLiked(PeopleLiked.includes(username));
+    }, [PeopleLiked, username]);
+    const handleLike = () => {
+        // Toggle the liked state when the like button is clicked
+        setLiked(!liked);
+        
+        // Call the onLike function to handle the backend logic for liking the post
+        onLike();
+    };
+   const navigateToPage = async () => {
+       console.log(account, displayName, creatorUsername);
+       if (account === displayName) {
+           navigate("/MyProfilePage", {
+               state: {
+                   displayName: displayName,
+                   username: username,
+                   userImg: userImage,
+                   token: token
+               }
+           });
+       } else {
+           try {
+               const res = await fetch(`http://localhost:5000/api/Users/${username}`, {
+                   method: 'GET',
+                   headers: {
+                       'Content-Type': 'application/json',
+                       'authorization': "bearer " + token,
+                   }
+               });
+               const data = await res.json();
+               console.log("asdasasdasdasdsdasdassdc", data.friends.FriendList, creatorUsername, data.friends.FriendList.includes(creatorUsername))
+               if (data.friends.FriendList.includes(creatorUsername)) {
+                   navigate("/FriendPage", { state: { username: creatorUsername, token: token, _isFriend: true } });
+               } else {
+                   navigate("/FriendPage", { state: { username: creatorUsername, token: token, _isFriend: false } });
+
+               }
+           } catch (error) {
+               console.error("Error checking friendship:", error);
+               // Handle error appropriately
+           }
+       }
+
+   }
+      return (
         <div className={"post-container"}>
             <div className={"header"}>
-                <div className={"left-header"}>
+                <div className={"left-header"} onClick={navigateToPage}>
                     <img src={userImage} className={"Logo"} alt="User logo" />
-                    {username}
+                    {displayName}
                 </div>
                 <div className={"right-header"}>
                     {time}
@@ -118,10 +175,11 @@ function Post({ id, text, liked, likes, time, _comments, image, onLike, onRemove
                 )}
             </div>
             <div style={{display: "flex"}}>
-            <span onClick={onLike} style={{ color: liked ? 'red' : 'black' ,flex: 1}} className={"btn btn-primary"}>
+ <span onClick={handleLike} style={{ color: liked ? 'red' : 'black' ,flex: 1}} className={"btn btn-primary"}>
                 {liked ? '❤️' : '🤍'} {liked ? parseInt(likes)+ 1 : likes}
             </span>
-            {account === username ? (
+
+            {account === displayName ? (
                 <>
                     {editMode ? (
                         <>

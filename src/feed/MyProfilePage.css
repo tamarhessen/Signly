@@ -1,0 +1,82 @@
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.container {
+    max-width: 100%;
+    display: flex;
+}
+
+/* Profile Details Container */
+.profile-details {
+    width: 30%;
+}
+
+/* Profile Header */
+.profile-header {
+    background-color: #fff;
+    border-radius: 1%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10%;
+    margin-bottom: 1%;
+}
+
+.profile-header h1 {
+    font-size: 300%;
+    margin-bottom: 10%;
+}
+
+.profile-header p {
+    font-size: 1%;
+    color: #666;
+}
+
+/* Profile Image */
+.profile-image {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+/* Posts Container */
+.posts-container {
+    width: 70%;
+}
+
+/* Posts */
+.posts {
+    background-color: #fff;
+    border-radius: 1%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5%;
+}
+
+.post {
+    margin-bottom: 1%;
+}
+
+.post-text {
+    font-size: 16px;
+    color: #333;
+}
+
+/* Buttons */
+.button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 1%;
+    padding: 1%;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}

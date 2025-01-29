@@ -44,7 +44,20 @@ function Center() {
     )
 }
 
-function RightSide({userImg}) {
+function RightSide({displayName,username, userImg, mode,token}) {
+    console.log("ttt"+username);
+    console.log("vvv"+displayName);
+    console.log("www"+userImg);
+    const navigate = useNavigate();
+
+    const handleProfileClick = () => {
+        // Navigate to the user's profile page
+        console.log("hello woadsfsdfdsfafdsfdsfdsrld")
+
+        console.log(username,userImg, token)
+        console.log("hello world")
+        navigate("/MyProfilePage",{ state: {displayName:displayName,username: username, userImg: userImg,token:token   }});
+    };
     return (
         <>
             <div className="column RightAlign TopBar">
@@ -52,18 +65,21 @@ function RightSide({userImg}) {
                 <span className={"btn"}>Menu</span>
                 <span className={"btn"}>Message</span>
                 <span className={"btn"}>Notifications</span>
-                <img src={userImg} className={"Logo"}></img>
+                <a onClick={handleProfileClick}>
+                <img src={userImg} className={"Logo"} alt="Profile" />
+            </a>
             </div>
         </>
     )
 }
-function InfoBar({userImg,setLoggedIn}) {
+function InfoBar({userImg,username, mode, token, setLoggedIn}) {
+    
     return (
         <>
             <div className="TopBarContainer">
                 <LeftSide setLoggedIn={setLoggedIn}></LeftSide>
                 <Center></Center>
-                <RightSide userImg={userImg}></RightSide>
+                <RightSide username={username} token={token} mode={mode} userImg={userImg}></RightSide>
             </div>
         </>
     )
