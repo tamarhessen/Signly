@@ -3,13 +3,14 @@ import {useState} from "react";
 import LeftSide from "./MainLeft"
 import MainFeedCenter from "./MainFeedCenter";
 import RightSide from "./MainRight";
-function MainScreen({username, userImg, mode, setMode, setLoggedIn}) {
+function MainScreen({ setLoggedIn,username, displayName,userImg, mode, setMode,token}) {
+    console.log(username+"rrr");
     return (
         <>
             <div className="MainScreen">
-                <LeftSide username={username}></LeftSide>
-                <MainFeedCenter username={username} userImg={userImg} mode={mode}></MainFeedCenter>
-                <RightSide setLoggedIn={setLoggedIn} mode={mode} setMode={setMode}></RightSide>
+                <LeftSide displayName={displayName}></LeftSide>
+                <MainFeedCenter username={username}displayName={displayName} userImg={userImg} mode={mode} token={token}></MainFeedCenter>
+                <RightSide username={username} userImg={userImg} setMode={setMode} mode={mode} token={token}></RightSide>
             </div>
         </>
     )

@@ -188,3 +188,17 @@ html {
 .right-header {
     margin-left: auto;
 }
+
+.FriendProfile {
+    display: flex;
+    flex: 5;
+}
+
+.name {
+    -ms-transform: translateY(50%);
+    transform: translateY(25%);
+}
+.nameBtn {
+    flex: 1;
+    border-radius: 50%;
+}

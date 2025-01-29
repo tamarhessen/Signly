@@ -167,8 +167,22 @@
 }
 /* CSS to limit the image size */
 .preview img {
-    max-width: 50%; /* Maximum width */
-    max-height: 50%; /* Maximum height */
+    max-width: 10%; /* Maximum width */
+    max-height: 10%; /* Maximum height */
     position: center;
     
+}
+.img-cont {
+    max-width: 100%; /* Ensure the image container does not exceed the width of its parent */
+    max-height: 300px; /* Set a maximum height for the image container */
+    overflow: hidden; /* Hide any overflow beyond the specified dimensions */
+    display: flex;
+    justify-content: center; /* Center the image horizontally */
+    align-items: center; /* Center the image vertically */
+}
+
+.img-cont img {
+    max-width: 100%; /* Ensure the image does not exceed the width of its container */
+    max-height: 100%; /* Ensure the image does not exceed the height of its container */
+    object-fit: contain; /* Maintain aspect ratio while fitting the image within its container */
 }

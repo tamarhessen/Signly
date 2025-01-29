@@ -1,7 +1,7 @@
 import {useState} from "react";
-function LeftSide({username}) {
+function LeftSide({displayName}) {
 
-    let SmallOptionBar = [[username, actionPlaceHolder],
+    let SmallOptionBar = [[displayName, actionPlaceHolder],
         ["Find Friends", actionPlaceHolder],
         ["Groups", actionPlaceHolder],
         ["Feeds", actionPlaceHolder],
@@ -11,7 +11,7 @@ function LeftSide({username}) {
         ["Saved", actionPlaceHolder],
         ["Pages", actionPlaceHolder],
         ["See More", SeeMore]];
-    let LargeOptionBar = [[username, actionPlaceHolder],
+    let LargeOptionBar = [[displayName, actionPlaceHolder],
         ["Find Friends", actionPlaceHolder],
         ["Groups", actionPlaceHolder],
         ["Feeds", actionPlaceHolder],
