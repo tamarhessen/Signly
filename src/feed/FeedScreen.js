@@ -19,7 +19,7 @@ function FeedScreen({setLoggedIn}) {
             <title>Feed</title>
             <div className={mode ? "light-mode" : "night-mode"}>
                 {/* Assuming profilePicture is a file object */}
-                {profilePictureURL && <InfoBar username={username} userImg={profilePictureURL} mode={mode} token={token}></InfoBar>}
+              
                 <MainScreen setLoggedIn={setLoggedIn} username={username} displayName={displayName} userImg={profilePictureURL} mode={mode} setMode={setMode} token={token}></MainScreen>
             </div>
         </>

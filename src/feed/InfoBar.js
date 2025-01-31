@@ -61,10 +61,8 @@ function RightSide({displayName,username, userImg, mode,token}) {
     return (
         <>
             <div className="column RightAlign TopBar">
-                <span className={"btn"}>Find friends</span>
-                <span className={"btn"}>Menu</span>
-                <span className={"btn"}>Message</span>
-                <span className={"btn"}>Notifications</span>
+               
+              
                 <a onClick={handleProfileClick}>
                 <img src={userImg} className={"Logo"} alt="Profile" />
             </a>

@@ -1,0 +1,19 @@
+footer {
+    width: 100%;
+    /* Optional styling for the footer */
+    background-color: #f8f8f8;
+    padding: 20px;
+    text-align: center;
+    margin-top: auto; /* Ensures the footer stays at the bottom */
+  }
+  
+  .footer a {
+    text-decoration: none;
+    color: #4CAF50;
+    margin: 0 10px;
+  }
+  
+  .footer a:hover {
+    color: #b73466;
+  }
+  
