@@ -5,6 +5,8 @@ import './Login.css';
 import Signup from './Signup';
 import { useNavigate } from 'react-router-dom';
 import { getProfilePicture } from './Users'; // Import getProfilePicture function
+import logo from './logo.png'; // נתיב ישיר לתמונה בתוך תיקיית src
+import backgroundImage from './background.png';
 
 function Login({ setLoggedIn }) {
   const [showSignupModal, setShowSignupModal] = useState(false);
@@ -45,10 +47,9 @@ function Login({ setLoggedIn }) {
       });
       const json2 = await res2.json();
       const displayNameValue = json2.displayName;
-const profilePictureValue=json2.profilePic;
+      const profilePictureValue = json2.profilePic;
       setLoggedIn(true);
-      navigate('/feed', { state: { username:username,displayName: displayNameValue, profilePictureURL: profilePictureValue,token: token  } });
-
+      navigate('/feed', { state: { username: username, displayName: displayNameValue, profilePictureURL: profilePictureValue, token: token } });
     } else {
       setLoginError('Invalid username or password');
     }
@@ -93,15 +94,17 @@ const profilePictureValue=json2.profilePic;
   
     fetchProfilePicture();
   }, [username]);
-  
+
   return (
-    <div className='login-page'>
+    <div className="login-page">
+      <div className="background-blur"></div> {/* רקע מטושטש */}
+  
       <div className="welcome-text">
-        <h2>facebook</h2>
+        <img src={logo} alt="SIGNLY Logo" className="logo" />
+        {/* <h2>SIGNLY</h2> */}
       </div>
       <div className="additional-info">
-        <p>Facebook helps you connect and share</p>
-        <p>with the people in your life.</p>
+        <p>Learn sign language through interaction and fun!</p>
       </div>
       <div className='sign-in-container'>
         <div className="username-password-container">
@@ -131,9 +134,6 @@ const profilePictureValue=json2.profilePic;
           </div>
         </div>
         <div className="button-container">
-          <div className="forgot-password">
-            <a href="#">Forgotten password?</a>
-          </div>
           <div className="SignUp">
             <button type="button" className="green-button" onClick={handleCreateAccount}>Create new account</button>
           </div>

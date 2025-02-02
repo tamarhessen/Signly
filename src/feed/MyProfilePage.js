@@ -81,7 +81,7 @@ function MyProfilePage() {
                 img.src = event.target.result;
                 img.onload = () => {
                     const MAX_WIDTH = 800;
-                    const MAX_HEIGHT = 600;
+                    const MAX_HEIGHT = 800;
                     let width = img.width;
                     let height = img.height;
                     if (width > height) {
@@ -554,7 +554,7 @@ const handleDeleteComment = (postId, comment, comments) => {
             alt="Profile Image"
             className={"Logo profile-image"}
             onClick={() => setShowModal(true)}
-            style={{ width: "100%", height: "20%" }}
+            style={{ width: "100%", height: "100%" }}
           />
           {showEditWindow ? (
             <div>

@@ -38,10 +38,10 @@ body {
 
 /* Profile Image */
 .profile-image {
-    width: 100%;
-    height: auto;
-    border-radius: 50%;
-    object-fit: cover;
+    width: 100px;  /* הגדרת רוחב קבוע */
+    height: 100px; /* הגדרת גובה קבוע */
+    border-radius: 100%; /* הופך את התמונה לעיגול */
+    object-fit: cover; /* התמונה תתאים באופן מושלם לגבולות */
     margin-right: 20px;
 }
 
