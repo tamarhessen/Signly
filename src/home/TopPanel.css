@@ -1,0 +1,87 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 5px;
+  background-color: #e6cccc;
+  align-items: center; /* Vertically center the items */
+}
+
+/* Container for logo + search */
+.logo-search {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between logo and search */
+}
+
+/* Logo container */
+.logo-container {
+  cursor: pointer;
+}
+
+.logo-image {
+  width: 60px;
+  height: auto;
+}
+
+/* Style the search bar */
+.search-bar {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  width: 200px; /* Adjust as needed */
+  transition: all 0.3s ease;
+}
+
+.search-bar:focus {
+  border-color: #b73466;
+}
+
+/* Center the nav-bar and align it in the middle */
+.nav-bar {
+  display: flex;
+  gap: 20px;
+  justify-content: center; /* Center the nav links */
+  position: absolute; /* Remove it from the normal flow */
+  left: 50%; /* Move it to the middle */
+  transform: translateX(-50%); /* Adjust position to truly center it */
+}
+
+/* Nav link styles */
+.nav-link {
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+  position: relative; /* Needed for pseudo-element positioning */
+  padding-right: 20px; /* Add space between the text and the border */
+  line-height: 1.5; /* Adjust line height to match text height */
+}
+
+/* Add line after each nav item (except the last one) */
+.nav-link:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0; /* Ensure the line aligns with the text height */
+  width: 2px; /* Set the thickness of the line */
+  background-color: #948e8e; /* Line color */
+}
+
+/* Hover effect for nav links */
+.nav-link:hover {
+  color: #b73466;
+}
+
+/* Profile styles */
+.profile-picture {
+  cursor: pointer;
+}
+
+.profile-image {
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50%;
+}

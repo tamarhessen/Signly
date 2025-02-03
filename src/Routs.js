@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Login setDisplayName={setDisplayName} setProfilePicture={setProfilePicture} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/feed" element={<FeedScreen displayName={displayName} profilePicture={profilePicture} />} />
+        <Route path="/home" element={<FeedScreen displayName={displayName} profilePicture={profilePicture} />} />
       </Routes>
     </Router>
   );

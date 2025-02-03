@@ -5,7 +5,8 @@ import About from '../About'; // Import About component
 import RightPanel from './RightPanel';
 import TopPanel from './TopPanel';
 import Footer from './Footer';
-import LeftPanel from './LeftPanel'; // Import LeftPanel
+//import LeftPanel from './LeftPanel'; // Import LeftPanel
+import Navigation from './Navigation'; // Import Navigation
 
 function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }) {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
   };
 
   // Image carousel state
-  const images = ['/FrontPage1.jpg', '/FrontPage2.jpg', '/FrontPage1.jpg'];
+  const images = ['/hello.jpg', '/yes.jpg', '/no.jpg', '/thankyou.jpg','help.jpg'];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
@@ -35,13 +36,11 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
 
       {/* Main Content */}
       <div className="content-container">
-        {/* Left Side Panel */}
-        <LeftPanel displayName={displayName} navigate={navigate} /> {/* Only one LeftPanel */}
+        
 
         {/* Main Feed Center and Right Panel */}
         <main className="main-content">
           <div className="home-screen">
-            <h1>Welcome to Signly!</h1>
             <img src={images[currentImageIndex]} alt="Scrolling Images" className="welcome-image" />
             <button className="start-lesson-button" onClick={() => navigate('/lesson')}>
               Start Lesson
