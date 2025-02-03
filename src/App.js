@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Login';
 import Signup from './Signup';
-import FeedScreen from './feed/FeedScreen';
+import FeedScreen from './home/FeedScreen';
 import About from './About';  // Import About component
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal } from 'bootstrap';
 import './Login.css';
 import { authenticateUser } from './Users';
 import { LoggedIn } from './loggedIn';
-import MyProfilePage from './feed/MyProfilePage';
-import FriendPage from './feed/FriendPage';
+import MyProfilePage from './home/MyProfilePage';
+import FriendPage from './home/FriendPage';
 
 function App() {
   const [displayName, setDisplayName] = useState('');
@@ -35,7 +35,7 @@ function App() {
         {/* Protected Routes */}
         <Route path="/MyProfilePage" element={<ProtectedRoute><MyProfilePage displayName={displayName} username={username} profilePicture={profilePicture} /></ProtectedRoute>} />
         <Route path="/FriendPage" element={<ProtectedRoute><FriendPage /></ProtectedRoute>} />
-        <Route path="/feed" element={<ProtectedRoute><FeedScreen setLoggedIn={setLoggedIn} username={username} displayName={displayName} profilePicture={profilePicture} /></ProtectedRoute>} />
+        <Route path="/home" element={<ProtectedRoute><FeedScreen setLoggedIn={setLoggedIn} username={username} displayName={displayName} profilePicture={profilePicture} /></ProtectedRoute>} />
 
         {/* Catch-all route */}
         <Route path="*" element={<Navigate replace to="/" />} />
