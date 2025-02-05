@@ -1,0 +1,84 @@
+.right-panel {
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  width: 280px;
+  height: 280px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9ebeb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease-in-out;
+}
+
+.right-panel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+h3 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.progress-info {
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 15px;
+  border-radius: 8px;
+  background: linear-gradient(45deg, #b73466, #f06);
+  overflow: hidden;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar::-webkit-progress-bar {
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+
+.progress-bar::-webkit-progress-value {
+  background-color: #b73466;
+  border-radius: 8px;
+}
+
+p {
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+  margin: 0;
+}
+
+button {
+  padding: 12px 25px;
+  font-size: 16px;
+  background-color: #b73466;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #9e2a56;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button:focus {
+  outline: none;
+}
