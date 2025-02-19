@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Lesson</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #camera-feed {
+            width: 80%;
+            border: 2px solid #ddd;
+            margin: 20px auto;
+            display: block;
+        }
+        #gesture {
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Sign Language Gesture Recognition</h1>
+    <p>Click the button below to start the camera and recognize your sign language gesture.</p>
+
+    <!-- Button to trigger gesture recognition -->
+    <button id="start-btn">Start Camera</button>
+
+    <!-- Video feed from the camera -->
+    <video id="camera-feed" width="640" height="480" autoplay></video>
+
+    <h2>Detected Gesture: <span id="gesture">None</span></h2>
+
+    <script>
+        // Get references to the HTML elements
+        const startBtn = document.getElementById('start-btn');
+        const cameraFeed = document.getElementById('camera-feed');
+        const gestureElement = document.getElementById('gesture');
+
+        // Flag to check if camera is already active
+        let cameraActive = false;
+
+        startBtn.addEventListener('click', function() {
+            // Start the camera when button is clicked
+            if (!cameraActive) {
+                startCamera();
+            }
+        });
+
+        function startCamera() {
+            // Access user's webcam
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    cameraFeed.srcObject = stream;
+                    cameraActive = true;
+                    startBtn.textContent = "Camera Running...";
+
+                    // Call a function to recognize gestures periodically
+                    setInterval(recognizeGesture, 100);
+                })
+                .catch(err => {
+                    console.error("Error accessing camera:", err);
+                    alert("Unable to access the camera.");
+                });
+        }
+
+        function recognizeGesture() {
+            // Send the camera frame to the backend for gesture recognition
+            fetch('/start_camera')
+                .then(response => response.json())
+                .then(data => {
+                    // Display the detected gesture on the page
+                    if (data.letter) {
+                        gestureElement.innerText = data.letter;
+                    } else {
+                        gestureElement.innerText = "No hand detected";
+                    }
+                })
+                .catch(err => {
+                    console.error("Error:", err);
+                    gestureElement.innerText = "Error recognizing gesture.";
+                });
+        }
+    </script>
+
+</body>
+</html>

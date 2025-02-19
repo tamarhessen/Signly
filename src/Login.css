@@ -1,126 +1,131 @@
-body {
-  background-color: #ebe7e7; /* Light gray background color */
+
+.login-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.logo {
+  width: 200px; /* גודל הלוגו */
+  height: auto; /* שימור פרופורציות */
+  display: block; /* לוודא שהלוגו יהיה בלוק */
+  margin: 30px auto 30px auto; /* למרכז את הלוגו במרכז הדף */
+  /* float: left;  */
 }
 
+.background-blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('./background.png'); /* שים כאן את הרקע */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(9px); /* דרגת הטשטוש */
+  z-index: 0;
+}
 .sign-in-container {
-  width: 20%; /* Adjust the width */
-  height: 45%; /* Adjust the height to make it a square */
-  margin-top: -13%; /* Adjust the top margin to align with the welcome text */
-  margin-left: auto; /* Position on the right side of the screen */
-  margin-right: 20%; /* Adjust the right margin for spacing */
-  padding: 1.5%;
-  border: 2% solid #ccc; /* Adjust the border width and color */
-  border-radius: 5%;
-  background-color: #ffffff;
+  width: 25%; /* Slightly wider for better accessibility */
+  height: 50%; /* Adjusted for better fit */
+
+  margin-left: auto; /* Center horizontally */
+  margin-right: auto; /* Center horizontally */
+  padding: 2%;
+  border: 2px solid #d1d1d1; /* Lighter border */
+  border-radius: 8px;
+  background-color: #ffffff; /* White background for clarity */
   display: flex;
   flex-direction: column;
-  justify-content:center;
-  align-items:stretch;
+  justify-content: center;
+  align-items: stretch;
   position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
-/* Override Bootstrap modal close button style */
-
 
 .welcome-text {
   font-style: normal;
-  text-align: left;
-  font-size: 250%;
-  color: #2b8bf9;
+  text-align: center;
+  font-size: 2.5em;
+  color: #c729a5; /* Fuchsia Pink color */
   position: relative;
-  margin-top: 15%; /* Adjust the top position */
-  left: 20%; /* Adjust the left position */
+  font-family: 'Georgia', sans-serif;
 }
+
 .welcome-text h2 {
-  font-size: 250%; /* Adjust the font size as needed */
+  font-size: 2.5em;
 }
 
 .additional-info {
-  text-align: justify;
-  font-size: 200%;
-  position:relative;
-  margin-top: 1%; /* Adjust the top position */
-  left: 20%; /* Adjust the left position */
+  text-align: center;
+  font-size: 2em;
+  position: relative;
+  font-family: 'Georgia', 'Bold';
+  color: #1f4e79; /* Light gray text for secondary info */
+  font-weight: 540;
+ 
 }
 
 .additional-info p {
-  margin-top: 2%;
-  line-height: 0;
-}
 
-.login-form {
-  margin-top: 50%;
-  margin-left: -50%;
+  line-height: 1.5;
 }
 
 .form-group {
-  margin-bottom: 10%;
+  margin-bottom: 5%;
 }
 
 .form-group input[type="text"],
 .form-group input[type="password"] {
-  width: 100%; /* Adjust the width relative to the container's width */
-  padding: 5%;
-  border-radius: 10px; /* Adjust the border radius */
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
   position: relative;
+  font-size: 1.2em;
 }
-
 
 button {
   width: 100%;
-  padding: 5%;
-  background-color: #007bff;
+  padding: 15px;
+  background-color: #1f4e79; /* Indigo Blue (denim blue) */
   color: #fff;
   border: none;
-  border-radius: 3%;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 100%;
-  margin-left: 0%;
-  position: relative;
+  font-size: 1.2em;
+  margin-top: 5%;
 }
 
-.blue-button {
-  width: 100%;
-  margin-bottom: 100%;
+button:hover {
+  background-color: #153b5e; /* Darker shade of the blue for hover effect */
+
 }
 
 .green-button {
   width: 70%;
-  padding: 3%;
-  background-color: #28a745;
+  padding: 12px;
+  background-color: #c729a5;
   color: #fff;
   border: none;
-  border-radius: 10px; /* Adjust the border radius */
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 100%;
+  font-size: 1.2em;
   margin-left: 15%;
-  margin-top: 40%;
-}
-.modal-content .close {
-  color: #888;
-}
-.modal-content .close:hover {
-  color: #555;
-}
-button:hover {
-  background-color: #0056b3;
+  margin-top: 15%;
+  
 }
 
 .green-button:hover {
-  background-color: #1a7830;
+  background-color: #790071;
 }
 
-
-.forgot-password {
-  width: 100%;
-  margin-top: 0px; /* Adjust the top margin for vertical centering */
-  text-align: center;
-  margin-left: 0%; /* Center the text horizontally */
+/* Modal customization */
+.modal-content .close {
+  color: #f6f6f6;
 }
 
-.forgot-password a {
-  text-decoration: none; /* Remove underline by default */
-}
-
-.forgot-password a:hover {
-  text-decoration: underline; /* Add underline only on hover */
+.modal-content .close:hover {
+  color: #555;
 }

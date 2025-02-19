@@ -1,7 +1,7 @@
 /* SignupPage.css */
 .signup-container {
     position: relative; /* Ensure relative positioning */
-    padding: 2.5%; /* Adjusted to percentage */
+    padding: 5%; /* Adjusted to percentage */
     background-color: #fff;
     display: flex;
     flex-direction: column;
@@ -11,10 +11,11 @@
   
 .signup-header {
     text-align: left;
+    font-family: 'Georgia', sans-serif;
 }
   
 .signup-header h2 {
-    font-size: 300%; /* Adjusted to percentage */
+    font-size: 400%; /* Adjusted to percentage */
     margin-bottom: 2.5%; /* Adjusted to percentage */
     vertical-align: middle;
 }
@@ -49,7 +50,7 @@
 .signup-form .signup-btn {
     width: 100%; /* Adjusted to percentage */
     padding: 1.25%; /* Adjusted to percentage */
-    background-color: green;
+    background-color: #c729a5;
     color: #fff;
     border: none;
     border-radius: 0.625%; /* Adjusted to percentage */
@@ -58,31 +59,33 @@
 }
   
 .signup-form .signup-btn:hover {
-    background-color: green;
+    background-color: #790071;
 }
   
 
 .close-button {
     position: absolute;
-    top: 0.625%; /* Adjusted to percentage */
-    right: 3.125%; /* Adjusted to percentage */
+    top: 0%; /* Adjusted to percentage */
+    right: 5%; /* Adjusted to percentage */
     width: 3.75%; /* Adjusted to percentage */
-    height: 3.75%; /* Adjusted to percentage */
+    height: 1%; /* Adjusted to percentage */
     background-color: transparent;
     color: #888;
     border: none;
-    font-size: 250%; /* Adjusted to percentage */
+    font-size: 200%; /* Adjusted to percentage */
     line-height: 1; /* Ensure proper alignment */
     cursor: pointer;
     z-index: 9999; /* Ensure it's above other elements */
 }
 
 .close-button:hover {
-    color: #555;
+    color: #000000;
+    background: none; /* לוודא שאין רקע שמופיע בעת ריחוף */
+    outline: none; /* מבטל את קו ההיקף במקרה של ריחוף 
 }
 .close-button:active {
     /* No color change on button press */
-    color: inherit;
+    color: #000000;
 }
 
 /* Override focus styles */
