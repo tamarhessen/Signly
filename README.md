@@ -2,7 +2,7 @@
 
 ## This project is the front end of the web application of facebook.
 
-### Made by: Tamar Hessen, Sapir Yanai, and Daniel Lifshitz.
+### Made by: Tamar Hessen and Sapir Yanai
 
 
 ## Run:
