@@ -11,7 +11,7 @@ function MainFeedCenter({username, displayName,userImg, mode,token}) {
         {/*<UploadPost username={username}></UploadPost>*/}
         <br/>
             {/*<Posts username={username}></Posts>*/}
-            <PostList username={username} displayName={displayName}userImg={userImg} mode={mode} token={token}></PostList>
+            
         </div>
     </>);
 }

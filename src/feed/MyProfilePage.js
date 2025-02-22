@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import LeftSide from "./MainLeft"
 import MainFeedCenter from "./MainFeedCenter";
-import RightSide from "./MainRight";
+import RightSide from "./RightPanel";
 import Post from "./Post";
 
 
