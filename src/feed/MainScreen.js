@@ -32,7 +32,8 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
   return (
     <div className="main-screen">
       {/* Top Panel */}
-      <TopPanel userImg={userImg} navigate={navigate} />
+      <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} />
+
 
       {/* Main Content */}
       <div className="content-container">

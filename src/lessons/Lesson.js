@@ -3,8 +3,11 @@ import { Card } from '../components/card';
 import './Lesson.css';
 
 function Lesson() {
+    const levels = ['L', 'A', 'B']; // Define the sequence of levels
+    const [currentLevel, setCurrentLevel] = useState(0);
     const [gesture, setGesture] = useState('Nothing');
     const [cameraActive, setCameraActive] = useState(false);
+    const [levelCompleted, setLevelCompleted] = useState(false);
 
     const startCamera = () => {
         setCameraActive(true);
@@ -13,7 +16,6 @@ function Lesson() {
     useEffect(() => {
         if (cameraActive) {
             const interval = setInterval(() => {
-                // Add the fetch request inside the interval
                 fetch('http://127.0.0.1:5000/detect_gesture')
                     .then((response) => {
                         if (!response.ok) {
@@ -22,22 +24,33 @@ function Lesson() {
                         return response.json();
                     })
                     .then((data) => {
-                        console.log('Received gesture data:', data); // Debugging output
                         setGesture(data.gesture);
+                        if (data.gesture === levels[currentLevel]) {
+                            setLevelCompleted(true);
+                        }
                     })
                     .catch((error) => {
                         console.error('Error fetching gesture:', error);
                     });
-            }, 100); // Polling every 100ms
+            }, 100); 
 
-            return () => clearInterval(interval); // Cleanup on component unmount
+            return () => clearInterval(interval);
         }
-    }, [cameraActive]); // Effect depends on cameraActive state
+    }, [cameraActive, currentLevel]);
+
+    const nextLevel = () => {
+        if (currentLevel < levels.length - 1) {
+            setCurrentLevel(currentLevel + 1);
+            setLevelCompleted(false);
+        } else {
+            alert('Congratulations! You completed all levels.');
+        }
+    };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
             <h1 className="text-3xl font-bold mb-8 text-gray-800">
-                Sign Language Gesture Recognition
+            Sign Language Gesture Recognition - Level {currentLevel + 1} (Sign: {levels[currentLevel]})
             </h1>
 
             {!cameraActive ? (
@@ -53,7 +66,7 @@ function Lesson() {
             ) : (
                 <Card className="p-6 bg-white rounded-xl shadow-lg">
                     <div className="flex flex-col items-center space-y-6">
-                        {/* Camera Feed Container */}
+                        {/* Camera Feed */}
                         <div className="relative">
                             <img
                                 src="http://127.0.0.1:5000/video_feed"
@@ -73,6 +86,19 @@ function Lesson() {
                                 </span>
                             </div>
                         </div>
+
+                        {/* Level Completion */}
+                        {levelCompleted && (
+                            <div className="text-center mt-6">
+                                <p className="text-green-600 font-semibold">Correct! You signed {levels[currentLevel]}.</p>
+                                <button 
+                                    onClick={nextLevel}
+                                    className="mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+                                >
+                                    {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </Card>
             )}

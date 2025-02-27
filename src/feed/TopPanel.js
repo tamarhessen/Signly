@@ -1,10 +1,10 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom'; // Import useLocation hook
+import { useLocation } from 'react-router-dom';
 import './TopPanel.css';
 
-function TopPanel({ userImg, navigate }) {
-  const location = useLocation(); // Get the current location
-  
+function TopPanel({ userImg, username, displayName, navigate }) {
+  const location = useLocation();
+
   return (
     <header className="header">
       <div className="logo-search">
@@ -24,32 +24,20 @@ function TopPanel({ userImg, navigate }) {
       </div>
 
       <nav className="nav-bar">
-        <span 
-          onClick={() => navigate("/")}
-          className={`nav-link ${location.pathname === "/" ? "active" : ""}`} // Apply "active" class if on the homepage
-        >
+        <span onClick={() => navigate("/")} className={`nav-link ${location.pathname === "/" ? "active" : ""}`}>
           Home
         </span>
-        <span 
-          onClick={() => navigate("/about")}
-          className={`nav-link ${location.pathname === "/about" ? "active" : ""}`} // Highlight About link when on the About page
-        >
+        <span onClick={() => navigate("/about")} className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}>
           About
         </span>
-        <span 
-          onClick={() => navigate("/contact")}
-          className={`nav-link ${location.pathname === "/contact" ? "active" : ""}`} // Highlight Contact Us link when on the Contact page
-        >
+        <span onClick={() => navigate("/contact")} className={`nav-link ${location.pathname === "/contact" ? "active" : ""}`}>
           Contact Us
         </span>
       </nav>
 
-      <div className="profile-picture" onClick={() => navigate("/profile")}>
-        <img 
-          src={userImg || '/profile.jpg'} 
-          alt="Profile" 
-          className="profile-image" 
-        />
+      <div className="profile-container" onClick={() => navigate("/MyProfilePage", { state: { username, displayName, userImg } })}>
+        <img src={userImg || '/profile.jpg'} alt="Profile" className="profile-image" />
+        <span className="profile-name">{displayName}</span> {/* Show display name */}
       </div>
     </header>
   );
