@@ -34,6 +34,10 @@ const UserSchema = new Schema({
     friends: {
         type: FriendsSchema,
         nullable: true
+    },
+    points: {
+        type: Number,
+        default: 0
     }
 });
 
