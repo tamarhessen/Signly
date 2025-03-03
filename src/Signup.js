@@ -116,7 +116,7 @@ const handleSubmit = async (e) => {
       password,
       displayName,
       profilePic, 
-      points:0// Assign the base64 string to profilePic
+      points:0
     };
 
     // Post user to server

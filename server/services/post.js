@@ -1,4 +1,4 @@
-const {Post, Comment, User, Friends} = require('../models/post.js');
+const {Post, Comment, User, Friends} = require('../models/post');
 const jwt = require('jsonwebtoken');
 
 let postId = 0;
@@ -428,6 +428,26 @@ async function getCommentsByPostId(postId) {
     }
     return post.Comments;
 }
+async function updateUserPoints(userId, points) {
+    try {
+        const user = await User.findById(userId);  // Find user by ID
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        // Add points to the current total
+        user.points += points;
+
+        console.log('Updated points in DB:', user.points);  // Log the updated points
+
+        // Save the updated user to the database
+        await user.save();
+        return user;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error updating points');
+    }
+}
 
 module.exports = {
     generateToken,
@@ -449,5 +469,6 @@ module.exports = {
     createComment,
     editComment,
     deleteComment,
-    getCommentsByPostId
+    getCommentsByPostId,
+    updateUserPoints
 };

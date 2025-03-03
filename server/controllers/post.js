@@ -156,6 +156,39 @@ async function getCommentsByPostId(req, res) {
     const result = await postService.getCommentsByPostId(postId);
     res.json(result)
 }
+async function updateUserPoints(userId, points) {
+    try {
+        const user = await User.findById(userId);  // Replace with your DB model
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        // Add points to the current total
+        user.points += points;
+
+        console.log('Updated points in DB:', user.points);  // Log the points after update
+
+        // Save the updated user
+        await user.save();
+        return user;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error updating points');
+    }
+}
+
+async function updatePoints(req, res) {
+    const userId = req.params.id;
+    const { points } = req.body;  // Get points from request body
+
+    try {
+        const updatedUser = await postService.updateUserPoints(userId, points);
+        res.json(updatedUser);  // Return updated user object with points
+    } catch (error) {
+        console.error('Error updating points:', error);
+        res.status(500).json({ error: 'Error updating points' });
+    }
+}
 
 module.exports = {
     generateToken,
@@ -176,5 +209,7 @@ module.exports = {
     createComment,
     editComment,
     deleteComment,
-    getCommentsByPostId
+    getCommentsByPostId,
+    updatePoints,
+    updateUserPoints
 };

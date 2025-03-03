@@ -3,6 +3,7 @@ const postController = require('../controllers/post');
 const express = require('express');
 const router = express.Router();
 const authenticateToken = require('../middleware/authenticateToken');
+const { User } = require('../models/post');  // Adjust the path to your User model as needed
 
 // // Posts
 router.get('/api/posts', authenticateToken, postController.getPosts);
@@ -11,7 +12,28 @@ router.get('/api/users/:id/Posts/:postId/Comments', authenticateToken, postContr
 router.delete('/api/users/:id/Posts/:postId/Comments/:commentId', authenticateToken, postController.deleteComment);
 router.patch('/api/users/:id/Posts/:postId/Comments/:commentId', authenticateToken, postController.editComment);
 router.post('/api/posts/:id', authenticateToken, postController.likePost);
+router.put('/update-points', async (req, res) => {
+    const { username, points } = req.body;
 
+    try {
+        const user = await User.findOne({ username: username });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.points = points;
+        await user.save();
+
+        res.status(200).json({
+            message: 'Points updated successfully',
+            points: user.points
+        });
+    } catch (error) {
+        console.error('Error updating points:', error);
+        res.status(500).json({ message: 'Error updating points' });
+    }
+});
 
 
 
