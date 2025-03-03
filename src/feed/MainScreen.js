@@ -7,6 +7,7 @@ import TopPanel from './TopPanel';
 import Footer from './Footer';
 //import LeftPanel from './LeftPanel'; // Import LeftPanel
 import Navigation from './Navigation'; // Import Navigation
+import { Link } from 'react-router-dom';
 
 function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }) {
   const navigate = useNavigate();
@@ -43,9 +44,13 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
         <main className="main-content">
           <div className="home-screen">
             <img src={images[currentImageIndex]} alt="Scrolling Images" className="welcome-image" />
-            <button className="start-lesson-button" onClick={() => navigate('/lesson')}>
-              Start Lesson
-            </button>
+            <Link
+              to="/lesson"
+              state={{ username, displayName, userImg }}
+              className="start-lesson-button"
+         >
+  Start Lesson
+</Link>
           </div>
         </main>
 
@@ -55,6 +60,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
           points={userProgress.points}
           nextLevelPoints={userProgress.nextLevelPoints}
           navigate={navigate}
+       
         />
       </div>
 
