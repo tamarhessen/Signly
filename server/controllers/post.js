@@ -26,44 +26,6 @@ async function getUserByUsername(req, res) {
     res.json(user);
 }
 
-async function getPosts(req, res) {
-    const posts = await postService.getPosts(req.user.username);
-    console.log("abc", posts)
-    if (!posts) {
-        return res.status(404).json({ error: 'Posts not found' });
-    }
-    res.json(posts)
-}
-
-async function createPost(req, res) {
-    let user = await postService.getUserByUsername(req.user.username);
-    let username = user.displayName;
-    let userImg = user.profilePic;
-    console.log(userImg)
-    const post = await postService.createPost(username, userImg, req.body.postText, req.body.postImg);
-    if (!post) {
-        return res.status(404).json({ error: 'Couldn\'t create a post'})
-    }
-    res.json(post)
-}
-
-async function editPost(req, res) {
-    let postId = req.params.pid;
-    console.log(req.params.pid);
-    const post = await postService.getPostById(postId);
-    if (!post) {
-        return res.status(404).json({ error: 'Couldn\'t find post'})
-    }
-    const newPost = await postService.editPost(post, req.body.postText, req.body.postImg);
-    res.json(newPost)
-}
-
-async function deletePost(req, res) {
-    console.log("hola2", req.params);
-    let postId = req.params.pid;
-    let post = await postService.deletePost(postId);
-    res.json(post);
-}
 
 async function getFriendsListByUserId(req, res) {
     let userId = req.params.id;
@@ -93,12 +55,7 @@ async function deleteFriend(req, res) {
     res.json(result)
 }
 
-async function getPostsByUserId(req, res) {
-    let userId = req.params.id;
-    let realUser = req.user.username;
-    const result = await postService.getAllPostsByUserId(userId, realUser);
-    res.json(result);
-}
+
 
 async function deleteUserById(req, res) {
     let userId = req.params.id;
@@ -116,46 +73,7 @@ async function updateUserById(req, res) {
     res.json(result)
 }
 
-async function likePost(req, res) {
-    let postId = req.params.id;
-    let username = req.user.username;
-    const result = await postService.likePost(postId, username);
-    res.json(result)
-}
 
-async function createComment(req, res) {
-    let postId = req.params.postId;
-    let user = await postService.getUserByUsername(req.user.username);
-    let userImg = user.profilePic;
-    let username = user.displayName;
-    let commentText = req.body.text;
-    const result = await postService.createComment(postId, username, userImg, commentText);
-    res.json(result)
-}
-
-async function editComment(req, res) {
-    let postId = req.params.postId;
-    let commentId = req.params.commentId;
-    let user = postService.getUserByUsername(req.user.username);
-    let username = user.displayName;
-    let commentText = req.body.text;
-    const result = await postService.editComment(postId, username, commentText, commentId);
-    res.json(result)
-}
-
-async function deleteComment(req,res) {
-    let postId = req.params.postId;
-    let commentId = req.params.commentId;
-    let username = req.params.id;
-    const result = await postService.deleteComment(postId, username, commentId);
-    res.json(result)
-}
-
-async function getCommentsByPostId(req, res) {
-    let postId = req.params.postId;
-    const result = await postService.getCommentsByPostId(postId);
-    res.json(result)
-}
 async function updateUserPoints(userId, points) {
     try {
         const user = await User.findById(userId);  // Replace with your DB model
@@ -202,22 +120,12 @@ module.exports = {
     generateToken,
     registerUser,
     getUserByUsername,
-    getPosts,
-    createPost,
-    editPost,
-    deletePost,
     getFriendsListByUserId,
     askToBeFriendOfUser,
     acceptFriendRequest,
     deleteFriend,
-    getPostsByUserId,
     deleteUserById,
     updateUserById,
-    likePost,
-    createComment,
-    editComment,
-    deleteComment,
-    getCommentsByPostId,
     updatePoints,
     updateUserPoints,
     getPoints

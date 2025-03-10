@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './MyProfilePage.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import PostList from './Posts';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import LeftSide from "./MainLeft";
-import MainFeedCenter from "./MainFeedCenter";
 import RightSide from "./RightPanel";
-import Post from "./Post";
+
 
 function MyProfilePage() {
   const [mode, setMode] = useState(true);
@@ -24,9 +21,6 @@ function MyProfilePage() {
   const [showEditWindow, setShowEditWindow] = useState(false);
   const [editedDisplayName, setEditedDisplayName] = useState('');
   const [image, setImage] = useState(undefined);
-  const [postImg, setPostImg] = useState(undefined);
-  const [posts, setPosts] = useState([]);
-  const [likes, setLikes] = useState([]);
   const [shiftDown, setShiftDown] = useState(false);
   const [show, setShow] = useState(false);
   const textRef = useRef("");
@@ -84,25 +78,9 @@ function MyProfilePage() {
     };
 
 
-// Save liked status and number of likes to localStorage whenever posts state changes
-useEffect(() => {
-    const updatedLikes = {};
-    posts.forEach(post => {
-        updatedLikes[post.id] = { liked: post.liked, likes: post.likes };
-    });
-    localStorage.setItem('likes', JSON.stringify(updatedLikes));
-}, [posts]);
+
 const handleClose = () => setShow(false);
 const handleShow = () => setShow(true);
-
-    
-
-
-const handleImageUpload = (userImg) => {
-    console.log(userImg);
-    console.log()
-    setPostImg(userImg);
-};
 
 
 const handleEditProfilePicture = async (file) => {

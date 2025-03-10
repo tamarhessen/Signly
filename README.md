@@ -53,45 +53,7 @@ All the visualization of the pages of app, login, and signup happens in those fi
 ## FeedScreen.js
 This file separates the feed page into two parts, the navigation bar on top, and the main screen on the bottom.
 
-## InfoBar.js
-This files separates the navigation bar into 3 parts: right, left, and center.
 
-On the right side we have 4 buttons and a picture, all the buttons don't do anything right now, and the picture is the profile picture of the user.
-
-In the center we have 3 buttons using svg format to show a drawing instead of a word.
-
-On the left side we have the facebook logo (when pressed the user gets sent to the login screen), and the search bar (currently doesn't do anything).
-
-## MainScreen.js
-This files separates the main screen into 3 parts, the right column, the center colum, and the left column, the center column is the main part of the feed screen and thus it is twice as big as the other columns.
-
-## MainRight.js
-This file has two buttons, night-mode/light-mode button (when pressed switches the css from the css for light-mode to the css for night-mode and back),
-
-The second button is the log-out button that when pressed sends back to the login page.
-
-## MainCenter.js
-This file holds the feed column, it calls Posts.js which shows 10 static posts, and an option to add more posts.
-
-## Posts.js
-
-This file holds 10 static posts, and an option to add more posts.
-
-## Post.js
-
-This file gets the data of a post, and returns the html for that post.
-
-## Comments.js
-
-This file gets the data of a comments list, and returns the html for that list.
-
-## Comment.js
-
-This file gets the data of a comment, and returns the html for that comment.
-
-## AddComment.js
-
-When clicked on the add comment button it shows the option to add a comment.
 
 ## LightModeFeed/NightModeFeed.css
 

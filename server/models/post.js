@@ -42,73 +42,12 @@ const UserSchema = new Schema({
 });
 
 
-const CommentSchema = new Schema({
-    id: {
-        type: Number,
-        integer: true
-    },
-    created: {
-        type: Date,
-        default: Date.now
-    },
-    creator:{
-        type:String,
-        required:true
-    },
-    creatorImg: {
-        type: String,
-        required: true
-    },
-    content: {
-        type: String,
-        required: true
-    }
-});
-
-const PostSchema = new Schema({
-    id: {
-        type: Number,
-        integer: true
-    },
-    created: {
-        type: Date,
-        default: Date.now
-    },
-    Creator: {
-        type:String,
-        required:true
-    },
-    CreatorImg: {
-        type: String,
-        required: true
-    },
-    Comments: [{
-        type: CommentSchema,
-        nullable: true
-    }],
-    PostImg:{
-        type: String,
-        nullable:true
-    },
-    PostText:{
-        type:String,
-        nullable:true
-    },
-    PostLikes:{
-        type: Number,
-        integer: true
-    },
-    PeopleLiked: [{
-        type:String,
-        nullable: true
-    }]
-});
 
 
 
-const Post = mongoose.model('Post', PostSchema);
-const Comment = mongoose.model('Comment', CommentSchema);
+
+
 const User = mongoose.model('User', UserSchema);
 const Friends = mongoose.model('Friends', FriendsSchema);
 
-module.exports = { Post, Comment, User, Friends };
+module.exports = {  User, Friends };
