@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Login';
 import Signup from './Signup';
-import FeedScreen from './feed/FeedScreen';
+import HomeScreen from './home/HomeScreen';
 
 function App() {
   const [displayName, setDisplayName] = useState('');
@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Login setDisplayName={setDisplayName} setProfilePicture={setProfilePicture} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/feed" element={<FeedScreen displayName={displayName} profilePicture={profilePicture} />} />
+        <Route path="/home" element={<HomeScreen displayName={displayName} profilePicture={profilePicture} />} />
       </Routes>
     </Router>
   );

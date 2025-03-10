@@ -19,9 +19,9 @@ This file is the base of the app and present the page depending on the path.
 
 If / then it will show the login page.
 
-If /feed and the user is logged in then it will show the feed page.
+If /home and the user is logged in then it will show the feed page.
 
-If /feed and the user isn't logged in then it will redirect to /.
+If /home and the user isn't logged in then it will redirect to /.
 
 Otherwise, it will redirect to /.
 

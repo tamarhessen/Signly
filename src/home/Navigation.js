@@ -1,4 +1,4 @@
-import FeedScreen from "./FeedScreen";
+import HomeScreen from "./HomeScreen";
 import {BrowserRouter, Route, Routes, Navigate, useNavigate} from
         "react-router-dom";
 import React, {useState} from "react";

@@ -6,7 +6,7 @@ import './NightModeFeed.css';
 import { useLocation } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-function FeedScreen({setLoggedIn}) {
+function HomeScreen({setLoggedIn}) {
     const [mode, setMode] = useState(true);
     const location = useLocation();
     const { state } = location;
@@ -16,7 +16,7 @@ function FeedScreen({setLoggedIn}) {
    
     return (
         <>
-            <title>Feed</title>
+            <title>Home</title>
             <div className={mode ? "light-mode" : "night-mode"}>
                 {/* Assuming profilePicture is a file object */}
            
@@ -26,4 +26,4 @@ function FeedScreen({setLoggedIn}) {
     );
 }
 
-export default FeedScreen;
+export default HomeScreen;
