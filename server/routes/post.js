@@ -37,6 +37,7 @@ router.put('/update-points', async (req, res) => {
 
 
 
+
 // Tokens
 router.post('/api/tokens', postController.generateToken);
 
@@ -60,6 +61,8 @@ router.post('/api/users/:id/friends', authenticateToken, postController.askToBeF
 router.patch('/api/users/:id/friends/:fid', authenticateToken, postController.acceptFriendRequest);
 router.delete('/api/users/:id/friends/:fid', authenticateToken, postController.deleteFriend);
 
+router.get('/api/users/:id/points', authenticateToken, postController.getPoints);
+  
 
 
 

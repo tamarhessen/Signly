@@ -448,6 +448,20 @@ async function updateUserPoints(userId, points) {
         throw new Error('Error updating points');
     }
 }
+async function getUserPoints(userId) {
+    const user = await User.findOne({ username: userId });
+    if (!user) {
+        console.log('couldn\'t find user');
+        return null;
+    }
+    console.log("User Object:", user); // בדיקה כללית
+    console.log("User Points:", user.points); // בדיקת השדה הספציפי
+    return user.points;
+}
+
+
+
+
 
 module.exports = {
     generateToken,
@@ -470,5 +484,6 @@ module.exports = {
     editComment,
     deleteComment,
     getCommentsByPostId,
-    updateUserPoints
+    updateUserPoints,
+    getUserPoints
 };

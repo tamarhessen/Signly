@@ -49,6 +49,7 @@ function Login({ setLoggedIn }) {
       const displayNameValue = json2.displayName;
       const profilePictureValue = json2.profilePic;
       setLoggedIn(true);
+   
       navigate('/feed', { state: { username: username, displayName: displayNameValue, profilePictureURL: profilePictureValue, token: token } });
     } else {
       setLoginError('Invalid username or password');

@@ -189,6 +189,14 @@ async function updatePoints(req, res) {
         res.status(500).json({ error: 'Error updating points' });
     }
 }
+async function getPoints(req, res) {
+    let userId = req.params.id;
+    const points = await postService.getUserPoints(userId);
+    res.json(points)
+}
+
+
+
 
 module.exports = {
     generateToken,
@@ -211,5 +219,6 @@ module.exports = {
     deleteComment,
     getCommentsByPostId,
     updatePoints,
-    updateUserPoints
+    updateUserPoints,
+    getPoints
 };
