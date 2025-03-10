@@ -1,4 +1,4 @@
-const { User, Friends} = require('../models/post');
+const { User, Friends} = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 async function generateToken(user) {

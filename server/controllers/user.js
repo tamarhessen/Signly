@@ -1,8 +1,8 @@
-const postService = require('../services/post');
+const userService = require('../services/user');
 
 // Token Controller
 async function generateToken(req, res) {
-    const token = await postService.generateToken(req.body);
+    const token = await userService.generateToken(req.body);
     if (!token) {
         return res.status(404).json({ error: 'invalid username and or password' });
     }
@@ -11,7 +11,7 @@ async function generateToken(req, res) {
 }
 
 async function registerUser(req, res) {
-    const user = await postService.registerUser(req.body);
+    const user = await userService.registerUser(req.body);
     if (!user) {
         return res.status(400).json({ error: 'Username already exists' });
     }
@@ -19,7 +19,7 @@ async function registerUser(req, res) {
 }
 
 async function getUserByUsername(req, res) {
-    const user = await postService.getUserByUsername(req.params.username);
+    const user = await userService.getUserByUsername(req.params.username);
     if (!user) {
         return res.status(404).json({ error: 'User not found' });
     }
@@ -29,7 +29,7 @@ async function getUserByUsername(req, res) {
 
 async function getFriendsListByUserId(req, res) {
     let userId = req.params.id;
-    const friendsList = await postService.getFriendsListByUserId(userId);
+    const friendsList = await userService.getFriendsListByUserId(userId);
     console.log("2", friendsList);
     res.json(friendsList)
 }
@@ -37,21 +37,21 @@ async function getFriendsListByUserId(req, res) {
 async function askToBeFriendOfUser(req, res) {
     let userId = req.params.id;
     console.log("hola")
-    const result = await postService.askToBeFriendOfUser(userId, req.user.username);
+    const result = await userService.askToBeFriendOfUser(userId, req.user.username);
     res.json(result);
 }
 
 async function acceptFriendRequest(req, res) {
     let userId = req.params.id;
     let friendId = req.params.fid;
-    const result = await postService.acceptFriendRequest(userId, friendId);
+    const result = await userService.acceptFriendRequest(userId, friendId);
     res.json(result);
 }
 
 async function deleteFriend(req, res) {
     let userId = req.params.id;
     let friendId = req.params.fid;
-    const result = await postService.deleteFriend(userId, friendId);
+    const result = await userService.deleteFriend(userId, friendId);
     res.json(result)
 }
 
@@ -59,7 +59,7 @@ async function deleteFriend(req, res) {
 
 async function deleteUserById(req, res) {
     let userId = req.params.id;
-    const result = await postService.deleteUserById(userId);
+    const result = await userService.deleteUserById(userId);
     res.json(result)
 }
 
@@ -69,7 +69,7 @@ async function updateUserById(req, res) {
     let newUsername = req.body.username;
     let newDisplayName = req.body.displayName;
     let newPassword = req.body.password;
-    const result = await postService.updateUserById(userId, newUsername, newImg, newDisplayName, newPassword);
+    const result = await userService.updateUserById(userId, newUsername, newImg, newDisplayName, newPassword);
     res.json(result)
 }
 
@@ -100,7 +100,7 @@ async function updatePoints(req, res) {
     const { points } = req.body;  // Get points from request body
 
     try {
-        const updatedUser = await postService.updateUserPoints(userId, points);
+        const updatedUser = await userService.updateUserPoints(userId, points);
         res.json(updatedUser);  // Return updated user object with points
     } catch (error) {
         console.error('Error updating points:', error);
@@ -109,7 +109,7 @@ async function updatePoints(req, res) {
 }
 async function getPoints(req, res) {
     let userId = req.params.id;
-    const points = await postService.getUserPoints(userId);
+    const points = await userService.getUserPoints(userId);
     res.json(points)
 }
 
