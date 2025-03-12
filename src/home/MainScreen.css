@@ -1,29 +1,25 @@
 .main-content {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  min-height: 80vh;
   text-align: center;
   padding: 40px 20px;
   background-color: #faf5f5; /* Subtle background color */
+  width: 100%;
+  max-width: none; /* מאפשר להתפרס */
+ 
 }
 
 .content-container {
   width: 100%;
-  max-width: 1200px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   gap: 40px;
 }
 
-.home-screen {
-  flex: 1;
-  text-align: center;
-  max-width: 600px;
-  width: 100%;
-}
+
+
 
 h1 {
   font-size: 32px;
@@ -40,7 +36,7 @@ h1 {
   height: auto;
   object-fit: contain;
   display: block;
-  margin: 20px auto;
+  margin: 40px auto;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
@@ -51,7 +47,7 @@ h1 {
 }
 
 .start-lesson-button {
-  margin-top: 20px;
+  margin-top: 300px;
   padding: 15px 30px;
   font-size: 20px;
   font-weight: 600;
@@ -78,7 +74,7 @@ h1 {
   position: relative;
   top: 100px;
   right: 0;
-  width: 300px;
+  width: 250px;
   height: 485px;
   padding: 25px;
   background-color: #fff;
@@ -87,6 +83,7 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  animation: fadeIn 1.5s ease-in-out;
 }
 
 .right-panel h3 {
@@ -132,3 +129,146 @@ button:hover {
 button:active {
   transform: translateY(2px);
 }
+.fun-fact {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 16px;
+  color: #555;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.useful-links {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.useful-links h3 {
+  font-size: 22px;
+  color: #333;
+}
+
+.useful-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.useful-links li {
+  margin: 10px 0;
+}
+
+.useful-links a {
+  text-decoration: none;
+  font-size: 18px;
+  color: #f3f3f3;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.useful-links a:hover {
+  color: #eaccd8;
+}
+.main-screen {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+.animated-title {
+  font-size: 60px;
+  font-weight: bold;
+  text-align: center;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.animated-subtitle {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 20px;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.carousel-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.carousel-image {
+  width: 250px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.start-lesson-button {
+  display: block;
+  width: 200px;
+  margin: 20px auto;
+  padding: 12px;
+  background-color: #b73466;
+  color: white;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.start-lesson-button:hover {
+  background-color: #790071;
+}
+
+.fun-fact {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #fff5c3;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 16px;
+  color: #555;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.useful-links {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.useful-links h3 {
+  font-size: 22px;
+  color: #333;
+}
+
+.links-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.link-button {
+  background-color: #1f4e79;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.link-button:hover {
+  background-color: #153b5e;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+

@@ -89,7 +89,7 @@ function Lesson() {
                     />
                     <button 
                         onClick={startCamera}
-                        className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition-transform transform hover:scale-105"
+                        className="bg-pink-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition-transform transform hover:scale-105"
                     >
                         TRY IT YOURSELF
                     </button>

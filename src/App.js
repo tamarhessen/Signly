@@ -10,6 +10,7 @@ import { Modal } from 'bootstrap';
 import { authenticateUser } from './Users';
 import { LoggedIn } from './loggedIn';
 import MyProfilePage from './home/MyProfilePage';
+import AlphabetImage from './home/AlphabetImage';
 import FriendPage from './home/FriendPage';
 import MainScreen from './home/MainScreen'; // Import MainScreen (updated path)
 import Lesson from './lessons/Lesson'; // Import Lesson component (updated path)
@@ -89,6 +90,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/alphabet-image" element={<AlphabetImage />} />
 
         {/* Catch-all route */}
         <Route path="*" element={<Navigate replace to="/" />} />
