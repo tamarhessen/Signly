@@ -1,21 +1,34 @@
 /* Lesson.css */
 .camera-container {
     position: relative;
-    width: 400px;
+    width: 400px; /* התאמת הרוחב לפי הצורך */
     height: 400px;
-    margin: 0 auto;
+    margin: 0 auto; /* ממרכז אופקית */
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* מרכז את כל האלמנטים בעמוד */
+.camera-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* ממלא את כל המסך */
+    width: 100%;
 }
 
 .camera-feed {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    justify-content: center;
+    align-items: center;
 }
 
 .gesture-display {
+    width: 100%;
+    height: 100%;
     margin-top: 20px;
     padding: 20px;
     background-color: white;
@@ -24,8 +37,9 @@
 }
 
 .gesture-circle {
-    width: 80px;
-    height: 80px;
+    width: 100%;
+    height: 100%;
+   
     border-radius: 50%;
     background-color: #f3f4f6;
     display: flex;
@@ -49,3 +63,14 @@
 .start-button:hover {
     background-color: #2563eb;
 }
+.points-display {
+    font-size: 20rem; /* גודל טקסט מוגדל */
+    font-weight: bold;
+    color: #1f2937; /* צבע כהה */
+}
+.correct-message {
+    font-size: 20rem; /* גודל טקסט מוגדל */
+    font-weight: bold;
+    color: #16a34a; /* צבע ירוק */
+}
+

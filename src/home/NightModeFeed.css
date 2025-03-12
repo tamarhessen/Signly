@@ -92,17 +92,10 @@
     flex: 1;
 }
 
-.night-mode .post-image {
-    max-width: 100%;
-}
 
-.night-mode .post-username-container {
-    display: flex;
-}
 
-.night-mode .post-username {
-    flex: 1;
-}
+
+
 
 .night-mode .time {
     flex: 1;
@@ -128,13 +121,6 @@
     box-shadow: 0px 0px 50px 5px #DADDE1;
 }
 
-.night-mode .uploadPost {
-    cursor: pointer;
-    margin-top: 5px;
-    background-color: #3A3B3C;
-    /*display: flex;*/
-    box-shadow: 0px 0px 10px 3px #DADDE1;
-}
 
 .night-mode .uploadBtn {}
 
@@ -150,11 +136,7 @@
     margin-bottom: 10px;
 }
 
-.night-mode .comment-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-}
+
 
 .night-mode .user-img {
     width: 40px;
@@ -168,15 +150,9 @@
     margin-right: 5px;
 }
 
-.night-mode .comment-body {}
 
-.night-mode .post-container {
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    background-color: #242526;
-    padding: 2%;
-    margin-top: 3%;
-    border-radius: 10px;
-}
+
+
 
 .night-mode .modal-content {
     background-color: #242526;

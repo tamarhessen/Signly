@@ -49,7 +49,8 @@ function Login({ setLoggedIn }) {
       const displayNameValue = json2.displayName;
       const profilePictureValue = json2.profilePic;
       setLoggedIn(true);
-      navigate('/feed', { state: { username: username, displayName: displayNameValue, profilePictureURL: profilePictureValue, token: token } });
+   
+      navigate('/home', { state: { username: username, displayName: displayNameValue, profilePictureURL: profilePictureValue, token: token } });
     } else {
       setLoginError('Invalid username or password');
     }
@@ -128,7 +129,7 @@ function Login({ setLoggedIn }) {
                   required
                 />
               </div>
-              <button type="submit" className="button-blue">Log In</button>
+              <button type="submit" className="blue-button">Log In</button >
               {loginError && <p className="error-message">{loginError}</p>}
             </form>
           </div>

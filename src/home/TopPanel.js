@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import './TopPanel.css';
 
-function TopPanel({ userImg, username, displayName, navigate }) {
+function TopPanel({ userImg, username, displayName, navigate,token }) {
   const location = useLocation();
 
   return (
@@ -35,7 +35,7 @@ function TopPanel({ userImg, username, displayName, navigate }) {
         </span>
       </nav>
 
-      <div className="profile-container" onClick={() => navigate("/MyProfilePage", { state: { username, displayName, userImg } })}>
+      <div className="profile-container" onClick={() => navigate("/MyProfilePage", { state: { username, displayName, userImg,token } })}>
         <img src={userImg || '/profile.jpg'} alt="Profile" className="profile-image" />
         <span className="profile-name">{displayName}</span> {/* Show display name */}
       </div>

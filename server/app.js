@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const customEnv = require('custom-env');
-const User = require('./models/post');
-const userRoutes = require('./routes/post');
+const User = require('./models/user');
+const userRoutes = require('./routes/user');
 
 // Start of part 3:
 const http = require("http");
@@ -52,7 +52,7 @@ mongoose.connect(process.env.CONNECTION_STRING, { // Connect to MongoDB using th
 app.use(express.static('public')); // Serve static files from the 'public' directory
 
 // Routes
-const chatRoutes = require('./routes/post'); // Import the chat routes
+const chatRoutes = require('./routes/user'); // Import the chat routes
 app.use('/', chatRoutes); // Mount the chat routes on the root path
 
 // Start the server

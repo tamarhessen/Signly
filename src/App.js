@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Login';
 import Signup from './Signup';
-import FeedScreen from './feed/FeedScreen';
+import HomeScreen from './home/HomeScreen';
 import About from './About'; // Import the About component
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Login.css';
 import { Modal } from 'bootstrap';
 import { authenticateUser } from './Users';
 import { LoggedIn } from './loggedIn';
-import MyProfilePage from './feed/MyProfilePage';
-import FriendPage from './feed/FriendPage';
-import MainScreen from './feed/MainScreen'; // Import MainScreen (updated path)
+import MyProfilePage from './home/MyProfilePage';
+import AlphabetImage from './home/AlphabetImage';
+import FriendPage from './home/FriendPage';
+import MainScreen from './home/MainScreen'; // Import MainScreen (updated path)
 import Lesson from './lessons/Lesson'; // Import Lesson component (updated path)
 
 function App() {
@@ -62,10 +63,10 @@ function App() {
           }
         />
         <Route
-          path="/feed"
+          path="/home"
           element={
             <ProtectedRoute>
-              <FeedScreen />
+              <HomeScreen />
             </ProtectedRoute>
           }
         />
@@ -89,6 +90,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/alphabet-image" element={<AlphabetImage />} />
 
         {/* Catch-all route */}
         <Route path="*" element={<Navigate replace to="/" />} />

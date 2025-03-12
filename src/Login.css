@@ -6,7 +6,7 @@
   overflow: hidden;
 }
 .logo {
-  width: 200px; /* גודל הלוגו */
+  width: 250px; /* גודל הלוגו */
   height: auto; /* שימור פרופורציות */
   display: block; /* לוודא שהלוגו יהיה בלוק */
   margin: 30px auto 30px auto; /* למרכז את הלוגו במרכז הדף */
@@ -28,12 +28,12 @@
 }
 .sign-in-container {
   width: 25%; /* Slightly wider for better accessibility */
-  height: 50%; /* Adjusted for better fit */
+  height: 45%; /* Adjusted for better fit */
 
   margin-left: auto; /* Center horizontally */
   margin-right: auto; /* Center horizontally */
   padding: 2%;
-  border: 2px solid #d1d1d1; /* Lighter border */
+  border: 1px solid #d1d1d1; /* Lighter border */
   border-radius: 8px;
   background-color: #ffffff; /* White background for clarity */
   display: flex;
@@ -69,7 +69,9 @@
 
 .additional-info p {
 
-  line-height: 1.5;
+  line-height: 2.5;
+  color: #1f4e79;
+  font-size: 1em;
 }
 
 .form-group {
@@ -97,8 +99,19 @@ button {
   font-size: 1.2em;
   margin-top: 5%;
 }
+.blue-button {
+  width: 100%;
+  padding: 15px;
+  background-color: #1f4e79; /* Indigo Blue (denim blue) */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2em;
+  margin-top: 5%;
+}
 
-button:hover {
+.blue-button:hover {
   background-color: #153b5e; /* Darker shade of the blue for hover effect */
 
 }
@@ -106,7 +119,7 @@ button:hover {
 .green-button {
   width: 70%;
   padding: 12px;
-  background-color: #c729a5;
+  background-color: #b73466;
   color: #fff;
   border: none;
   border-radius: 5px;
