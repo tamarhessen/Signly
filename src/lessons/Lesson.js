@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import TopPanel from '../home/TopPanel';
+import Footer from '../home/Footer';
+import { useNavigate } from 'react-router-dom';
 
 
-function Lesson() {
+function Lesson({ userImg, username, displayName, token }) {
     const levels = ['L', 'A', 'B']; // סדר האותיות בשלבים
     const signImages = {
         L: '/signs/L.png',
@@ -18,7 +21,7 @@ function Lesson() {
     const [showSignImage, setShowSignImage] = useState(true); // שליטה בהצגת התמונה
 
     const location = useLocation();
-    const { username } = location.state || {};
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (cameraActive) {
@@ -68,64 +71,70 @@ function Lesson() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
-            <h1 className="text-3xl font-bold mb-8 text-gray-800">
-                Level {currentLevel + 1} - Sign: {levels[currentLevel]}
-            </h1>
-
-            {/* הצגת הניקוד */}
-            <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center">
-                <p className="text-20xl font-semibold text-gray-700">Points:</p>
-                <p className="text-3xl font-bold text-blue-600">{points}</p>
-            </div>
-
-            {/* שלב הצגת התמונה */}
-            {showSignImage ? (
-                <div className="text-center mb-8 flex justify-center items-center">
-                    <img 
-                        src={signImages[levels[currentLevel]]} 
-                        alt={`Sign for ${levels[currentLevel]}`} 
-                        className="w-[400px] h-[400px] object-cover rounded-lg mb-6"
-                    />
-                    <button 
-                        onClick={startCamera}
-                        className="bg-pink-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition-transform transform hover:scale-105"
-                    >
-                        TRY IT YOURSELF
-                    </button>
+        <>
+            <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
+            <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
+                <h1 className="text-3xl font-bold mb-8 text-gray-800">
+                    Level {currentLevel + 1} - Sign: {levels[currentLevel]}
+                </h1>
+    
+                {/* הצגת הניקוד */}
+                <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center">
+                    <p className="text-20xl font-semibold text-gray-700">Points:</p>
+                    <p className="text-3xl font-bold text-blue-600">{points}</p>
                 </div>
-            ) : cameraActive ? (
-                <div className="text-center mb-8 flex justify-center items-center">
-                    <img
-                        src="http://127.0.0.1:5001/video_feed"
-                        alt="Camera Feed"
-                        className="w-[700px] h-[700px] rounded-lg object-cover"
-                    />
-                    <div className="text-center w-full mt-4">
-                        <div className="flex justify-center items-center h-24 w-24 mx-auto bg-gray-100 rounded-full">
-                            <span className="text-4xl font-bold text-gray-800">
-                                {gesture === 'Nothing' ? '-' : gesture}
-                            </span>
-                        </div>
+    
+                {/* שלב הצגת התמונה */}
+                {showSignImage ? (
+                    <div className="text-center mb-8 flex justify-center items-center">
+                        <img 
+                            src={signImages[levels[currentLevel]]} 
+                            alt={`Sign for ${levels[currentLevel]}`} 
+                            className="w-[400px] h-[400px] object-cover rounded-lg mb-6"
+                        />
+                        <button 
+                            onClick={startCamera}
+                           className="start-button"
+                        >
+                            TRY IT YOURSELF
+                        </button>
                     </div>
-
-                    {levelCompleted && (
-                        <div className="text-center mt-6">
-                            <p className="text-6xl text-green-600 font-semibold flex items-center justify-center">
-                                ✅ Correct! You signed {levels[currentLevel]}.
-                            </p>
-                            <button 
-                                onClick={nextLevel}
-                                className="mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg transition-transform transform hover:scale-105"
-                            >
-                                {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
-                            </button>
+                ) : cameraActive ? (
+                    <div className="text-center mb-8 flex justify-center items-center">
+                        <img
+                            src="http://127.0.0.1:5001/video_feed"
+                            alt="Camera Feed"
+                            className="w-[700px] h-[700px] rounded-lg object-cover"
+                        />
+                        <div className="text-center w-full mt-4">
+                            <div className="flex justify-center items-center h-24 w-24 mx-auto bg-gray-100 rounded-full">
+                                <span className="text-4xl font-bold text-gray-800">
+                                    {gesture === 'Nothing' ? '-' : gesture}
+                                </span>
+                            </div>
                         </div>
-                    )}
-                </div>
-            ) : null}
-        </div>
+    
+                        {levelCompleted && (
+                            <div className="text-center mt-6">
+                                <p className="text-6xl text-green-600 font-semibold flex items-center justify-center">
+                                    ✅ Correct! You signed {levels[currentLevel]}.
+                                </p>
+                                <button 
+                                    onClick={nextLevel}
+                                    className="start-button"
+                                >
+                                    {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                ) : null}
+            </div>
+            <Footer />
+        </>
     );
+    
+    
 }
 
 export default Lesson;
