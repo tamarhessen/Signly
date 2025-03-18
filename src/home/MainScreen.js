@@ -95,11 +95,11 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
               <img src={images[currentImageIndex]} alt="Sign Language Example" className="carousel-image" />
             </div>
 
-            <Link to="/lesson" state={{ username, displayName, userImg }} className="start-lesson-button">
+            <Link to="/lesson" state={{ userImg, username, displayName, token }} className="start-lesson-button">
               Start Lesson 🚀
             </Link>
               {/* Button to view image of English Alphabet in sign language */}
-              <Link to="/alphabet-image" className="start-lesson-button">
+              <Link to="/alphabet-image" state={{ userImg, username, displayName, token }} className="start-lesson-button">
               View Alphabet in Sign Language 🅰️
             </Link>
 

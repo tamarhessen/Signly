@@ -1,9 +1,25 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './TopPanel.css';
 
-function TopPanel({ userImg, username, displayName, navigate,token }) {
+function TopPanel({ userImg, username, displayName, token }) {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // בדיקה אם יש state או נתונים מ-localStorage
+  const state = location.state || {};
+  const currentUserImg = state.userImg || localStorage.getItem("userImg") || userImg || '/profile.jpg';
+  const currentUsername = state.username || localStorage.getItem("username") || username;
+  const currentDisplayName = state.displayName || localStorage.getItem("displayName") || displayName;
+  const currentToken = state.token || localStorage.getItem("token") || token;
+
+  // שמירת הנתונים ב-localStorage כדי לוודא שהם נשמרים לאחר ניווטים
+  useEffect(() => {
+    if (currentUsername) localStorage.setItem("username", currentUsername);
+    if (currentDisplayName) localStorage.setItem("displayName", currentDisplayName);
+    if (currentUserImg) localStorage.setItem("userImg", currentUserImg);
+    if (currentToken) localStorage.setItem("token", currentToken);
+  }, [currentUsername, currentDisplayName, currentUserImg, currentToken]);
 
   return (
     <header className="header">
@@ -12,19 +28,14 @@ function TopPanel({ userImg, username, displayName, navigate,token }) {
           <img 
             src="/logoPink.png" 
             alt="Signly Logo"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home", { state: { username: currentUsername, displayName: currentDisplayName, userImg: currentUserImg, token: currentToken } })} 
             className="logo-image" 
           />
         </div>
-        <input 
-          type="text" 
-          placeholder="Search for a sign..." 
-          className="search-bar" 
-        />
       </div>
 
       <nav className="nav-bar">
-        <span onClick={() => navigate("/")} className={`nav-link ${location.pathname === "/" ? "active" : ""}`}>
+        <span onClick={() => navigate("/home", { state: { username: currentUsername, displayName: currentDisplayName, userImg: currentUserImg, token: currentToken } })} className={`nav-link ${location.pathname === "/" ? "active" : ""}`}>
           Home
         </span>
         <span onClick={() => navigate("/about")} className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}>
@@ -35,9 +46,9 @@ function TopPanel({ userImg, username, displayName, navigate,token }) {
         </span>
       </nav>
 
-      <div className="profile-container" onClick={() => navigate("/MyProfilePage", { state: { username, displayName, userImg,token } })}>
-        <img src={userImg || '/profile.jpg'} alt="Profile" className="profile-image" />
-        <span className="profile-name">{displayName}</span> {/* Show display name */}
+      <div className="profile-container" onClick={() => navigate("/MyProfilePage", { state: { username: currentUsername, displayName: currentDisplayName, userImg: currentUserImg, token: currentToken } })}>
+        <img src={currentUserImg} alt="Profile" className="profile-image" />
+        <span className="profile-name">{currentDisplayName}</span>
       </div>
     </header>
   );
