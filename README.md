@@ -1,6 +1,6 @@
 # Signly
 
-## This project is the front end of the web application of facebook.
+## This project is the front end of the web application of signly.
 
 ### Made by: Tamar Hessen and Sapir Yanai
 
