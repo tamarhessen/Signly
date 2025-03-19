@@ -5,13 +5,15 @@ import Footer from '../home/Footer';
 import { useNavigate } from 'react-router-dom';
 
 
-function Lesson({ userImg, username, displayName, token }) {
+function Lesson() {
     const levels = ['L', 'A', 'B']; // סדר האותיות בשלבים
     const signImages = {
         L: '/signs/L.png',
         A: '/signs/A.png',
         B: '/signs/B.png'
     };
+    const location = useLocation();
+    const { userImg, username, displayName, token } = location.state || {};
 
     const [currentLevel, setCurrentLevel] = useState(0);
     const [gesture, setGesture] = useState('Nothing');
@@ -20,7 +22,7 @@ function Lesson({ userImg, username, displayName, token }) {
     const [points, setPoints] = useState(0);
     const [showSignImage, setShowSignImage] = useState(true); // שליטה בהצגת התמונה
 
-    const location = useLocation();
+   
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -49,21 +51,33 @@ function Lesson({ userImg, username, displayName, token }) {
     const nextLevel = () => {
         if (levelCompleted) {
             if (currentLevel < levels.length - 1) {
+                const newPoints = points + 1;
                 setCurrentLevel(currentLevel + 1);
                 setLevelCompleted(false);
                 setCameraActive(false);
                 setShowSignImage(true); // הצגת תמונת הסימן הבא
                 
-                const newPoints = points + 1;
+                
                 setPoints(newPoints);
 
-                // עדכון ניקוד בשרת
+                // Update the points in MongoDB
                 fetch('http://127.0.0.1:5000/update-points', {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, points: newPoints }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        points: newPoints,
+                    }),
                 })
-                .catch(error => console.error('Error updating points:', error));
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log('Points updated:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error updating points:', error);
+                    });
             } else {
                 alert('Congratulations! You completed all levels.');
             }

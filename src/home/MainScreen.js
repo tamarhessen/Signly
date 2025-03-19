@@ -78,7 +78,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
 
     return () => abortController.abort();
   }, [username, token]);
-
+ 
   return (
     <div className="main-screen">
       <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
