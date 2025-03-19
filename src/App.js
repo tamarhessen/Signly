@@ -15,12 +15,14 @@ import ContactUs from './home/ContactUs';
 import FriendPage from './home/FriendPage';
 import MainScreen from './home/MainScreen'; // Import MainScreen (updated path)
 import Lesson from './lessons/Lesson'; 
-import Progress from './lessons/progress'; // Import Lesson component (updated path)
+import Progress from './lessons/progress'; 
+import LevelsPage from './lessons/levelsPage'; // Import LevelsPage component
 
 function App() {
   const [displayName, setDisplayName] = useState('');
   const [profilePicture, setProfilePicture] = useState('');
   const [username, setUsername] = useState('');
+  const [points, setPoints] = useState(0);  // Points state added
   const { loggedIn, setLoggedIn } = LoggedIn();
 
   // Helper function to handle logged-in redirects
@@ -84,9 +86,19 @@ function App() {
           }
         />
 
+        {/* LevelsPage route */}
+        <Route
+          path="/levels"
+          element={
+            <ProtectedRoute>
+              <LevelsPage points={points} username={username} />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Lesson route */}
         <Route
-          path="/lesson"
+          path="/lesson/:level"
           element={
             <ProtectedRoute>
               <Lesson />

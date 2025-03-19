@@ -13,6 +13,7 @@ function TopPanel({ userImg, username, displayName, token }) {
   const currentDisplayName = state.displayName || localStorage.getItem("displayName") || displayName;
   const currentToken = state.token || localStorage.getItem("token") || token;
 
+  
   // שמירת הנתונים ב-localStorage כדי לוודא שהם נשמרים לאחר ניווטים
   useEffect(() => {
     if (currentUsername) localStorage.setItem("username", currentUsername);

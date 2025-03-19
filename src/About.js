@@ -9,8 +9,7 @@ function About({ userImg, username, displayName, token }) {
   return (
     <>
        
-    <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
-    <div className="about-page">
+       <TopPanel userImg={`${userImg}?t=${new Date().getTime()}`} username={username} displayName={displayName} navigate={navigate} token={token} />    <div className="about-page">
       
       <h1>✨ About Us ✨</h1>
       <p><span role="img" aria-label="hand">🖐️</span> Welcome to Signly! Our mission is to help people learn sign language easily and effectively using cutting-edge technology.</p>

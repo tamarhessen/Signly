@@ -16,6 +16,10 @@ function Login({ setLoggedIn }) {
   const modalRef = useRef(null);
   const navigate = useNavigate();
   const [profilePictureURL, setProfilePictureURL] = useState(null);
+  useEffect(() => {
+    // Clear localStorage when the Login page is loaded
+    localStorage.clear();  // This will remove all the stored items in localStorage
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

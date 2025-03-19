@@ -3,11 +3,6 @@ import './RightPanel.css'; // Import CSS
 
 function RightPanel({ level, points, nextLevelPoints, navigate }) {
   useEffect(() => {
-    console.log("RightPanel received props ->", {
-      level,
-      points,
-      nextLevelPoints
-    });
   }, [level, points, nextLevelPoints]);
 
   return (
