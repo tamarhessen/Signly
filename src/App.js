@@ -13,7 +13,8 @@ import MyProfilePage from './home/MyProfilePage';
 import AlphabetImage from './home/AlphabetImage';
 import FriendPage from './home/FriendPage';
 import MainScreen from './home/MainScreen'; // Import MainScreen (updated path)
-import Lesson from './lessons/Lesson'; // Import Lesson component (updated path)
+import Lesson from './lessons/Lesson'; 
+import Progress from './lessons/progress'; // Import Lesson component (updated path)
 
 function App() {
   const [displayName, setDisplayName] = useState('');
@@ -91,6 +92,7 @@ function App() {
           }
         />
         <Route path="/alphabet-image" element={<AlphabetImage />} />
+        <Route path="/progress" element={<Progress />} />
 
         {/* Catch-all route */}
         <Route path="*" element={<Navigate replace to="/" />} />

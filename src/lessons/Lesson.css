@@ -1,90 +1,59 @@
-/* Lesson.css */
-.camera-container {
-    position: relative;
-    width: 400px; /* התאמת הרוחב לפי הצורך */
-    height: 400px;
-    margin: 0 auto; /* ממרכז אופקית */
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* מרכז את כל האלמנטים בעמוד */
-.camera-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* ממלא את כל המסך */
-    width: 100%;
-}
-
-.camera-feed {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    justify-content: center;
-    align-items: center;
-}
-
-.gesture-display {
-    width: 100%;
-    height: 100%;
-    margin-top: 20px;
+.lesson-container {
+    text-align: center;
     padding: 20px;
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.gesture-circle {
-    width: 100%;
-    height: 100%;
-   
+.snake-path {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.level-circle {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background-color: #f3f4f6;
+    background-color: gray;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #1f2937;
-}
-
-.start-button {
-    background-color: #3b82f6;
+    font-size: 20px;
     color: white;
-    padding: 0.5rem 1.5rem; /* מעט padding בצדדים כדי שהכפתור לא יהיה צמוד */
-    border-radius: 0.5rem;
-    font-weight: 600;
-    font-size: 1rem; /* גודל הטקסט בתוך הכפתור */
-    transition: background-color 0.2s;
-    display: inline-block !important; /* הכפתור יתפוס את רוחב התוכן */
-    margin: 1rem 0; /* שוליים קטנים למעלה ולמטה */
-    width: auto !important; /* מבטיח שהכפתור יתפוס רק את רוחב התוכן */
+    transition: background-color 0.5s ease-in-out;
 }
 
-.start-button:hover {
-    background-color: #2563eb;
+.level-circle.completed {
+    background-color: green;
 }
 
-
-.start-button:hover {
-    background-color: #2563eb;
+.sign-container {
+    margin-bottom: 20px;
 }
 
-
-.start-button:hover {
-    background-color: #2563eb;
+.sign-image, .camera-feed {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
 }
-.points-display {
-    font-size: 20rem; /* גודל טקסט מוגדל */
+
+.gesture-box {
+    font-size: 24px;
     font-weight: bold;
-    color: #1f2937; /* צבע כהה */
-}
-.correct-message {
-    font-size: 20rem; /* גודל טקסט מוגדל */
-    font-weight: bold;
-    color: #16a34a; /* צבע ירוק */
+    margin-top: 10px;
 }
 
+.start-button, .next-button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.start-button:hover, .next-button:hover {
+    background-color: darkblue;
+}
