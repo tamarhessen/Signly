@@ -11,6 +11,7 @@ import { authenticateUser } from './Users';
 import { LoggedIn } from './loggedIn';
 import MyProfilePage from './home/MyProfilePage';
 import AlphabetImage from './home/AlphabetImage';
+import ContactUs from './home/ContactUs';
 import FriendPage from './home/FriendPage';
 import MainScreen from './home/MainScreen'; // Import MainScreen (updated path)
 import Lesson from './lessons/Lesson'; 
@@ -45,6 +46,7 @@ function App() {
 
         {/* Public About route */}
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<ContactUs />} />
 
         {/* Protected Routes */}
         <Route

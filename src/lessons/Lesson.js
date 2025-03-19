@@ -6,12 +6,36 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Lesson() {
-    const levels = ['L', 'A', 'B']; // סדר האותיות בשלבים
+    const levels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; // סדר האותיות בשלבים
     const signImages = {
-        L: '/signs/L.png',
         A: '/signs/A.png',
-        B: '/signs/B.png'
+        B: '/signs/B.png',
+        C: '/signs/C.png',
+        D: '/signs/D.png',
+        E: '/signs/E.png',
+        F: '/signs/F.png',
+        G: '/signs/G.png',
+        H: '/signs/H.png',
+        I: '/signs/I.png',
+        J: '/signs/J.png',
+        K: '/signs/K.png',
+        L: '/signs/L.png',
+        M: '/signs/M.png',
+        N: '/signs/N.png',
+        O: '/signs/O.png',
+        P: '/signs/P.png',
+        Q: '/signs/Q.png',
+        R: '/signs/R.png',
+        S: '/signs/S.png',
+        T: '/signs/T.png',
+        U: '/signs/U.png',
+        V: '/signs/V.png',
+        W: '/signs/W.png',
+        X: '/signs/X.png',
+        Y: '/signs/Y.png',
+        Z: '/signs/Z.png'
     };
+    
     const location = useLocation();
     const { userImg, username, displayName, token } = location.state || {};
 
