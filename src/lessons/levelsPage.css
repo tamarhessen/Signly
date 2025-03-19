@@ -1,0 +1,109 @@
+/* General page style */
+.levels-page {
+    background-color: #f7f7f7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* Title style */
+.levels-page h1 {
+    font-size: 2.5rem;
+    color: #2d2d2d;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Level container for the buttons */
+.levels-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 2rem;
+}
+
+/* Individual level button styling */
+.level-button {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 250px;
+    text-align: center;
+}
+
+/* Hover effect for buttons */
+.level-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+/* Focus effect for buttons (accessibility improvement) */
+.level-button:focus {
+    outline: 2px solid #4CAF50;
+    outline-offset: 2px;
+}
+
+/* Disabled level button styling */
+.level-button.disabled {
+    background-color: #9e9e9e;
+    cursor: not-allowed;
+}
+
+/* Level label text */
+.level-label {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 0.5rem;
+}
+
+/* Points requirement message */
+.points-message {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    color: #ff5722;
+    text-align: center;
+}
+
+/* Progress message */
+.progress-message {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    color: #2196F3;
+    text-align: center;
+}
+
+/* Responsive Design for smaller screens */
+@media (max-width: 768px) {
+    .levels-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .level-button {
+        width: 80%;
+        font-size: 1.15rem; /* Slightly smaller font size for better fit */
+    }
+
+    .level-label {
+        font-size: 0.9rem; /* Adjust label size for smaller screens */
+    }
+
+    .points-message {
+        font-size: 1.1rem; /* Increase font size for better readability */
+    }
+
+    .progress-message {
+        font-size: 1.1rem; /* Increase font size for better readability */
+    }
+}

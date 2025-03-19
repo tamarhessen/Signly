@@ -27,10 +27,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
   ];
   const [currentFactIndex, setCurrentFactIndex] = useState(0);
 
-  useEffect(() => {
-    console.log("Points changed:", points);
-    console.log("Level changed:", level);
-  }, [points, level]);
+
 
   useEffect(() => {
     const imageInterval = setInterval(() => {
@@ -49,7 +46,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
 
   useEffect(() => {
     const abortController = new AbortController();
-
+    
     async function fetchData() {
       try {
         console.log("Fetching points for user:", username);
@@ -69,7 +66,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
     
         // Handle case where response is just a number
         const points = typeof json === "number" ? json : json.points;
-    
+        console.log("Current points in main:", points);
         if (typeof points !== "number") {
           console.warn("Points field is missing or invalid in API response", json);
           return;
@@ -77,7 +74,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
     
         setPoints(points);
         setLevel(Math.floor(points / 10) + 1);
-        setNextLevelPoints((Math.floor(points / 10) + 1) * 10 + 10);
+        setNextLevelPoints((Math.floor(points / 10) + 1) * 5 + 5);
         setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Fetch error:", error);
@@ -96,7 +93,6 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
   return (
     <div className="main-screen">
       <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
-
       <div className="content-container">
         <main className="main-content">
           <div className="home-screen">
@@ -108,10 +104,12 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
             <div className="carousel-container">
               <img src={images[currentImageIndex]} alt="Sign Language Example" className="carousel-image" />
             </div>
-
-            <Link to="/lesson" state={{ userImg, username, displayName, token }} className="start-lesson-button">
+            
+            <Link to="/levels" state={{ userImg, username, displayName, token, points}} className="start-lesson-button">
               Start Lesson 🚀
             </Link>
+            
+
             {/* Button to view image of English Alphabet in sign language */}
             <Link to="/alphabet-image" state={{ userImg, username, displayName, token }} className="start-lesson-button">
               View Alphabet in Sign Language 🅰️

@@ -4,9 +4,8 @@ import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
 import { useNavigate } from 'react-router-dom';
 
-
 function Lesson() {
-    const levels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; // סדר האותיות בשלבים
+    const levels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; // Letters as levels
     const signImages = {
         A: '/signs/A.png',
         B: '/signs/B.png',
@@ -35,18 +34,17 @@ function Lesson() {
         Y: '/signs/Y.png',
         Z: '/signs/Z.png'
     };
-    
+
     const location = useLocation();
-    const { userImg, username, displayName, token } = location.state || {};
+    const { userImg, username, displayName, token, points } = location.state || {};
 
     const [currentLevel, setCurrentLevel] = useState(0);
     const [gesture, setGesture] = useState('Nothing');
     const [cameraActive, setCameraActive] = useState(false);
     const [levelCompleted, setLevelCompleted] = useState(false);
-    const [points, setPoints] = useState(0);
-    const [showSignImage, setShowSignImage] = useState(true); // שליטה בהצגת התמונה
+    const [userPoints, setUserPoints] = useState(points || 0);
+    const [showSignImage, setShowSignImage] = useState(true); // Control image display
 
-   
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -68,23 +66,24 @@ function Lesson() {
     }, [cameraActive, currentLevel]);
 
     const startCamera = () => {
-        setShowSignImage(false); // הסתרת התמונה
+        setShowSignImage(false); // Hide the image when camera starts
         setCameraActive(true);
     };
 
     const nextLevel = () => {
         if (levelCompleted) {
+            // Increase points when the level is completed
+            const newPoints = userPoints + 1;
+            console.log(`Moving to next level: ${currentLevel + 1}, New points: ${newPoints}`);
+            
             if (currentLevel < levels.length - 1) {
-                const newPoints = points + 1;
                 setCurrentLevel(currentLevel + 1);
                 setLevelCompleted(false);
                 setCameraActive(false);
-                setShowSignImage(true); // הצגת תמונת הסימן הבא
+                setShowSignImage(true);
+                setUserPoints(newPoints);  // Update user points
                 
-                
-                setPoints(newPoints);
-
-                // Update the points in MongoDB
+                // Update points in the backend
                 fetch('http://127.0.0.1:5000/update-points', {
                     method: 'PUT',
                     headers: {
@@ -97,12 +96,13 @@ function Lesson() {
                 })
                     .then((response) => response.json())
                     .then((data) => {
-                        console.log('Points updated:', data);
+                        console.log('Points updated in MongoDB:', data);
                     })
                     .catch((error) => {
                         console.error('Error updating points:', error);
                     });
             } else {
+                console.log('Game completed! Total points:', userPoints);
                 alert('Congratulations! You completed all levels.');
             }
         }
@@ -115,14 +115,14 @@ function Lesson() {
                 <h1 className="text-3xl font-bold mb-8 text-gray-800">
                     Level {currentLevel + 1} - Sign: {levels[currentLevel]}
                 </h1>
-    
-                {/* הצגת הניקוד */}
+
+                {/* Display Points */}
                 <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center">
                     <p className="text-20xl font-semibold text-gray-700">Points:</p>
-                    <p className="text-3xl font-bold text-blue-600">{points}</p>
+                    <p className="text-3xl font-bold text-blue-600">{userPoints}</p>
                 </div>
-    
-                {/* שלב הצגת התמונה */}
+
+                {/* Display Sign Image */}
                 {showSignImage ? (
                     <div className="text-center mb-8 flex justify-center items-center">
                         <img 
@@ -132,7 +132,7 @@ function Lesson() {
                         />
                         <button 
                             onClick={startCamera}
-                           className="start-button"
+                            className="start-button"
                         >
                             TRY IT YOURSELF
                         </button>
@@ -151,7 +151,7 @@ function Lesson() {
                                 </span>
                             </div>
                         </div>
-    
+
                         {levelCompleted && (
                             <div className="text-center mt-6">
                                 <p className="text-6xl text-green-600 font-semibold flex items-center justify-center">
@@ -171,8 +171,6 @@ function Lesson() {
             <Footer />
         </>
     );
-    
-    
 }
 
 export default Lesson;

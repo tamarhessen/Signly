@@ -20,7 +20,7 @@ function HomeScreen({setLoggedIn}) {
     
       const [points, setPoints] = useState(0);
       const [level, setLevel] = useState(1);
-      const [nextLevelPoints, setNextLevelPoints] = useState(10);
+      const [nextLevelPoints, setNextLevelPoints] = useState(1000);
       const [error, setError] = useState(null);
    
     return (
@@ -31,7 +31,7 @@ function HomeScreen({setLoggedIn}) {
                
               
                 <MainScreen setLoggedIn={setLoggedIn} username={username} displayName={displayName} userImg={profilePictureURL} mode={mode} setMode={setMode} token={token} ></MainScreen>
-          
+
             </div>
         </>
 
