@@ -12,6 +12,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
   const [level, setLevel] = useState(1);
   const [nextLevelPoints, setNextLevelPoints] = useState(1000);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true); // Track loading state
 
   // Image carousel state
   const images = ['/hello.jpg', '/yes.jpg', '/no.jpg', '/thankyou.jpg', '/help.jpg'];
@@ -25,6 +26,11 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
     "Some deaf individuals prefer signing over written language for faster communication. ✍️"
   ];
   const [currentFactIndex, setCurrentFactIndex] = useState(0);
+
+  useEffect(() => {
+    console.log("Points changed:", points);
+    console.log("Level changed:", level);
+  }, [points, level]);
 
   useEffect(() => {
     const imageInterval = setInterval(() => {
@@ -46,39 +52,47 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
 
     async function fetchData() {
       try {
+        console.log("Fetching points for user:", username);
+    
         const res = await fetch(`http://localhost:5000/api/users/${username}/points`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             authorization: `bearer ${token}`,
           },
-          signal: abortController.signal,
         });
-
-        if (!res.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-
+    
+        console.log("Response status:", res.status);
+    
         const json = await res.json();
-        setPoints(json.points);
-
-        const calculatedLevel = Math.floor(json.points / 500) + 1;
-        setLevel(calculatedLevel);
-        setNextLevelPoints((calculatedLevel * 500) + 500);
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          setError(error.message);
+        console.log("API Response:", json);
+    
+        // Handle case where response is just a number
+        const points = typeof json === "number" ? json : json.points;
+    
+        if (typeof points !== "number") {
+          console.warn("Points field is missing or invalid in API response", json);
+          return;
         }
+    
+        setPoints(points);
+        setLevel(Math.floor(points / 500) + 1);
+        setNextLevelPoints((Math.floor(points / 500) + 1) * 500 + 500);
+        setLoading(false); // Set loading to false after data is fetched
+      } catch (error) {
+        console.error("Fetch error:", error);
+        setError(error.message);
+        setLoading(false); // Set loading to false even in case of error
       }
     }
-
+    
     if (username) {
       fetchData();
     }
 
     return () => abortController.abort();
-  }, [username, token]);
- 
+  }, [username, token]); // Trigger fetchData when username or token changes
+
   return (
     <div className="main-screen">
       <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
@@ -98,8 +112,8 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
             <Link to="/lesson" state={{ userImg, username, displayName, token }} className="start-lesson-button">
               Start Lesson 🚀
             </Link>
-              {/* Button to view image of English Alphabet in sign language */}
-              <Link to="/alphabet-image" state={{ userImg, username, displayName, token }} className="start-lesson-button">
+            {/* Button to view image of English Alphabet in sign language */}
+            <Link to="/alphabet-image" state={{ userImg, username, displayName, token }} className="start-lesson-button">
               View Alphabet in Sign Language 🅰️
             </Link>
 
@@ -109,8 +123,9 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
             </div>
           </div>
         </main>
-
-        <RightPanel level={level} points={points} nextLevelPoints={nextLevelPoints} navigate={navigate} />
+     
+        {/* Conditionally render RightPanel only after data is fetched */}
+        {!loading && <RightPanel level={level} points={points} nextLevelPoints={nextLevelPoints} navigate={navigate} />}
       </div>
 
       <div className="useful-links">

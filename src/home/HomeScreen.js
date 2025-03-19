@@ -31,12 +31,7 @@ function HomeScreen({setLoggedIn}) {
                
               
                 <MainScreen setLoggedIn={setLoggedIn} username={username} displayName={displayName} userImg={profilePictureURL} mode={mode} setMode={setMode} token={token} ></MainScreen>
-                <RightPanel
-          level={level}
-          points={points}
-          nextLevelPoints={nextLevelPoints}
-         
-        />
+          
             </div>
         </>
 
