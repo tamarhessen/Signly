@@ -38,12 +38,17 @@ function TopPanel({ userImg, username, displayName, token }) {
         <span onClick={() => navigate("/home", { state: { username: currentUsername, displayName: currentDisplayName, userImg: currentUserImg, token: currentToken } })} className={`nav-link ${location.pathname === "/" ? "active" : ""}`}>
           Home
         </span>
-        <span onClick={() => navigate("/about")} className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}>
-          About
-        </span>
-        <span onClick={() => navigate("/contact")} className={`nav-link ${location.pathname === "/contact" ? "active" : ""}`}>
-          Contact Us
-        </span>
+
+        <span onClick={() => navigate("/about", { state: { userImg, username, displayName, token } })} 
+      className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}>
+  About
+</span>
+<span 
+  onClick={() => navigate("/contact", { state: { userImg, username, displayName, token } })} 
+  className={`nav-link ${location.pathname === "/contact" ? "active" : ""}`}
+>
+  Contact Us
+</span>
       </nav>
 
       <div className="profile-container" onClick={() => navigate("/MyProfilePage", { state: { username: currentUsername, displayName: currentDisplayName, userImg: currentUserImg, token: currentToken } })}>

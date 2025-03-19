@@ -17,12 +17,22 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
-labels_dict = {0: 'A', 1: 'B', 2: 'L', 3: 'Nothing'}
+labels_dict = {
+    0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I',
+    9: 'J', 10: 'K', 11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q',
+    17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W', 23: 'X', 24: 'Y', 25: 'Z',
+    26: 'Nothing'
+}
 
-# Define levels for each gesture
-letter_levels = {'A': 1, 'B': 1, 'L': 1}
+# הגדרת רמות לכל אות בא"ב
+letter_levels = {
+    'A': 1, 'B': 1, 'C': 1, 'D': 1, 'E': 1, 'F': 1, 'G': 1, 'H': 1, 'I': 1,
+    'J': 1, 'K': 1, 'L': 1, 'M': 1, 'N': 1, 'O': 1, 'P': 1, 'Q': 1, 'R': 1,
+    'S': 1, 'T': 1, 'U': 1, 'V': 1, 'W': 1, 'X': 1, 'Y': 1, 'Z': 1
+}
 
-CONFIDENCE_THRESHOLD = 0.70
+
+CONFIDENCE_THRESHOLD = 0.50
 FRAME_CONSISTENCY = 5
 POSITION_TOLERANCE = 0.1
 

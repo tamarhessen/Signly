@@ -28,19 +28,25 @@ for dir_ in os.listdir(DATA_DIR):
 
         results = hands.process(img_rgb)
         if results.multi_hand_landmarks:
-            for hand_landmarks in results.multi_hand_landmarks:
-                for i in range(len(hand_landmarks.landmark)):
-                    x = hand_landmarks.landmark[i].x
-                    y = hand_landmarks.landmark[i].y
+            hand_landmarks = results.multi_hand_landmarks[
+                0]  # קח רק את היד הראשונה
+            data_aux = []
+            x_ = []
+            y_ = []
 
-                    x_.append(x)
-                    y_.append(y)
+            for i in range(
+                    len(hand_landmarks.landmark)):  # עובר על 21 נקודות היד
+                x = hand_landmarks.landmark[i].x
+                y = hand_landmarks.landmark[i].y
 
-                for i in range(len(hand_landmarks.landmark)):
-                    x = hand_landmarks.landmark[i].x
-                    y = hand_landmarks.landmark[i].y
-                    data_aux.append(x - min(x_))
-                    data_aux.append(y - min(y_))
+                x_.append(x)
+                y_.append(y)
+
+            for i in range(len(hand_landmarks.landmark)):
+                x = hand_landmarks.landmark[i].x
+                y = hand_landmarks.landmark[i].y
+                data_aux.append(x - min(x_))  # שומר X מנורמל
+                data_aux.append(y - min(y_))  # שומר Y מנורמל
 
             data.append(data_aux)
             labels.append(dir_)
