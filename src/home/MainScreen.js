@@ -10,7 +10,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
   const navigate = useNavigate();
   const [points, setPoints] = useState(0);
   const [level, setLevel] = useState(1);
-  const [nextLevelPoints, setNextLevelPoints] = useState(1000);
+  const [nextLevelPoints, setNextLevelPoints] = useState(10);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true); // Track loading state
 
@@ -76,8 +76,8 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
         }
     
         setPoints(points);
-        setLevel(Math.floor(points / 500) + 1);
-        setNextLevelPoints((Math.floor(points / 500) + 1) * 500 + 500);
+        setLevel(Math.floor(points / 10) + 1);
+        setNextLevelPoints((Math.floor(points / 10) + 1) * 10 + 10);
         setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Fetch error:", error);
