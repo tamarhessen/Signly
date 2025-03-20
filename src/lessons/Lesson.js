@@ -5,8 +5,14 @@ import Footer from '../home/Footer';
 import { useNavigate } from 'react-router-dom';
 
 function Lesson() {
-    const levels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; // Letters as levels
-    const signImages = {
+    const levels = [
+        ['A', 'B', 'C', 'D', 'E'],  // Level 1
+        ['F', 'G', 'H', 'I', 'J'],  // Level 2
+        ['K', 'L', 'M', 'N', 'O'],  // Level 3
+        ['P', 'Q', 'R', 'S', 'T'],  // Level 4
+        ['U', 'V', 'W', 'X'],       // Level 5
+        ['Y', 'Z']                  // Level 6
+    ];    const signImages = {
         A: '/signs/A.png',
         B: '/signs/B.png',
         C: '/signs/C.png',
@@ -38,7 +44,8 @@ function Lesson() {
     const location = useLocation();
     const { userImg, username, displayName, token, points } = location.state || {};
 
-    const [currentLevel, setCurrentLevel] = useState(0);
+    const [currentLevel, setCurrentLevel] = useState(0);  // Which difficulty level
+    const [letterIndex, setLetterIndex] = useState(0);   // Which letter in the level
     const [gesture, setGesture] = useState('Nothing');
     const [cameraActive, setCameraActive] = useState(false);
     const [levelCompleted, setLevelCompleted] = useState(false);
@@ -70,50 +77,59 @@ function Lesson() {
         setCameraActive(true);
     };
 
-    const nextLevel = () => {
-        if (levelCompleted) {
-            // Increase points when the level is completed
-            const newPoints = userPoints + 1;
-            console.log(`Moving to next level: ${currentLevel + 1}, New points: ${newPoints}`);
-            
-            if (currentLevel < levels.length - 1) {
-                setCurrentLevel(currentLevel + 1);
-                setLevelCompleted(false);
-                setCameraActive(false);
-                setShowSignImage(true);
-                setUserPoints(newPoints);  // Update user points
-                
-                // Update points in the backend
-                fetch('http://127.0.0.1:5000/update-points', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        points: newPoints,
-                    }),
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        console.log('Points updated in MongoDB:', data);
-                    })
-                    .catch((error) => {
-                        console.error('Error updating points:', error);
-                    });
-            } else {
-                console.log('Game completed! Total points:', userPoints);
-                alert('Congratulations! You completed all levels.');
-            }
+const nextLevel = () => {
+    if (levelCompleted) {
+        const newPoints = userPoints + 1;
+        console.log(`Moving to next letter: ${letterIndex + 1}, New points: ${newPoints}`);
+
+        if (letterIndex < levels[currentLevel].length - 1) {
+            // Move to the next letter within the same level
+            setLetterIndex(letterIndex + 1);
+        } else if (currentLevel < levels.length - 1) {
+            // Move to the next difficulty level
+            setCurrentLevel(currentLevel + 1);
+            setLetterIndex(0); // Reset letter index to start of new level
+        } else {
+            // All levels completed
+            console.log('Game completed! Total points:', userPoints);
+            alert('Congratulations! You completed all levels.');
+            return;
         }
-    };
+
+        // Reset for next letter
+        setLevelCompleted(false);
+        setCameraActive(false);
+        setShowSignImage(true);
+        setUserPoints(newPoints); // Update user points
+
+        // Update points in the backend
+        fetch('http://127.0.0.1:5000/update-points', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: username,
+                points: newPoints,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Points updated in MongoDB:', data);
+            })
+            .catch((error) => {
+                console.error('Error updating points:', error);
+            });
+    }
+};
 
     return (
         <>
             <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
             <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
                 <h1 className="text-3xl font-bold mb-8 text-gray-800">
-                    Level {currentLevel + 1} - Sign: {levels[currentLevel]}
+                    Level {currentLevel + 1} - Sign: {levels[currentLevel][letterIndex]}
+
                 </h1>
 
                 {/* Display Points */}
@@ -127,7 +143,8 @@ function Lesson() {
                     <div className="text-center mb-8 flex justify-center items-center">
                         <img 
                             src={signImages[levels[currentLevel]]} 
-                            alt={`Sign for ${levels[currentLevel]}`} 
+                            alt={`Sign for ${levels[currentLevel][letterIndex]}
+`} 
                             className="w-[400px] h-[400px] object-cover rounded-lg mb-6"
                         />
                         <button 
@@ -155,7 +172,8 @@ function Lesson() {
                         {levelCompleted && (
                             <div className="text-center mt-6">
                                 <p className="text-6xl text-green-600 font-semibold flex items-center justify-center">
-                                    ✅ Correct! You signed {levels[currentLevel]}.
+                                    ✅ Correct! You signed {levels[currentLevel][letterIndex]}
+.
                                 </p>
                                 <button 
                                     onClick={nextLevel}
