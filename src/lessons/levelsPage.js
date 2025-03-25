@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './levelsPage.css';
 import TopPanel from '../home/TopPanel';
+import Footer from '../home/Footer';
+import Levels from './Levels.js';
 
 function LevelsPage({ userImg, username, displayName, token, points }) {
     const location = useLocation();
@@ -44,6 +46,8 @@ function LevelsPage({ userImg, username, displayName, token, points }) {
             });
 
             console.log("Response status:", res.status);
+            console.log("Current Token:", currentToken);
+
 
             if (res.ok) {
                 const points = await res.text(); // API returns a plain number
@@ -87,15 +91,19 @@ function LevelsPage({ userImg, username, displayName, token, points }) {
     useEffect(() => {
         fetchData();
     }, [currentUsername, currentToken]); // Dependency array to fetch when username or token changes
-
-    // Function to navigate to the lesson page if the level is unlocked
+    console.log(currentUsername+"ddd");
     const navigateToLevel = (level) => {
-        if (userPoints >= level.requiredPoints) {
+        if (level.level === 1) {
+            
+            navigate('/levels26', { state: { currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } });
+
+        } else if (userPoints >= level.requiredPoints) {
             navigate(`/lesson/${level.level}`, { state: { username: currentUsername, points: userPoints } });
         } else {
             alert(`You need ${level.requiredPoints - userPoints} more points to unlock this level.`);
         }
     };
+    
 
     if (loading) {
         return <p>Loading points...</p>;
@@ -106,14 +114,17 @@ function LevelsPage({ userImg, username, displayName, token, points }) {
     }
 
     return (
+        
         <div className="levels-page">
+        <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
+            
             <h1>Choose Your Level</h1>
             <div className="levels-container">
                 {levels.map((levelData) => (
                     <div key={levelData.level} className="level-container">
                         <button
                             onClick={() => navigateToLevel(levelData)}
-                            className={`level-button ${userPoints >= levelData.requiredPoints ? '' : 'disabled'}`}
+                            className={`levellll-button ${userPoints >= levelData.requiredPoints ? '' : 'disabled'}`}
                             disabled={userPoints < levelData.requiredPoints}
                         >
                             Level {levelData.level}
@@ -125,7 +136,7 @@ function LevelsPage({ userImg, username, displayName, token, points }) {
             <p className="points-message">
                 You have {userPoints} points. Earn more points to unlock higher levels!
             </p>
-
+            <Footer />
 
         </div>
     );
