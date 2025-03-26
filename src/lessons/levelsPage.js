@@ -97,6 +97,11 @@ function LevelsPage({ userImg, username, displayName, token, points }) {
             
             navigate('/levels26', { state: { currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } });
 
+        }
+        else if (level.level === 2) {
+            
+            navigate('/level2', { state: { currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } });
+
         } else if (userPoints >= level.requiredPoints) {
             navigate(`/lesson/${level.level}`, { state: { username: currentUsername, points: userPoints } });
         } else {
