@@ -1,52 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
-import { useNavigate } from 'react-router-dom';
 
 function Lesson() {
-    const levels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; // Letters as levels
-    const signImages = {
-        A: '/signs/A.png',
-        B: '/signs/B.png',
-        C: '/signs/C.png',
-        D: '/signs/D.png',
-        E: '/signs/E.png',
-        F: '/signs/F.png',
-        G: '/signs/G.png',
-        H: '/signs/H.png',
-        I: '/signs/I.png',
-        J: '/signs/J.png',
-        K: '/signs/K.png',
-        L: '/signs/L.png',
-        M: '/signs/M.png',
-        N: '/signs/N.png',
-        O: '/signs/O.png',
-        P: '/signs/P.png',
-        Q: '/signs/Q.png',
-        R: '/signs/R.png',
-        S: '/signs/S.png',
-        T: '/signs/T.png',
-        U: '/signs/U.png',
-        V: '/signs/V.png',
-        W: '/signs/W.png',
-        X: '/signs/X.png',
-        Y: '/signs/Y.png',
-        Z: '/signs/Z.png'
-    };
-
     const location = useLocation();
-    const { userImg, username, displayName, token, points } = location.state || {};
+    const navigate = useNavigate();
+    const {letter, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } = location.state || {};
+    const levels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const [currentLevel, setCurrentLevel] = useState(levels.indexOf(letter) || 0);
+    console.log(location.state);  // בדוק אם זה מקבל את הערכים
 
-    const [currentLevel, setCurrentLevel] = useState(0);
+   
+        console.log(letter);
+    
+    const signImages = levels.reduce((acc, letter) => {
+        acc[letter] = `/signs/${letter}.png`;
+        return acc;
+    }, {});
+
+  
+   
+    
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+   
+    const [completedLevels, setCompletedLevels] = useState([]);
+  
     const [gesture, setGesture] = useState('Nothing');
     const [cameraActive, setCameraActive] = useState(false);
     const [levelCompleted, setLevelCompleted] = useState(false);
-    const [userPoints, setUserPoints] = useState(points || 0);
-    const [showSignImage, setShowSignImage] = useState(true); // Control image display
-
-    const navigate = useNavigate();
-
+    const [userPoints, setUserPoints] = useState(currentPoints || 0);
+    const [showSignImage, setShowSignImage] = useState(true);
+   
     useEffect(() => {
         if (cameraActive) {
             const interval = setInterval(() => {
@@ -64,65 +50,146 @@ function Lesson() {
             return () => clearInterval(interval);
         }
     }, [cameraActive, currentLevel]);
+    const fetchData = async () => {
+        try {
+            console.log("Fetching points for user:", currentUsername);
 
-    const startCamera = () => {
-        setShowSignImage(false); // Hide the image when camera starts
-        setCameraActive(true);
-    };
+            const res = await fetch(`http://localhost:5000/api/users/${currentUsername}/points`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `bearer ${currentToken}`,
+                },
+            });
 
-    const nextLevel = () => {
-        if (levelCompleted) {
-            // Increase points when the level is completed
-            const newPoints = userPoints + 1;
-            console.log(`Moving to next level: ${currentLevel + 1}, New points: ${newPoints}`);
-            
-            if (currentLevel < levels.length - 1) {
-                setCurrentLevel(currentLevel + 1);
-                setLevelCompleted(false);
-                setCameraActive(false);
-                setShowSignImage(true);
-                setUserPoints(newPoints);  // Update user points
-                
-                // Update points in the backend
-                fetch('http://127.0.0.1:5000/update-points', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        points: newPoints,
-                    }),
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        console.log('Points updated in MongoDB:', data);
-                    })
-                    .catch((error) => {
-                        console.error('Error updating points:', error);
-                    });
+            console.log("Response status:", res.status);
+            console.log("Current Token:", currentToken);
+
+
+            if (res.ok) {
+                const points = await res.text(); // API returns a plain number
+                console.log("API Response:", points);
+                setUserPoints(Number(points)); // Convert the response to a number
             } else {
-                console.log('Game completed! Total points:', userPoints);
-                alert('Congratulations! You completed all levels.');
+                throw new Error('Failed to fetch points');
             }
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
         }
     };
 
+    // Function to increase points on the server and update the local state
+    const increasePoints = async (additionalPoints) => {
+        try {
+            const res = await fetch(`http://localhost:5000/api/users/${currentUsername}/points`, {
+                method: 'PUT', // Update points
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `bearer ${currentToken}`,
+                },
+                body: JSON.stringify({ points: userPoints + additionalPoints }), // Add additional points
+            });
+
+            if (res.ok) {
+                const points = await res.text(); // API returns a plain number
+                console.log("Updated points:", points);
+                setUserPoints(Number(points)); // Convert the response to a number and update the state
+            } else {
+                throw new Error('Failed to update points');
+            }
+        } catch (error) {
+            console.error("Error updating points:", error);
+        }
+    };
+
+    useEffect(() => {
+        // Retrieve user points from LocalStorage
+        const storedPoints = localStorage.getItem('userPoints');
+        if (storedPoints) {
+            setUserPoints(parseInt(storedPoints, 10));
+        }
+    }, []);
+    useEffect(() => {
+        fetchData();
+    }, []); // מריץ את הפונקציה רק פעם אחת כשהקומפוננטה נטענת
+
+    const startCamera = () => {
+        setShowSignImage(false);
+        setCameraActive(true);
+    };
+    console.log("Completed Levels from state:", completedLevels);
+    console.log("Current Level:", levels[currentLevel]);
+    console.log("Already completed?", completedLevels.includes(levels[currentLevel]));
+    
+
+const nextLevel = () => {
+    if (levelCompleted) {
+        // בדוק אם השלב הזה כבר בוצע
+        if (levelCompleted && userPoints < currentLevel + 1) {
+
+            const newPoints = userPoints + 1;
+            const newCompletedLevels = [...completedLevels, levels[currentLevel]];
+
+            // עדכון ה-LocalStorage עם השלבים שהושלמו
+            localStorage.setItem('completedLevels', JSON.stringify(newCompletedLevels));
+
+            // עדכון ה-state של השלבים שהושלמו והנקודות
+            setCompletedLevels(newCompletedLevels);
+            setUserPoints(newPoints);
+
+            // עדכון הנקודות בשרת
+            fetch('http://127.0.0.1:5000/update-points', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: currentUsername,
+                    points: newPoints,
+                }),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Points updated in MongoDB:', data);
+            })
+            .catch((error) => {
+                console.error('Error updating points:', error);
+            });
+        } else {
+            // הודעה למשתמש אם השלב כבר הושלם
+            console.log('This level has already been completed!');
+        }
+
+        // מעבר לשלב הבא אם יש
+        if (currentLevel < levels.length - 1) {
+            setCurrentLevel(currentLevel + 1);
+            setLevelCompleted(false);
+            setCameraActive(false);
+            setShowSignImage(true);
+        }
+
+        navigate('/levels26', { state: { currentUserImg, currentUsername, currentDisplayName, currentToken, userPoints } });
+    }
+};
+
+
+    
+
     return (
         <>
-            <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
+            <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
             <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
                 <h1 className="text-3xl font-bold mb-8 text-gray-800">
                     Level {currentLevel + 1} - Sign: {levels[currentLevel]}
                 </h1>
 
-                {/* Display Points */}
                 <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center">
-                    <p className="text-20xl font-semibold text-gray-700">Points:</p>
+                    <p className="text-2xl font-semibold text-gray-700">Points:</p>
                     <p className="text-3xl font-bold text-blue-600">{userPoints}</p>
                 </div>
 
-                {/* Display Sign Image */}
                 {showSignImage ? (
                     <div className="text-center mb-8 flex justify-center items-center">
                         <img 
@@ -130,10 +197,7 @@ function Lesson() {
                             alt={`Sign for ${levels[currentLevel]}`} 
                             className="w-[400px] h-[400px] object-cover rounded-lg mb-6"
                         />
-                        <button 
-                            onClick={startCamera}
-                            className="start-button"
-                        >
+                        <button onClick={startCamera} className="start-button">
                             TRY IT YOURSELF
                         </button>
                     </div>
@@ -157,10 +221,7 @@ function Lesson() {
                                 <p className="text-6xl text-green-600 font-semibold flex items-center justify-center">
                                     ✅ Correct! You signed {levels[currentLevel]}.
                                 </p>
-                                <button 
-                                    onClick={nextLevel}
-                                    className="start-button"
-                                >
+                                <button onClick={nextLevel} className="start-button">
                                     {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
                                 </button>
                             </div>

@@ -15,7 +15,8 @@ import ContactUs from './home/ContactUs';
 import FriendPage from './home/FriendPage';
 import MainScreen from './home/MainScreen'; // Import MainScreen (updated path)
 import Lesson from './lessons/Lesson'; 
-import Progress from './lessons/progress'; 
+import Levels from './lessons/Levels.js'; 
+
 import LevelsPage from './lessons/levelsPage'; // Import LevelsPage component
 
 function App() {
@@ -106,7 +107,9 @@ function App() {
           }
         />
         <Route path="/alphabet-image" element={<AlphabetImage />} />
-        <Route path="/progress" element={<Progress />} />
+    
+        <Route path="/levels26" element={<Levels />} />
+        <Route path="/lesson/:letter" element={<Lesson />} />
 
         {/* Catch-all route */}
         <Route path="*" element={<Navigate replace to="/" />} />
