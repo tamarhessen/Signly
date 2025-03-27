@@ -25,11 +25,11 @@ function LevelsPage({ userImg, username, displayName, token, points }) {
     // Levels array to represent levels from 1 to 6
     const levels = [
         { level: 1, requiredPoints: 0 },
-        { level: 2, requiredPoints: 10 },
-        { level: 3, requiredPoints: 20 },
-        { level: 4, requiredPoints: 30 },
-        { level: 5, requiredPoints: 40 },
-        { level: 6, requiredPoints: 50 }
+        { level: 2, requiredPoints: 26 },
+        { level: 3, requiredPoints: 52 },
+        { level: 4, requiredPoints: 78 },
+        { level: 5, requiredPoints: 200 },
+        { level: 6, requiredPoints: 300 }
     ];
 
     // Function to fetch points from the server
@@ -102,7 +102,12 @@ function LevelsPage({ userImg, username, displayName, token, points }) {
             
             navigate('/level2', { state: { currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } });
 
-        } else if (userPoints >= level.requiredPoints) {
+        } 
+        else if (level.level === 3) {
+            
+            navigate('/level3', { state: { currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } });
+
+        }else if (userPoints >= level.requiredPoints) {
             navigate(`/lesson/${level.level}`, { state: { username: currentUsername, points: userPoints } });
         } else {
             alert(`You need ${level.requiredPoints - userPoints} more points to unlock this level.`);

@@ -3,16 +3,18 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
 
-function Lesson2() {
+function Lesson3() {
     const location = useLocation();
     const navigate = useNavigate();
     const {word, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } = location.state || {};
     console.log("Current Word:", word);
 
-    const levels = ['dad', 'dog', 'bat', 'rat', 'mat', 'hat', 'pat', 'sat', 'fat', 'vat', 
-        'lap', 'map', 'tap', 'cap', 'nap', 'zap', 'lap', 'sap', 'gap', 'wrap', 
-        'trap', 'flap', 'clap', 'slap', 'snap', 'stap'];
-
+    const levels = [
+        'planet', 'rocket', 'jungle', 'garden', 'castle', 'forest', 'butterfly', 'diamond', 'sunshine', 'rainbow',
+        'mountain', 'friendship', 'computer', 'elephant', 'building', 'fireworks', 'backpack', 'treasure', 'vacation',
+        'adventure', 'airplane', 'birthday', 'chocolate', 'dinosaur', 'festival', 'lighthouse'
+    ];
+    
     // Sign images for each letter
     const signImages = {
         A: '/signs/A.png', B: '/signs/B.png', C: '/signs/C.png', D: '/signs/D.png', 
@@ -118,4 +120,4 @@ function Lesson2() {
     );
 }
 
-export default Lesson2;
+export default Lesson3;

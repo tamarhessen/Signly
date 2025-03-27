@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
-import './Level2.css';
+import './Level3.css';
 
-function Levels() {
+function Level3() {
     const navigate = useNavigate();
       
     const [loading, setLoading] = useState(true);
@@ -15,9 +15,12 @@ function Levels() {
     console.log(currentUsername);
 
     // Example 3-letter words array (can be expanded or replaced)
-    const levels = ['dad', 'dog', 'bat', 'rat', 'mat', 'hat', 'pat', 'sat', 'fat', 'vat', 
-                    'lap', 'map', 'tap', 'cap', 'nap', 'zap', 'lap', 'sap', 'gap', 'wrap', 
-                    'trap', 'flap', 'clap', 'slap', 'snap', 'stap'];
+    const levels = [
+        'planet', 'rocket', 'jungle', 'garden', 'castle', 'forest', 'butterfly', 'diamond', 'sunshine', 'rainbow',
+        'mountain', 'friendship', 'computer', 'elephant', 'building', 'fireworks', 'backpack', 'treasure', 'vacation',
+        'adventure', 'airplane', 'birthday', 'chocolate', 'dinosaur', 'festival', 'lighthouse'
+    ];
+    
     console.log(levels.length);
 
     const [userPoints, setUserPoints] = useState(currentPoints);
@@ -85,10 +88,10 @@ function Levels() {
                 {levels.map((level, index) => (
                     <button
                         key={level}
-                        onClick={() => navigate(`/lesson2/${level}`, { state: { word: level, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } })}
-                        className={`levels-button absolute p-4 text-xl font-bold w-20 h-20 rounded-full 
+                        onClick={() => navigate(`/lesson3/${level}`, { state: { word: level, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } })}
+                        className={`levels-button absolute p-4.2 text-xl font-bold w-30 h-30 rounded-full 
                             ${index < unlockedLevels ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-200 text-gray-600 cursor-not-allowed'}`}
-                        disabled={index+26 >= unlockedLevels}
+                        disabled={index+52 >= unlockedLevels}
                         style={calculatePosition(index)}
                     >
                         {level}
@@ -101,4 +104,4 @@ function Levels() {
     );
 }
 
-export default Levels;
+export default Level3;
