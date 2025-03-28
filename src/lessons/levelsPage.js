@@ -45,13 +45,13 @@ function LevelsPage({ userImg, username, displayName, token, points }) {
                 },
             });
 
-            console.log("Response status:", res.status);
+            console.log("Response status:7", res.status);
             console.log("Current Token:", currentToken);
 
 
             if (res.ok) {
                 const points = await res.text(); // API returns a plain number
-                console.log("API Response:", points);
+                console.log("API Response11:", points);
                 setUserPoints(Number(points)); // Convert the response to a number
             } else {
                 throw new Error('Failed to fetch points');

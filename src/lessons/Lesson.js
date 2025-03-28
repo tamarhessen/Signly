@@ -7,12 +7,13 @@ function Lesson() {
     const location = useLocation();
     const navigate = useNavigate();
     const {letter, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } = location.state || {};
+    console.log("points2" ,currentPoints);
     const levels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
     const [currentLevel, setCurrentLevel] = useState(levels.indexOf(letter) || 0);
-    console.log(location.state);  // בדוק אם זה מקבל את הערכים
+    console.log("location.state",location.state);  // בדוק אם זה מקבל את הערכים
 
    
-        console.log(letter);
+        console.log("letter",letter);
     
     const signImages = levels.reduce((acc, letter) => {
         acc[letter] = `/signs/${letter}.png`;
@@ -62,13 +63,13 @@ function Lesson() {
                 },
             });
 
-            console.log("Response status:", res.status);
+            console.log("Response status:2", res.status);
             console.log("Current Token:", currentToken);
 
 
             if (res.ok) {
                 const points = await res.text(); // API returns a plain number
-                console.log("API Response:", points);
+                console.log("API Response2:", points);
                 setUserPoints(Number(points)); // Convert the response to a number
             } else {
                 throw new Error('Failed to fetch points');
@@ -138,6 +139,7 @@ const nextLevel = () => {
             // עדכון ה-state של השלבים שהושלמו והנקודות
             setCompletedLevels(newCompletedLevels);
             setUserPoints(newPoints);
+            console.log("newPoints",newPoints);
 
             // עדכון הנקודות בשרת
             fetch('http://127.0.0.1:5000/update-points', {
@@ -152,7 +154,7 @@ const nextLevel = () => {
             })
             .then((response) => response.json())
             .then((data) => {
-                console.log('Points updated in MongoDB:', data);
+                console.log('Points updatwerethrgfred in MongoDB:', data);
             })
             .catch((error) => {
                 console.error('Error updating points:', error);
