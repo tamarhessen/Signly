@@ -15,7 +15,7 @@ function Levels() {
     console.log(currentUsername);
 
     // Example 3-letter words array (can be expanded or replaced)
-    const levels = ['dad', 'dog', 'bat', 'rat', 'mat', 'hat', 'pat', 'sat', 'fat', 'vat', 
+    const levels = ['dad', 'dog', 'bat', 'rat', 'mat', 'hat', 'pat', 'sat', 'fat', 'dada', 
         'lap', 'map', 'tap', 'cap', 'nap', 'zap', 'sap', 'gap', 'wrap', 
         'trap', 'flap', 'clap', 'slap', 'snap', 'stap'];  // Removed one "nap"
 
@@ -45,7 +45,7 @@ function Levels() {
                 },
             });
 
-            console.log("Response status:", res.status);
+            console.log("Response status:4", res.status);
             console.log("Current Token:", currentToken);
 
             if (res.ok) {
