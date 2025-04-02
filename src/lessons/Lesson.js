@@ -61,9 +61,14 @@ function Lesson() {
                             setLevelCompleted(true);
                             setCanTryAgain(false);
                             setErrorMessage("");
-                            setShowConfetti(true); // הצגת זיקוקים 🎉
-                            setTimeout(() => setShowConfetti(false), 3000); // כיבוי לאחר 3 שניות
-                        } else if (data.gesture !== 'Nothing') {
+                            
+                            setShowConfetti(true);
+                            setTimeout(() => {
+                                setShowConfetti(false);
+                                setTimeout(() => setShowConfetti(true), 500); // Restart after 0.5s for a smoother effect
+                            }, 5000); // Confetti runs for 5 seconds before resetting
+                        } // כיבוי לאחר 3 שניות
+                        else if (data.gesture !== 'Nothing') {
                             setErrorMessage(`❌ Incorrect! Try signing '${levels[currentLevel]}' again.`);
                             setCanTryAgain(false); 
                         }

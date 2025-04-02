@@ -1,7 +1,8 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
+import Confetti from "react-confetti";
 
 const signImages = {
   A: '/signs/A.png', B: '/signs/B.png', C: '/signs/C.png', D: '/signs/D.png', 
@@ -15,12 +16,12 @@ const signImages = {
 
 const levels = ['dad', 'dog', 'bat', 'rat', 'mat', 'hat', 'pat', 'sat', 'fat', 'vat', 
     'lap', 'map', 'tap', 'cap', 'nap', 'zap', 'sap', 'gap', 'wrap', 
-    'trap', 'flap', 'clap', 'slap', 'snap', 'stap'];  // Removed one "nap"
+    'trap', 'flap', 'clap', 'slap', 'snap', 'stap'];
 
 function Lesson2() {
     const location = useLocation();
     const navigate = useNavigate();
-    console.log("location.state: ",location.state);  // בדוק אם זה מקבל את הערכים
+    console.log("location.state: ",location.state);
     const { word, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } = location.state || {};
     console.log("word: " ,word);
     console.log("points3: " ,currentPoints);
@@ -36,8 +37,15 @@ function Lesson2() {
     const [showSignImage, setShowSignImage] = useState(true);
     const [correctLetters, setCorrectLetters] = useState('');
     const [completedLevels, setCompletedLevels] = useState([]);
-    const [errorMessage, setErrorMessage] = useState("");
-        const [canTryAgain, setCanTryAgain] = useState(true);
+    const [incorrectLetter, setIncorrectLetter] = useState(false);
+    const [isLocked, setIsLocked] = useState(false);
+     const [showConfetti, setShowConfetti] = useState(false); // מצב לזיק
+    
+    const retryGesture = () => {
+        setIncorrectLetter(false);
+        setIsLocked(false); // Unlock when retrying
+    };
+    
 
     useEffect(() => {
         if (word) {
@@ -45,7 +53,6 @@ function Lesson2() {
             setCurrentLevel(levels.indexOf(word.toLowerCase()));
         }
     }, [word]);
-    let i = 1;
 
     useEffect(() => {
         if (cameraActive) {
@@ -54,124 +61,118 @@ function Lesson2() {
                     .then(response => response.json())
                     .then(data => {
                         setGesture(data.gesture);
-    
-                        // נבדוק אם האות כבר זוהתה בעזרת המערך של correctLetters
-                        if (data.gesture === currentWord[currentLetterIndex] && !correctLetters.includes(currentWord[currentLetterIndex])) {
-                            setCorrectLetters(prev => prev + currentWord[currentLetterIndex]);
-                            setCurrentLetterIndex(prevIndex => prevIndex + 1);
-                            setErrorMessage("");
-    
-                            // אם כל האותיות זוהו, נסיים את הרמה
-                            if (currentLetterIndex === currentWord.length) {
-                                setLevelCompleted(true);
-                                setCanTryAgain(false);
-                                setErrorMessage("");
+                        
+                        // Only process gestures if not locked
+                        if (!isLocked) {
+                            if (data.gesture === currentWord[currentLetterIndex]) {
+                                setCorrectLetters(prev => prev + currentWord[currentLetterIndex]);
+                                setCurrentLetterIndex(prevIndex => prevIndex + 1);
+                            } else if (data.gesture !== 'Nothing' && data.gesture !== currentWord[currentLetterIndex - 1]) {
+                                // Mark incorrect and lock until "Try Again" is pressed
+                                setIncorrectLetter(true);
+                                setIsLocked(true);
                             }
+                        }
+
+                        if (currentLetterIndex === currentWord.length) {
+                            setLevelCompleted(true);
+                            setShowConfetti(true);
+                            
+                            setTimeout(() => {
+                                setShowConfetti(false);
+                                setTimeout(() => setShowConfetti(true), 500); // Restart after 0.5s for a smoother effect
+                            }, 5000);
                         }
                     })
                     .catch(error => console.error('Error fetching gesture:', error));
             }, 100);
-    
+
             return () => clearInterval(interval);
         }
-    }, [cameraActive, currentLetterIndex, currentWord, correctLetters]);
+    }, [cameraActive, currentLetterIndex, currentWord, isLocked]);
     
-    
-   console.log(i);
-        const fetchData = async () => {
-         try {
-             console.log("Fetching points for user:", currentUsername);
- 
-             const res = await fetch(`http://localhost:5000/api/users/${currentUsername}/points`, {
-                 method: 'GET',
-                 headers: {
-                     'Content-Type': 'application/json',
-                     authorization: `bearer ${currentToken}`,
-                 },
-             });
- 
-             console.log("Response status:3", res.status);
-             console.log("Current Token:", currentToken);
- 
- 
-             if (res.ok) {
-                 const points = await res.text(); // API returns a plain number
-                 console.log("API Response3:", points);
-                 setUserPoints(Number(points)); // Convert the response to a number
-             } else {
-                 throw new Error('Failed to fetch points');
-             }
-         } catch (error) {
-             setError(error.message);
-         } finally {
-             setLoading(false);
-         }
-     };
- 
-     // Function to increase points on the server and update the local state
-     const increasePoints = async (additionalPoints) => {
-         try {
-             const res = await fetch(`http://localhost:5000/api/users/${currentUsername}/points`, {
-                 method: 'PUT', // Update points
-                 headers: {
-                     'Content-Type': 'application/json',
-                     authorization: `bearer ${currentToken}`,
-                 },
-                 body: JSON.stringify({ points: userPoints + additionalPoints }), // Add additional points
-             });
- 
-             if (res.ok) {
-                 const points = await res.text(); // API returns a plain number
-                 console.log("Updated points:", points);
-                 setUserPoints(Number(points)); // Convert the response to a number and update the state
-             } else {
-                 throw new Error('Failed to update points');
-             }
-         } catch (error) {
-             console.error("Error updating points:", error);
-         }
-     };
- 
-     useEffect(() => {
-         // Retrieve user points from LocalStorage
-         const storedPoints = localStorage.getItem('userPoints');
-         if (storedPoints) {
-             setUserPoints(parseInt(storedPoints, 10));
-         }
-     }, []);
-     useEffect(() => {
-         fetchData();
-     }, []); // מריץ את הפונקציה רק פעם אחת כשהקומפוננטה נטענת
- 
-     const startCamera = () => {
-         setShowSignImage(false);
-         setCameraActive(true);
-         setErrorMessage("");
-     };
-     const retryGesture = () => {
-        setErrorMessage("");
-        setGesture("Nothing");
-        setCanTryAgain(true);
+    const fetchData = async () => {
+        try {
+            console.log("Fetching points for user:", currentUsername);
+
+            const res = await fetch(`http://localhost:5000/api/users/${currentUsername}/points`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `bearer ${currentToken}`,
+                },
+            });
+
+            console.log("Response status:3", res.status);
+            console.log("Current Token:", currentToken);
+
+            if (res.ok) {
+                const points = await res.text();
+                console.log("API Response3:", points);
+                setUserPoints(Number(points));
+            } else {
+                throw new Error('Failed to fetch points');
+            }
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
-     console.log("Completed Levels from state:", completedLevels);
-     console.log("Current Level:", levels[currentLevel]);
-     console.log("Already completed?", completedLevels.includes(levels[currentLevel]));
-     
- 
-     const nextLevel = () => {
+
+    const increasePoints = async (additionalPoints) => {
+        try {
+            const res = await fetch(`http://localhost:5000/api/users/${currentUsername}/points`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `bearer ${currentToken}`,
+                },
+                body: JSON.stringify({ points: userPoints + additionalPoints }),
+            });
+
+            if (res.ok) {
+                const points = await res.text();
+                console.log("Updated points:", points);
+                setUserPoints(Number(points));
+            } else {
+                throw new Error('Failed to update points');
+            }
+        } catch (error) {
+            console.error("Error updating points:", error);
+        }
+    };
+
+    useEffect(() => {
+        const storedPoints = localStorage.getItem('userPoints');
+        if (storedPoints) {
+            setUserPoints(parseInt(storedPoints, 10));
+        }
+    }, []);
+    
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const startCamera = () => {
+        setShowSignImage(false);
+        setCameraActive(true);
+    };
+    
+    console.log("Completed Levels from state:", completedLevels);
+    console.log("Current Level:", levels[currentLevel]);
+    console.log("Already completed?", completedLevels.includes(levels[currentLevel]));
+    
+    const nextLevel = () => {
         if (levelCompleted) {
-            // Remove the restrictive points condition
             const newPoints = userPoints + 1;
             const newCompletedLevels = [...completedLevels, levels[currentLevel]];
     
-            // Update LocalStorage with completed levels
             localStorage.setItem('completedLevels', JSON.stringify(newCompletedLevels));
     
-            // Update state of completed levels and points
             setCompletedLevels(newCompletedLevels);
             setUserPoints(newPoints);
     
-            // Update points on the server
             fetch('http://127.0.0.1:5000/update-points', {
                 method: 'PUT',
                 headers: {
@@ -190,12 +191,15 @@ function Lesson2() {
                 console.error('Error updating points:', error);
             });
     
-            // Move to next level if possible
             if (currentLevel < levels.length - 1) {
                 setCurrentLevel(currentLevel + 1);
                 setLevelCompleted(false);
                 setCameraActive(false);
                 setShowSignImage(true);
+                setCurrentLetterIndex(0);
+                setCorrectLetters('');
+                setIncorrectLetter(false);
+                setIsLocked(false);
             }
     
             navigate('/level2', { 
@@ -209,8 +213,6 @@ function Lesson2() {
             });
         }
     };
- 
- 
 
     return (
         <>
@@ -221,6 +223,7 @@ function Lesson2() {
                 navigate={navigate} 
                 token={currentToken} 
             />
+            {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
             <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
                 <h1 className="text-3xl font-bold mb-8 text-gray-800">
                     Level {currentLevel + 1} - Word: {currentWord.split('').map((letter, index) => (
@@ -263,22 +266,27 @@ function Lesson2() {
                             <p className="text-xl font-semibold text-gray-700">
                                 Signed so far: {correctLetters}
                             </p>
+                            <p className="text-lg text-gray-600">
+                                {isLocked ? "Press 'Try Again' to continue" : `Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
+                            </p>
                         </div>
-                    </div>
-                ) : null}
-                 {errorMessage && (
-                            <div className="text-center mt-6">
-                                <p className="text-3xl text-red-600 font-semibold">{errorMessage}</p>
-                                <button onClick={retryGesture} className="start-button">Try Again</button>
+                        {incorrectLetter && (
+                            <div className="text-center mt-4">
+                                <p className="text-red-600 text-2xl font-bold">❌ Wrong Sign! Try Again</p>
+                                <button onClick={retryGesture} className="mt-2 bg-red-500 text-pink px-4 py-2 rounded-lg">
+                                    Try Again
+                                </button>
                             </div>
                         )}
+                    </div>
+                ) : null}
                 {levelCompleted && (
                     <div className="text-center mt-6">
                         <p className="text-6xl text-green-600 font-semibold flex items-center justify-center">
                             ✅ Correct! You signed {levels[currentLevel]}.
                         </p>
                         <button onClick={nextLevel} className="start-button">
-                        {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
+                            {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
                         </button>
                     </div>
                 )}
