@@ -11,7 +11,7 @@ function Levels() {
     const [error, setError] = useState(null);
     const location = useLocation();
     const { currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } = location.state || {};
-    console.log(currentPoints);
+    console.log("points111" ,currentPoints);
 
     const levels = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)); // 'A' (65) עד 'Z' (90)
 

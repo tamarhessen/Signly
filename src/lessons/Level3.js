@@ -4,7 +4,7 @@ import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
 import './Level3.css';
 
-function Level3() {
+function Levels() {
     const navigate = useNavigate();
       
     const [loading, setLoading] = useState(true);
@@ -16,12 +16,12 @@ function Level3() {
 
     // Example 3-letter words array (can be expanded or replaced)
     const levels = [
-        'planet', 'rocket', 'jungle', 'garden', 'castle', 'forest', 'butterfly', 'diamond', 'sunshine', 'rainbow',
+        'daddy', 'rocket', 'jungle', 'garden', 'castle', 'forest', 'butterfly', 'diamond', 'sunshine', 'rainbow',
         'mountain', 'friendship', 'computer', 'elephant', 'building', 'fireworks', 'backpack', 'treasure', 'vacation',
         'adventure', 'airplane', 'birthday', 'chocolate', 'dinosaur', 'festival', 'lighthouse'
     ];
     
-    console.log(levels.length);
+
 
     const [userPoints, setUserPoints] = useState(currentPoints);
 
@@ -47,12 +47,12 @@ function Level3() {
                 },
             });
 
-            console.log("Response status:", res.status);
+            console.log("Response status:4", res.status);
             console.log("Current Token:", currentToken);
 
             if (res.ok) {
                 const points = await res.text(); // API returns a plain number
-                console.log("API Response:", points);
+                console.log("API Response4:", points);
                 setUserPoints(Number(points)); // Convert the response to a number
             } else {
                 throw new Error('Failed to fetch points');
@@ -68,7 +68,7 @@ function Level3() {
         fetchData();
     }, []); // Runs once when the component loads
     
-    console.log(userPoints);
+    console.log("points: ",userPoints);
 
     // Calculate the number of unlocked levels based on userPoints
     const unlockedLevels = userPoints + 1;
@@ -89,9 +89,9 @@ function Level3() {
                     <button
                         key={level}
                         onClick={() => navigate(`/lesson3/${level}`, { state: { word: level, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } })}
-                        className={`levels-button absolute p-4.2 text-xl font-bold w-30 h-30 rounded-full 
+                        className={`levels-button absolute p-4 text-xl font-bold w-20 h-20 rounded-full 
                             ${index < unlockedLevels ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-200 text-gray-600 cursor-not-allowed'}`}
-                        disabled={index+52 >= unlockedLevels}
+                        disabled={index+26 >= unlockedLevels}
                         style={calculatePosition(index)}
                     >
                         {level}
@@ -104,4 +104,4 @@ function Level3() {
     );
 }
 
-export default Level3;
+export default Levels;

@@ -62,7 +62,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
         console.log("Response status:", res.status);
     
         const json = await res.json();
-        console.log("API Response:", json);
+        console.log("API Response1:", json);
     
         // Handle case where response is just a number
         const points = typeof json === "number" ? json : json.points;

@@ -16,9 +16,10 @@ function Levels() {
 
     // Example 3-letter words array (can be expanded or replaced)
     const levels = ['dad', 'dog', 'bat', 'rat', 'mat', 'hat', 'pat', 'sat', 'fat', 'vat', 
-                    'lap', 'map', 'tap', 'cap', 'nap', 'zap', 'lap', 'sap', 'gap', 'wrap', 
-                    'trap', 'flap', 'clap', 'slap', 'snap', 'stap'];
-    console.log(levels.length);
+        'lap', 'map', 'tap', 'cap', 'nap', 'zap', 'sap', 'gap', 'wrap', 
+        'trap', 'flap', 'clap', 'slap', 'snap', 'stap'];  // Removed one "nap"
+
+
 
     const [userPoints, setUserPoints] = useState(currentPoints);
 
@@ -49,7 +50,7 @@ function Levels() {
 
             if (res.ok) {
                 const points = await res.text(); // API returns a plain number
-                console.log("API Response:", points);
+                console.log("API Response4:", points);
                 setUserPoints(Number(points)); // Convert the response to a number
             } else {
                 throw new Error('Failed to fetch points');
@@ -65,7 +66,7 @@ function Levels() {
         fetchData();
     }, []); // Runs once when the component loads
     
-    console.log(userPoints);
+    console.log("points: ",userPoints);
 
     // Calculate the number of unlocked levels based on userPoints
     const unlockedLevels = userPoints + 1;
