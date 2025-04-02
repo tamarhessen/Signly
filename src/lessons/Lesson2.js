@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
@@ -36,6 +36,8 @@ function Lesson2() {
     const [showSignImage, setShowSignImage] = useState(true);
     const [correctLetters, setCorrectLetters] = useState('');
     const [completedLevels, setCompletedLevels] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
+        const [canTryAgain, setCanTryAgain] = useState(true);
 
     useEffect(() => {
         if (word) {
@@ -43,6 +45,7 @@ function Lesson2() {
             setCurrentLevel(levels.indexOf(word.toLowerCase()));
         }
     }, [word]);
+    let i = 1;
 
     useEffect(() => {
         if (cameraActive) {
@@ -51,20 +54,30 @@ function Lesson2() {
                     .then(response => response.json())
                     .then(data => {
                         setGesture(data.gesture);
-                        if (data.gesture === currentWord[currentLetterIndex]) {
+    
+                        // נבדוק אם האות כבר זוהתה בעזרת המערך של correctLetters
+                        if (data.gesture === currentWord[currentLetterIndex] && !correctLetters.includes(currentWord[currentLetterIndex])) {
                             setCorrectLetters(prev => prev + currentWord[currentLetterIndex]);
                             setCurrentLetterIndex(prevIndex => prevIndex + 1);
-                        }
-                        if (currentLetterIndex === currentWord.length) {
-                            setLevelCompleted(true);
+                            setErrorMessage("");
+    
+                            // אם כל האותיות זוהו, נסיים את הרמה
+                            if (currentLetterIndex === currentWord.length) {
+                                setLevelCompleted(true);
+                                setCanTryAgain(false);
+                                setErrorMessage("");
+                            }
                         }
                     })
                     .catch(error => console.error('Error fetching gesture:', error));
             }, 100);
-
+    
             return () => clearInterval(interval);
         }
-    }, [cameraActive, currentLetterIndex, currentWord]);
+    }, [cameraActive, currentLetterIndex, currentWord, correctLetters]);
+    
+    
+   console.log(i);
         const fetchData = async () => {
          try {
              console.log("Fetching points for user:", currentUsername);
@@ -133,7 +146,13 @@ function Lesson2() {
      const startCamera = () => {
          setShowSignImage(false);
          setCameraActive(true);
+         setErrorMessage("");
      };
+     const retryGesture = () => {
+        setErrorMessage("");
+        setGesture("Nothing");
+        setCanTryAgain(true);
+    };
      console.log("Completed Levels from state:", completedLevels);
      console.log("Current Level:", levels[currentLevel]);
      console.log("Already completed?", completedLevels.includes(levels[currentLevel]));
@@ -247,6 +266,12 @@ function Lesson2() {
                         </div>
                     </div>
                 ) : null}
+                 {errorMessage && (
+                            <div className="text-center mt-6">
+                                <p className="text-3xl text-red-600 font-semibold">{errorMessage}</p>
+                                <button onClick={retryGesture} className="start-button">Try Again</button>
+                            </div>
+                        )}
                 {levelCompleted && (
                     <div className="text-center mt-6">
                         <p className="text-6xl text-green-600 font-semibold flex items-center justify-center">
