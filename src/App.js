@@ -20,8 +20,11 @@ import Level2 from './lessons/Level2.js';
 import Lesson2 from './lessons/Lesson2';
 import Level3 from './lessons/Level3.js';
 import Lesson3 from './lessons/Lesson3';
+import Level4 from './lessons/Level4.js';
+import Lesson4 from './lessons/Lesson4';
 
 import LevelsPage from './lessons/levelsPage'; // Import LevelsPage component
+
 
 function App() {
   const [displayName, setDisplayName] = useState('');
@@ -127,9 +130,18 @@ function App() {
             </ProtectedRoute>
           }
         />
+          <Route
+          path="/lesson4/:sentence"
+          element={
+            <ProtectedRoute>
+              <Lesson4 />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/alphabet-image" element={<AlphabetImage />} />
         <Route path="/Level2" element={<Level2 />} />
         <Route path="/Level3" element={<Level3 />} />
+        <Route path="/Level4" element={<Level4 />} />
 
         <Route path="/levels26" element={<Levels />} />
         <Route path="/lesson/:letter" element={<Lesson />} />
