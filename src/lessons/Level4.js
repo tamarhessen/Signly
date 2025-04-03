@@ -88,7 +88,7 @@ function Level4() {
                         onClick={() => navigate(`/lesson4/${level}`, { state: { word: level, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } })}
                         className={`levels-button absolute p-4 text-xl font-bold w-20 h-20 rounded-full 
                             ${index < unlockedLevels ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-200 text-gray-600 cursor-not-allowed'}`}
-                        disabled={index+26 >= unlockedLevels}
+                        disabled={index+78 >= unlockedLevels}
                         style={calculatePosition(index)}
                     >
                         {level}

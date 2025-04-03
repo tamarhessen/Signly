@@ -158,14 +158,17 @@ function Lesson2() {
         setShowSignImage(false);
         setCameraActive(true);
     };
-    
+    console.log("wwwww", currentLevel)
     console.log("Completed Levels from state:", completedLevels);
     console.log("Current Level:", levels[currentLevel]);
     console.log("Already completed?", completedLevels.includes(levels[currentLevel]));
     
     const nextLevel = () => {
         if (levelCompleted) {
-            const newPoints = userPoints + 1;
+            console.log("wwwww", currentLevel)
+          
+          const newPoints = userPoints + 1;
+           
             const newCompletedLevels = [...completedLevels, levels[currentLevel]];
     
             localStorage.setItem('completedLevels', JSON.stringify(newCompletedLevels));
