@@ -73,8 +73,8 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
         }
     
         setPoints(points);
-        setLevel(Math.floor(points / 10) + 1);
-        setNextLevelPoints(400);
+        setLevel(Math.floor(points / 26) + 1);
+        setNextLevelPoints(100);
         setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Fetch error:", error);
@@ -105,9 +105,21 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
               <img src={images[currentImageIndex]} alt="Sign Language Example" className="carousel-image" />
             </div>
             
-            <Link to="/levels" state={{ userImg, username, displayName, token, points}} className="start-lesson-button">
-              Start Lesson 🚀
-            </Link>
+            <Link 
+  to="/levels" 
+  state={{ 
+    currentUserImg: userImg,
+    currentUsername: username,
+    currentDisplayName: displayName,
+    currentToken: token,
+    currentPoints: points 
+  }} 
+  className="start-lesson-button"
+>
+  Start Lesson 🚀
+</Link>
+
+            
             
 
             {/* Button to view image of English Alphabet in sign language */}

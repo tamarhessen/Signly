@@ -5,16 +5,11 @@ import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
 import Levels from './Levels.js';
 
-function LevelsPage({ userImg, username, displayName, token, points }) {
+function LevelsPage() {
     const location = useLocation();
-    const { userImg: locationUserImg, username: locationUsername, displayName: locationDisplayName, token: locationToken, points: locationPoints } = location.state || {};
+   
+    const {  currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } = location.state || {};
 
-    // Use the passed props or location data (in case location data is available)
-    const currentUserImg = userImg || locationUserImg;
-    const currentUsername = username || locationUsername;
-    const currentDisplayName = displayName || locationDisplayName;
-    const currentToken = token || locationToken;
-    const currentPoints = points || locationPoints || 0; // Default to 0 if no points
 
     const [userPoints, setUserPoints] = useState(currentPoints);
     const [loading, setLoading] = useState(true);
@@ -28,8 +23,7 @@ function LevelsPage({ userImg, username, displayName, token, points }) {
         { level: 2, requiredPoints: 26 },
         { level: 3, requiredPoints: 52 },
         { level: 4, requiredPoints: 78 },
-        { level: 5, requiredPoints: 200 },
-        { level: 6, requiredPoints: 300 }
+
     ];
 
     // Function to fetch points from the server
@@ -112,9 +106,7 @@ function LevelsPage({ userImg, username, displayName, token, points }) {
             
             navigate('/level4', { state: { currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } });
 
-        }else if (userPoints >= level.requiredPoints) {
-            navigate(`/lesson/${level.level}`, { state: { username: currentUsername, points: userPoints } });
-        } else {
+        }else {
             alert(`You need ${level.requiredPoints - userPoints} more points to unlock this level.`);
         }
     };
@@ -131,7 +123,7 @@ function LevelsPage({ userImg, username, displayName, token, points }) {
     return (
         
         <div className="levels-page">
-        <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
+        <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
             
             <h1>Choose Your Level</h1>
             <div className="levels-container">
