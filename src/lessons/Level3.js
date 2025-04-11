@@ -77,7 +77,12 @@ function Levels() {
         <>
         <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
 
-
+        <button
+  className="start-lesson-button"
+  onClick={() => navigate('/levels', {state:{currentUserImg, currentUsername, currentDisplayName, currentToken, userPoints}})}
+>
+  Back to levels' page
+</button>
             <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center mb-6">
                 <p className="text-2xl font-semibold text-gray-700">Points:</p>
                 <p className="text-3xl font-bold text-blue-600">{userPoints}</p>
@@ -91,7 +96,7 @@ function Levels() {
                         onClick={() => navigate(`/lesson3/${level}`, { state: { word: level, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } })}
                         className={`levels-button absolute p-4 text-xl font-bold w-20 h-20 rounded-full 
                             ${index < unlockedLevels ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-200 text-gray-600 cursor-not-allowed'}`}
-                        disabled={index+26 >= unlockedLevels}
+                        disabled={index+52 >= unlockedLevels}
                         style={calculatePosition(index)}
                     >
                         {level}

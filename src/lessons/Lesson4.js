@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
+import Confetti from "react-confetti";
 
 const levels = [
     'Dad is here', 'The rocket flies', 'We love the jungle', 'Flowers in the garden', 'The castle is big'
@@ -20,8 +21,8 @@ const signImages = {
 function Lesson4() {
     const location = useLocation();
     const navigate = useNavigate();
-    const { word, currentUserImg, currentUsername, currentToken } = location.state || {};
-    
+
+    const { word, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } = location.state || {};
     const [currentLevel, setCurrentLevel] = useState(0);
     const [currentSentence, setCurrentSentence] = useState(word || levels[currentLevel]);
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -31,6 +32,14 @@ function Lesson4() {
     const [completedWords, setCompletedWords] = useState([]);
     const [recognizedLetters, setRecognizedLetters] = useState([]);
     const [showSignImage, setShowSignImage] = useState(true);
+     const [showConfetti, setShowConfetti] = useState(false); // מצב לזיק
+      const [userPoints, setUserPoints] = useState(currentPoints || 0);
+       const [levelCompleted, setLevelCompleted] = useState(false)
+        const [completedLevels, setCompletedLevels] = useState([]);
+        const [correctLetters, setCorrectLetters] = useState('');
+        const [incorrectLetter, setIncorrectLetter] = useState(false);
+            const [isLocked, setIsLocked] = useState(false)
+       
     
     const words = currentSentence.split(' ');
     const currentWord = words[currentWordIndex];
@@ -73,14 +82,64 @@ function Lesson4() {
             setRecognizedLetters(new Array(words[currentWordIndex + 1].length).fill(false));
         }
     };
+    const nextLevel = () => {
+        if (levelCompleted) {
+          const newPoints = userPoints + 1; 
+            const newCompletedLevels = [...completedLevels, levels[currentLevel]];
+            localStorage.setItem('completedLevels', JSON.stringify(newCompletedLevels));
+            setCompletedLevels(newCompletedLevels);
+            setUserPoints(newPoints);
+            fetch('http://127.0.0.1:5000/update-points', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: currentUsername,
+                    points: newPoints,
+                }),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Points updated in MongoDB:', data);
+            })
+            .catch((error) => {
+                console.error('Error updating points:', error);
+            });
+            if (currentLevel < levels.length - 1) {
+                setCurrentLevel(currentLevel + 1);
+                setLevelCompleted(false);
+                setCameraActive(false);
+                setShowSignImage(true);
+                setCurrentLetterIndex(0);
+                setCorrectLetters('');
+                setIncorrectLetter(false);
+                setIsLocked(false);
+            }
+            navigate('/level4', { 
+                state: { 
+                    currentUserImg, 
+                    currentUsername, 
+                    currentDisplayName, 
+                    currentToken, 
+                    userPoints: newPoints 
+                } 
+            });
+        }
+    };
 
     return (
         <>
             <TopPanel userImg={currentUserImg} username={currentUsername} navigate={navigate} token={currentToken} />
+            {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
             <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
                 <h1 className="text-3xl font-bold mb-8 text-gray-800">
                     Level {currentLevel + 1} - Sentence: {currentSentence}
                 </h1>
+                <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center">
+                    <p className="text-2xl font-semibold text-gray-700">Points:</p>
+                    <p className="text-3xl font-bold text-blue-600">{userPoints}</p>
+                </div>
 
                 {/* הצגת כל התמונות בתחילה */}
                 {showSignImage && (
@@ -141,6 +200,16 @@ function Lesson4() {
                     <button onClick={nextWord} className="next-word-button mt-4">Next Word</button>
                 )}
             </div>
+            {levelCompleted && (
+                    <div className="text-center mt-6">
+                        <p className="text-6xl text-green-600 font-semibold flex items-center justify-center">
+                            ✅ Correct! You signed {levels[currentLevel]}.
+                        </p>
+                        <button onClick={nextLevel} className="start-button">
+                            {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
+                        </button>
+                    </div>
+                )}
             <Footer />
         </>
     );

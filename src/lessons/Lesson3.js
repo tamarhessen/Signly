@@ -4,22 +4,20 @@ import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
 import Confetti from "react-confetti";
 
+const signImages = {
+  A: '/signs/A.png', B: '/signs/B.png', C: '/signs/C.png', D: '/signs/D.png', 
+  E: '/signs/E.png', F: '/signs/F.png', G: '/signs/G.png', H: '/signs/H.png', 
+  I: '/signs/I.png', J: '/signs/J.png', K: '/signs/K.png', L: '/signs/L.png', 
+  M: '/signs/M.png', N: '/signs/N.png', O: '/signs/O.png', P: '/signs/P.png', 
+  Q: '/signs/Q.png', R: '/signs/R.png', S: '/signs/S.png', T: '/signs/T.png', 
+  U: '/signs/U.png', V: '/signs/V.png', W: '/signs/W.png', X: '/signs/X.png', 
+  Y: '/signs/Y.png', Z: '/signs/Z.png'
+};
 const levels = [
     'daddy', 'rocket', 'jungle', 'garden', 'castle', 'forest', 'butterfly', 'diamond', 'sunshine', 'rainbow',
     'mountain', 'friendship', 'computer', 'elephant', 'building', 'fireworks', 'backpack', 'treasure', 'vacation',
     'adventure', 'airplane', 'birthday', 'chocolate', 'dinosaur', 'festival', 'lighthouse'
 ];
-
-// Sign images for each letter
-const signImages = {
-    A: '/signs/A.png', B: '/signs/B.png', C: '/signs/C.png', D: '/signs/D.png', 
-    E: '/signs/E.png', F: '/signs/F.png', G: '/signs/G.png', H: '/signs/H.png', 
-    I: '/signs/I.png', J: '/signs/J.png', K: '/signs/K.png', L: '/signs/L.png', 
-    M: '/signs/M.png', N: '/signs/N.png', O: '/signs/O.png', P: '/signs/P.png', 
-    Q: '/signs/Q.png', R: '/signs/R.png', S: '/signs/S.png', T: '/signs/T.png', 
-    U: '/signs/U.png', V: '/signs/V.png', W: '/signs/W.png', X: '/signs/X.png', 
-    Y: '/signs/Y.png', Z: '/signs/Z.png'
-};
 
 function Lesson3() {
     const location = useLocation();
@@ -43,10 +41,12 @@ function Lesson3() {
     const [incorrectLetter, setIncorrectLetter] = useState(false);
     const [isLocked, setIsLocked] = useState(false);
      const [showConfetti, setShowConfetti] = useState(false); // מצב לזיק
+         const [canTryAgain, setCanTryAgain] = useState(true);
     
     const retryGesture = () => {
         setIncorrectLetter(false);
         setIsLocked(false); // Unlock when retrying
+        setCanTryAgain(true);
     };
     
 
@@ -58,41 +58,43 @@ function Lesson3() {
     }, [word]);
 
     useEffect(() => {
-        if (cameraActive) {
+        if (cameraActive && canTryAgain) {
             const interval = setInterval(() => {
                 fetch('http://127.0.0.1:5001/detect_gesture')
                     .then(response => response.json())
                     .then(data => {
-                        setGesture(data.gesture);
-                        
-                        // Only process gestures if not locked
-                        if (!isLocked) {
-                            if (data.gesture === currentWord[currentLetterIndex]) {
-                                setCorrectLetters(prev => prev + currentWord[currentLetterIndex]);
-                                setCurrentLetterIndex(prevIndex => prevIndex + 1);
-                            } else if (data.gesture !== 'Nothing' && data.gesture !== currentWord[currentLetterIndex - 1]) {
-                                // Mark incorrect and lock until "Try Again" is pressed
-                                setIncorrectLetter(true);
-                                setIsLocked(true);
+                        if (!levelCompleted) { // 👈 זה התנאי החדש
+                            setGesture(data.gesture);
+    
+                            if (!isLocked) {
+                                if (data.gesture === currentWord[currentLetterIndex]) {
+                                    setCorrectLetters(prev => prev + currentWord[currentLetterIndex]);
+                                    setCurrentLetterIndex(prevIndex => prevIndex + 1);
+                                } else if (data.gesture !== 'Nothing' && data.gesture !== currentWord[currentLetterIndex - 1]) {
+                                    setIncorrectLetter(true);
+                                    setIsLocked(true);
+                                    setCanTryAgain(false);
+                                }
                             }
-                        }
-
-                        if (currentLetterIndex === currentWord.length) {
-                            setLevelCompleted(true);
-                            setShowConfetti(true);
-                            
-                            setTimeout(() => {
-                                setShowConfetti(false);
-                                setTimeout(() => setShowConfetti(true), 500); // Restart after 0.5s for a smoother effect
-                            }, 5000);
+    
+                            if (currentLetterIndex === currentWord.length) {
+                                setLevelCompleted(true);
+                                setShowConfetti(true);
+    
+                                setTimeout(() => {
+                                    setShowConfetti(false);
+                                    setTimeout(() => setShowConfetti(true), 500);
+                                }, 5000);
+                            }
                         }
                     })
                     .catch(error => console.error('Error fetching gesture:', error));
             }, 100);
-
+    
             return () => clearInterval(interval);
         }
-    }, [cameraActive, currentLetterIndex, currentWord, isLocked]);
+    }, [cameraActive, currentLetterIndex, canTryAgain, currentWord, isLocked, levelCompleted]);
+    
     
     const fetchData = async () => {
         try {
@@ -145,7 +147,6 @@ function Lesson3() {
             console.error("Error updating points:", error);
         }
     };
-
     useEffect(() => {
         const storedPoints = localStorage.getItem('userPoints');
         if (storedPoints) {
@@ -161,38 +162,41 @@ function Lesson3() {
         setShowSignImage(false);
         setCameraActive(true);
     };
-    
+    console.log("wwwww", currentLevel)
     console.log("Completed Levels from state:", completedLevels);
     console.log("Current Level:", levels[currentLevel]);
     console.log("Already completed?", completedLevels.includes(levels[currentLevel]));
     
     const nextLevel = () => {
+        setCanTryAgain(false);
         if (levelCompleted) {
-            const newPoints = userPoints + 1;
-            const newCompletedLevels = [...completedLevels, levels[currentLevel]];
     
-            localStorage.setItem('completedLevels', JSON.stringify(newCompletedLevels));
-    
-            setCompletedLevels(newCompletedLevels);
-            setUserPoints(newPoints);
-    
-            fetch('http://127.0.0.1:5000/update-points', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: currentUsername,
-                    points: newPoints,
-                }),
-            })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log('Points updated in MongoDB:', data);
-            })
-            .catch((error) => {
-                console.error('Error updating points:', error);
-            });
+            // בדיקה אם המשתמש כבר סיים את השלב הזה
+            if (userPoints <= currentLevel + 52) {
+                const newPoints = userPoints + 1;
+                const newCompletedLevels = [...completedLevels, levels[currentLevel]];
+                localStorage.setItem('completedLevels', JSON.stringify(newCompletedLevels));
+                setCompletedLevels(newCompletedLevels);
+                setUserPoints(newPoints);
+                
+                fetch('http://127.0.0.1:5000/update-points', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: currentUsername,
+                        points: newPoints,
+                    }),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('Points updated in MongoDB:', data);
+                })
+                .catch((error) => {
+                    console.error('Error updating points:', error);
+                });
+            }
     
             if (currentLevel < levels.length - 1) {
                 setCurrentLevel(currentLevel + 1);
@@ -205,17 +209,18 @@ function Lesson3() {
                 setIsLocked(false);
             }
     
-            navigate('/level2', { 
+            navigate('/level3', { 
                 state: { 
                     currentUserImg, 
                     currentUsername, 
                     currentDisplayName, 
                     currentToken, 
-                    userPoints: newPoints 
+                    currentPoints: userPoints > currentLevel + 52 ? userPoints : userPoints + 1 
                 } 
             });
         }
     };
+    
 
     return (
         <>
@@ -298,6 +303,5 @@ function Lesson3() {
         </>
     );
 }
-
 
 export default Lesson3;

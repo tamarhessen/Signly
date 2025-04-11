@@ -74,7 +74,12 @@ function Levels() {
     return (
         <>
         <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
-
+        <button
+ className="start-lesson-button"
+  onClick={() => navigate('/levels', {state:{currentUserImg, currentUsername, currentDisplayName, currentToken, userPoints}})}
+>
+  Back to levels' page
+</button>
 
             <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center mb-6">
                 <p className="text-2xl font-semibold text-gray-700">Points:</p>
