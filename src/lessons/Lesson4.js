@@ -45,6 +45,7 @@ function Lesson4() {
     const [isLocked, setIsLocked] = useState(false);
     const [canTryAgain, setCanTryAgain] = useState(true);
     const [wordCompleted, setWordCompleted] = useState(false);
+  
 
 
     const words = currentSentence.split(' ');
@@ -143,6 +144,7 @@ function Lesson4() {
     };
     const nextLevel = () => {
         if (levelCompleted) {
+            if (userPoints <= currentLevel + 78) {
             const newPoints = userPoints + 1;
             const newCompletedLevels = [...completedLevels, levels[currentLevel]];
             localStorage.setItem('completedLevels', JSON.stringify(newCompletedLevels));
@@ -157,6 +159,7 @@ function Lesson4() {
                 .then(res => res.json())
                 .then(data => console.log('Points updated in MongoDB:', data))
                 .catch(err => console.error('Error updating points:', err));
+        }
 
             if (currentLevel < levels.length - 1) {
                 setCurrentLevel(prev => prev + 1);
@@ -181,7 +184,7 @@ function Lesson4() {
                     currentUsername,
                     currentDisplayName,
                     currentToken,
-                    currentPoints: newPoints
+                    currentPoints: userPoints > currentLevel + 78 ? userPoints : userPoints + 1 
                 }
             });
         }
@@ -191,16 +194,17 @@ function Lesson4() {
         <>
             <TopPanel userImg={currentUserImg} username={currentUsername} navigate={navigate} token={currentToken} />
             {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+    
             <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
                 <h1 className="text-3xl font-bold mb-8 text-gray-800">
                     Level {currentLevel + 1} - Sentence: {currentSentence}
                 </h1>
-
-                <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center">
+    
+                <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center mb-6">
                     <p className="text-2xl font-semibold text-gray-700">Points:</p>
                     <p className="text-3xl font-bold text-blue-600">{userPoints}</p>
                 </div>
-
+    
                 {showSignImage && (
                     <div className="text-center mb-8">
                         <div className="flex justify-center items-center space-x-2">
@@ -211,7 +215,7 @@ function Lesson4() {
                                             key={letterIndex}
                                             src={signImages[letter.toUpperCase()]}
                                             alt={`Sign for ${letter}`}
-                                            className="w-16 h-16 object-cover border border-gray-300 rounded-lg bg-pink"
+                                            className="w-16 h-16 object-cover border border-gray-300 rounded-lg"
                                         />
                                     ))}
                                 </div>
@@ -219,9 +223,13 @@ function Lesson4() {
                         </div>
                     </div>
                 )}
-
-                {!cameraActive && <button onClick={startCamera} className="start-button mt-4">TRY IT YOURSELF</button>}
-
+    
+                {!cameraActive && (
+                   <button onClick={() => setCameraActive(true)} className="start-button mt-4">
+                        TRY IT YOURSELF
+                    </button>
+                )}
+    
                 {cameraActive && (
                     <div className="text-center mb-8 flex justify-center items-center">
                         <img src="http://127.0.0.1:5001/video_feed" alt="Camera Feed" className="w-[700px] h-[700px] rounded-lg object-cover" />
@@ -234,59 +242,74 @@ function Lesson4() {
                         </div>
                     </div>
                 )}
-
-                <div className="mt-4">
-                    <p className="font-semibold text-xl">Signed so far: {completedWords.join(', ')}</p>
-                    <p className="text-lg text-gray-600">
-                        {isLocked ? "Press 'Try Again' to continue" : `Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
-                    </p>
-                </div>
-
-                {incorrectLetter && (
-    <div className="text-center mt-4">
-        <p className="text-red-600 text-2xl font-bold">❌ Wrong Sign! Try Again</p>
-        <button onClick={retryGesture} className="mt-2 bg-red-500 text-pink px-4 py-2 rounded-lg">
-            Try Again
-        </button>
-    </div>
+    {cameraActive && (
+              
+                <div className="text-center mt-4">
+    <p className={`font-semibold mt-2 ${isLocked ? 'text-red-600' : 'text-gray-800'}`} style={{ fontSize: '2rem' }}>
+        {isLocked ? "Press 'Try Again' to continue" : `✍️ Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
+    </p>
+</div>
 )}
 
-
-                <div className="mt-4">
-                    <p className="font-semibold text-xl">Word Progress:</p>
-                    <div className="flex justify-center space-x-2">
+    
+                {/* Wrong Letter Message */}
+                {incorrectLetter && (
+                    <div className="text-center mt-4">
+                        <p className="text-red-600 text-2xl font-bold">❌ Wrong Sign! Try Again</p>
+                        <button onClick={retryGesture} className="mt-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-md">
+                            Try Again
+                        </button>
+                    </div>
+                )}
+      {cameraActive && (
+               
+                <div className="mt-6 text-center">
+                    <p className="font-bold text-xl text-gray-700 mb-2">Word Progress:</p>
+                    <div className="grid grid-cols-[repeat(auto-fit,minmax(60px,1fr))] gap-3 justify-center">
                         {letters.map((letter, index) => (
-                            <span key={index} className={`text-2xl font-bold ${recognizedLetters[index] ? 'text-green-500' : 'text-red-500'}`}>
-                                {letter} {recognizedLetters[index] ? '✔️' : '❌'}
-                            </span>
+                            <div
+                                key={index}
+                                className={`px-3 py-2 rounded-xl text-xl font-semibold shadow-md ${
+                                    recognizedLetters[index]
+                                        ? 'bg-green-100 text-green-700'
+                                        : 'bg-red-100 text-red-600'
+                                }`}
+                            >
+                                {letter.toUpperCase()} {recognizedLetters[index] ? '✔️' : '❌'}
+                            </div>
                         ))}
                     </div>
                 </div>
-
+                )}
+    
+                {/* Word Completed */}
                 {wordCompleted && !levelCompleted && (
-    <div className="mt-4">
-        <p className="text-green-600 text-2xl font-bold">✅ You finished the word "{currentWord}"!</p>
-        <button onClick={nextWord} className="mt-2 bg-green-500 text-white px-4 py-2 rounded-lg">
-            Next Word
-        </button>
-    </div>
-)}
-            </div> 
-
+                    <div className="mt-6 text-center">
+                        <p className="text-green-600 text-2xl font-bold">
+                            ✅ You finished the word "{currentWord}"!
+                        </p>
+                        <button onClick={nextWord} className="start-button mt-2">
+                            Next Word
+                        </button>
+                    </div>
+                )}
+            </div>
+    
+            {/* Level Completed */}
             {levelCompleted && (
                 <div className="text-center mt-6">
-                    <p className="text-6xl text-green-600 font-semibold flex items-center justify-center">
+                    <p className="text-5xl text-green-600 font-semibold flex items-center justify-center">
                         ✅ Correct! You signed {levels[currentLevel]}.
-                        </p>
-                        <button onClick={nextLevel} className="start-button">
-                            {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
-                        </button>
+                    </p>
+                    <button onClick={nextLevel} className="start-button mt-4">
+                        {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
+                    </button>
                 </div>
             )}
-
+    
             <Footer />
         </>
     );
-}
-
+    }
+    
 export default Lesson4;

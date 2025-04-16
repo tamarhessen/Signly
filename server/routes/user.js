@@ -51,6 +51,7 @@ router.patch('/api/users/:id/friends/:fid', authenticateToken, userController.ac
 router.delete('/api/users/:id/friends/:fid', authenticateToken, userController.deleteFriend);
 
 router.get('/api/users/:id/points', authenticateToken, userController.getPoints);
+router.get('/leaderboard/:id', userController.getLeaderboard);
   
 
 
