@@ -271,16 +271,17 @@ function Lesson3() {
                             </div>
                         </div>
                         <div className="mt-4">
-                            <p className="text-xl font-semibold text-gray-700">
+                            <p className="text-xl font-semibold text-gray-700" style={{ fontSize: '2rem' }}>
                                 Signed so far: {correctLetters}
                             </p>
-                            <p className="text-lg text-gray-600">
-                                {isLocked ? "Press 'Try Again' to continue" : `Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
-                            </p>
+                            <p className="text-lg text-gray-600" style={{ fontSize: '2rem' }}>
+    {isLocked ?  "": `Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
+</p>
+
                         </div>
                         {incorrectLetter && (
-                            <div className="text-center mt-4">
-                                <p className="text-red-600 text-2xl font-bold">❌ Wrong Sign! Try Again</p>
+                            <div className="text-center mt-4" >
+                                <p className="text-red-600 text-2xl font-bold" style={{ fontSize: '2rem' }}>❌ Wrong Sign! Try Again</p>
                                 <button onClick={retryGesture} className="mt-2 bg-red-500 text-pink px-4 py-2 rounded-lg">
                                     Try Again
                                 </button>

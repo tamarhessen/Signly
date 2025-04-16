@@ -5,6 +5,7 @@ import './MainScreen.css';
 import RightPanel from './RightPanel';
 import TopPanel from './TopPanel';
 import Footer from './Footer';
+import { User } from 'lucide-react';
 
 function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }) {
   const navigate = useNavigate();
@@ -143,7 +144,13 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
         <div className="links-container">
           <Link to="/about" className="link-button">📘 About Sign Language</Link>
           <Link to="/faq" className="link-button">❓ FAQs</Link>
-          <Link to="/profile" className="link-button">🏆 Your Achievements</Link>
+          <Link to="/achive"  state={{ 
+    currentUserImg: userImg,
+    currentUsername: username,
+    currentDisplayName: displayName,
+    currentToken: token,
+    currentPoints: points 
+  }}  className="link-button">🏆 Leaderboard 🏆</Link>
         </div>
       </div>
 

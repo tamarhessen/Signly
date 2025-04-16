@@ -9,6 +9,7 @@ import './Login.css';
 import { Modal } from 'bootstrap';
 import { authenticateUser } from './Users';
 import { LoggedIn } from './loggedIn';
+
 import MyProfilePage from './home/MyProfilePage';
 import AlphabetImage from './home/AlphabetImage';
 import ContactUs from './home/ContactUs';
@@ -24,6 +25,7 @@ import Level4 from './lessons/Level4.js';
 import Lesson4 from './lessons/Lesson4';
 
 import LevelsPage from './lessons/levelsPage'; // Import LevelsPage component
+import Leaderboard from './Leaderboard.js';
 
 
 function App() {
@@ -144,6 +146,7 @@ function App() {
         <Route path="/Level4" element={<Level4 />} />
 
         <Route path="/levels26" element={<Levels />} />
+        <Route path="/achive" element={<Leaderboard />} />
         <Route path="/lesson/:letter" element={<Lesson />} />
 
         {/* Catch-all route */}

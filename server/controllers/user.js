@@ -112,6 +112,19 @@ async function getPoints(req, res) {
     const points = await userService.getUserPoints(userId);
     res.json(points)
 }
+// ב-controller
+async function getLeaderboard(req, res) {
+    try {
+        const userId = req.params.id;
+        const leaderboard = await userService.getLeaderboard(userId);
+        res.json(leaderboard); // 💥 זה חייב להיות מערך
+    } catch (error) {
+        console.error("Error in getLeaderboard:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+}
+
+
 
 
 
@@ -128,5 +141,6 @@ module.exports = {
     updateUserById,
     updatePoints,
     updateUserPoints,
-    getPoints
+    getPoints,
+    getLeaderboard
 };

@@ -13,6 +13,16 @@ async function generateToken(user) {
 
     return jwt.sign(payload, secretKey);
 }
+async function getLeaderboard(currentUserId) {
+    const users = await User.find({}, 'displayName points _id');
+
+    return users.map(user => ({
+        username: user.displayName,
+        points: user.points,
+   
+    }));
+}
+
 
 async function registerUser(userData) {
     const {username} = userData;
@@ -216,5 +226,6 @@ module.exports = {
     deleteUserById,
     updateUserById,
     updateUserPoints,
-    getUserPoints
+    getUserPoints,
+    getLeaderboard
 };
