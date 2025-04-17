@@ -28,14 +28,15 @@ function Leaderboard() {
                     <h2 className="leaderboard-title">🏆 Leaderboard 🏆</h2>
                     <ul className="leaderboard-list">
                         {leaderboard.map((player, index) => (
-                            <li
-                                key={index}
-                                className={`leaderboard-item ${player.username === currentDisplayName ? 'highlight' : ''}`}
-                            >
-                                <span className="rank">#{index + 1}</span>
-                                <span className="name">{player.username}</span>
-                                <span className="points">{player.points} pts</span>
-                            </li>
+                          <li
+                          key={index}
+                          className={`leaderboard-item ${player.username === currentDisplayName ? 'highlight' : ''}`}
+                      >
+                          <span className="rank">#{index + 1}</span>
+                          <img className="pic" src={player.pic} alt="Profile" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+                          <span className="name">{player.username}</span>
+                          <span className="points">{player.points}</span>
+                      </li>
                         ))}
                     </ul>
                 </div>

@@ -26,6 +26,7 @@ import Lesson4 from './lessons/Lesson4';
 
 import LevelsPage from './lessons/levelsPage'; // Import LevelsPage component
 import Leaderboard from './Leaderboard.js';
+import FAQ from './FAQ.js';
 
 
 function App() {
@@ -147,6 +148,8 @@ function App() {
 
         <Route path="/levels26" element={<Levels />} />
         <Route path="/achive" element={<Leaderboard />} />
+        <Route path="/faq" element={<FAQ />} />
+
         <Route path="/lesson/:letter" element={<Lesson />} />
 
         {/* Catch-all route */}

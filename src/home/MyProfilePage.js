@@ -5,13 +5,15 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import RightSide from "./RightPanel";
+import TopPanel from './TopPanel';
+import Footer from './Footer';
 
 
 function MyProfilePage() {
   const [mode, setMode] = useState(true);
   const location = useLocation();
   const { state } = location;
-  const {username, userImg, token } = state || {};  // Ensure state is not undefined
+  const {username,userImg, token } = state || {};  // Ensure state is not undefined
   const [pic, setPic] = useState(userImg || '/default-profile.jpg');
   const [displayName, setDisplayName] = useState('');
   const [account, setAccount] = useState('');
@@ -237,73 +239,73 @@ const handleEditProfilePicture = async (file) => {
         console.log(response)
         navigate("/");
     }
-  return (
-   
-      <div className="profile-details">
-        <div className="profile-header">
-          <img
-            src={userImg}
-            alt="Profile Image"
-            className={"Logo profile-image"}
-            onClick={() => setShowModal(true)}
-            style={{ width: "100%", height: "100%" }}
-          />
-          {showEditWindow ? (
-            <div>
-              <input
-                type="text"
-                value={editedDisplayName}
-                onChange={handleDisplayNameChange}
-              />
-              <button onClick={handleSaveDisplayName}>Save</button>
-              <button onClick={handleCloseEditWindow}>Cancel</button>
-            </div>
-          ) : (
-            <div>
-              <h1>{displayName}</h1>
-              <button onClick={handleOpenEditWindow} className="bb-button">Edit Display name</button>
+    return (
+      <>
+        <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
+    
+        <div className="profile-details">
+          <div className="profile-header">
+            <img
+              src={userImg}
+              alt="Profile Image"
+              className={"Logo profile-image"}
+              onClick={() => setShowModal(true)}
+              style={{ width: "100%", height: "100%" }}
+            />
+            {showEditWindow ? (
+              <div>
+                <input
+                  type="text"
+                  value={editedDisplayName}
+                  onChange={handleDisplayNameChange}
+                />
+                <button onClick={handleSaveDisplayName}>Save</button>
+                <button onClick={handleCloseEditWindow}>Cancel</button>
+              </div>
+            ) : (
+              <div>
+                <h1>{displayName}</h1>
+                <button onClick={handleOpenEditWindow} className="bb-button">Edit Display name</button>
                 <button onClick={handleDelete} className={"btn btn-danger"}>Delete user</button>
-            </div>
-          )}
+              </div>
+            )}
+          </div>
+          <Footer />
         </div>
     
-  
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Profile Picture</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form.Group className="mb-3">
+              <Form.Label className="form-label">Picture</Form.Label>
+              <Form.Control
+                className="form-control"
+                type="file"
+                id="formFile"
+                onChange={showPic}
+                name="image"
+                accept="image/*"
+              />
+            </Form.Group>
+            <div className="img-cont">
+              <img src={pic} id="Profile-Picture" alt="Profile Picture" />
+            </div>
+            <br />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={() => handleEditProfilePicture(realPic)}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
     
-  
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Profile Picture</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label className="form-label">Picture</Form.Label>
-            <Form.Control
-              className="form-control"
-              type="file"
-              id="formFile"
-              onChange={showPic}
-              name="image"
-              accept="image/*"
-            />
-          </Form.Group>
-          <div className="img-cont">
-            <img src={pic} id="Profile-Picture" alt="Profile Picture" />
-          </div>
-          <br />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => handleEditProfilePicture(realPic)}
-          >
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
-  );
           }
+          
 export default MyProfilePage;

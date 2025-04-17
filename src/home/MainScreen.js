@@ -143,7 +143,13 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
         <h3>🌟 Explore More</h3>
         <div className="links-container">
           <Link to="/about" className="link-button">📘 About Sign Language</Link>
-          <Link to="/faq" className="link-button">❓ FAQs</Link>
+          <Link to="/faq" state={{ 
+    currentUserImg: userImg,
+    currentUsername: username,
+    currentDisplayName: displayName,
+    currentToken: token,
+    currentPoints: points 
+  }} className="link-button">❓ FAQs</Link>
           <Link to="/achive"  state={{ 
     currentUserImg: userImg,
     currentUsername: username,

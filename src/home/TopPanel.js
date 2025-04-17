@@ -29,7 +29,7 @@ function TopPanel({ userImg, username, displayName, token }) {
           <img 
             src="/logoPink.png" 
             alt="Signly Logo"
-            onClick={() => navigate("/home", { state: { username: currentUsername, displayName: currentDisplayName, userImg: currentUserImg, token: currentToken } })} 
+            onClick={() => navigate("/", { state: { username: currentUsername, displayName: currentDisplayName, userImg: currentUserImg, token: currentToken } })} 
             className="logo-image" 
           />
         </div>
