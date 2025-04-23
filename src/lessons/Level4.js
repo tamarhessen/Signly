@@ -75,16 +75,28 @@ function Level4() {
     return (
         <>
         <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
-        <button
-    className="start-lesson-button"
-  onClick={() => navigate('/levels', {state:{currentUserImg, currentUsername, currentDisplayName, currentToken, userPoints}})}
->
-  Back to levels' page
-</button>
+     
             <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center mb-6">
                 <p className="text-2xl font-semibold text-gray-700">Points:</p>
                 <p className="text-3xl font-bold text-blue-600">{userPoints}</p>
             </div>
+            <div className="absolute left-0">
+      <button
+        className="bg-blue-500 px-2 py-1 rounded  text-sm w-auto"
+        onClick={() => navigate('/levels', {
+          state: {
+            currentUserImg,
+            currentUsername,
+            currentDisplayName,
+            currentToken,
+            userPoints
+          }
+        })}
+      >
+        Back to 
+        levels' page
+      </button>
+    </div>
 
             <div className="levels-circle-wrapper relative">
                 {levels.map((level, index) => (

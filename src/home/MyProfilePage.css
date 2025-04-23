@@ -74,3 +74,17 @@ body {
 
   
 }
+html, body {
+    height: 100%;
+  }
+  
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .profile-details {
+    flex: 1; /* דוחף את ה-footer למטה כשאין תוכן */
+  }
+  

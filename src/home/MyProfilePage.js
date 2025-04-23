@@ -240,7 +240,7 @@ const handleEditProfilePicture = async (file) => {
         navigate("/");
     }
     return (
-      <>
+      <div className="page-wrapper">
         <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
     
         <div className="profile-details">
@@ -267,11 +267,15 @@ const handleEditProfilePicture = async (file) => {
                 <h1>{displayName}</h1>
                 <button onClick={handleOpenEditWindow} className="bb-button">Edit Display name</button>
                 <button onClick={handleDelete} className={"btn btn-danger"}>Delete user</button>
+                <button onClick={logout} className="btn btn-warning">Logout</button>
               </div>
             )}
+          
+          </div>
           </div>
           <Footer />
-        </div>
+      
+        
     
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
@@ -303,7 +307,7 @@ const handleEditProfilePicture = async (file) => {
             </Button>
           </Modal.Footer>
         </Modal>
-      </>
+        </div>
     );
     
           }
