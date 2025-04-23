@@ -7,7 +7,7 @@ import Confetti from "react-confetti";
 function Lesson() {
     const location = useLocation();
     const navigate = useNavigate();
-    const [lives, setLives] = useState(3);
+    const [lives, setLives] = useState();
     const [isOutOfLives, setIsOutOfLives] = useState(false);
     const { letter, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } = location.state || {};
     
@@ -49,7 +49,37 @@ function Lesson() {
         };
         fetchData();
     }, [currentUsername, currentToken]);
-
+    useEffect(() => {
+        const fetchLives = async () => {
+            try {
+                const res = await fetch(`http://localhost:5000/api/users/lives/${currentUsername}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        authorization: `bearer ${currentToken}`,
+                    },
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    setLives(data); // הנחת שיש שדה "lives" ב־response
+                } else {
+                    throw new Error('Failed to fetch lives');
+                }
+            } catch (error) {
+                console.error('Error fetching lives:', error);
+            }
+        };
+    
+        fetchLives();
+    }, [currentUsername, currentToken]); // תעשה את זה שוב אם המשתמש או הטוקן משתנים
+    useEffect(() => {
+        console.log('Lives:', lives);  // תוסיף כאן
+        if (lives < 0 || isNaN(lives)) {
+            setLives(0);  // תיקון אם מספר החיים לא תקין
+        }
+    }, [lives]);
+    
+    
     useEffect(() => {
         if (cameraActive && canTryAgain) {
             const interval = setInterval(() => {
