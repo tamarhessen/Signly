@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './RightPanel.css';
-
+//write
 function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
   const [lives, setLives] = useState(3);
   const [timeLeft, setTimeLeft] = useState(null);
-
+  let pointsperlevel=(points-((level-1)*26)-1);
   // Fetch lives
   useEffect(() => {
     const abortController = new AbortController();
@@ -100,8 +100,8 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
       <h3>Your Progress</h3>
       <div className="progress-info">
         <p>Level: {level}</p>
-        <progress value={points} max={nextLevelPoints} className="progress-bar" />
-        <p>{points}/{nextLevelPoints} points</p>
+        <progress value={pointsperlevel} max={nextLevelPoints} className="progress-bar" />
+        <p>{pointsperlevel} points</p>
       </div>
       <div className="lives-info">
         <p>Lives: {'❤️'.repeat(lives)} {lives}/3</p>
