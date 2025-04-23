@@ -5,47 +5,90 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
   const [lives, setLives] = useState(3);
   const [timeLeft, setTimeLeft] = useState(null);
 
-  // מביא את כמות הלבבות
+  // Fetch lives
   useEffect(() => {
-    fetch(`http://localhost:5000/lives/${username}`)
-      .then(res => res.json())
-      .then(data => {
-        setLives(data.lives);
-      })
-      .catch(err => {
-        console.error('Failed to fetch lives:', err);
-      });
+    const abortController = new AbortController();
+
+    async function fetchLives() {
+      try {
+        console.log("Fetching lives for user:", username);
+
+        const res = await fetch(`http://localhost:5000/api/users/lives/${username}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          signal: abortController.signal,
+        });
+
+        console.log("Lives response status:", res.status);
+        const data = await res.json();
+        console.log("Lives data:", data);
+
+        const livesValue = typeof data === 'number' ? data : data.lives;
+        setLives(livesValue);
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.error('Failed to fetch lives:', err);
+        }
+      }
+    }
+
+    if (username) {
+      fetchLives();
+    }
+
+    return () => abortController.abort();
   }, [username]);
 
-  // מביא את הזמן עד הלב הבא אם אין לבבות
+  // Fetch time until next life (only when lives = 0)
   useEffect(() => {
-    if (lives === 0) {
-      fetch(`http://localhost:5000/time-until-life/${username}`)
-        .then(res => res.json())
-        .then(data => {
-          setTimeLeft(data.timeLeft); // timeLeft in seconds
-        })
-        .catch(err => {
-          console.error('Failed to fetch time until next life:', err);
+    const abortController = new AbortController();
+
+    async function fetchTimeLeft() {
+      try {
+        console.log("Fetching time until next life for:", username);
+
+        const res = await fetch(`http://localhost:5000/api/users/time-until-life/${username}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          signal: abortController.signal,
         });
-    } else {
-      setTimeLeft(null); // אם יש לבבות אין צורך להציג זמן
+
+        console.log("Time response status:", res.status);
+        const data = await res.json();
+        console.log("Time data:", data);
+
+        setTimeLeft(data.timeLeft);
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.error('Failed to fetch time until next life:', err);
+        }
+      }
     }
+
+    if (username && lives === 0) {
+      fetchTimeLeft();
+    } else {
+      setTimeLeft(null);
+    }
+
+    return () => abortController.abort();
   }, [username, lives]);
 
-  // טיימר שמוריד שנייה בכל שנייה
+  // Timer that decreases timeLeft by 1 each second
   useEffect(() => {
     let timer;
     if (timeLeft !== null && timeLeft > 0) {
       timer = setInterval(() => {
         setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
-
       }, 1000);
     }
     return () => clearInterval(timer);
   }, [timeLeft]);
 
-  // תצוגת זמן בפורמט דקות:שניות
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;

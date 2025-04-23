@@ -213,9 +213,9 @@ async function getUserPoints(userId) {
 }
 
 async function loseLife(userId) {
-    const user = await User.findById(userId);
+    const user = await User.findOne({ username: userId });
     if (!user) throw new Error('User not found');
-  
+      
     const waitTimeMinutes = 15;
   
     if (user.lives > 0) {
@@ -243,16 +243,19 @@ async function loseLife(userId) {
     }
   }
   async function getLives(userId) {
-    const user = await User.findById(userId);
+    // Look up by username instead of ID
+    const user = await User.findOne({ username: userId });
     if (!user) throw new Error('User not found');
   
-    return { lives: user.lives };
+    // Return just the number of lives to match what frontend expects
+    return user.lives;
   }
+
   
   async function getTimeUntilNextLife(userId) {
-    const user = await User.findById(userId);
+    const user = await User.findOne({ username: userId });
     if (!user) throw new Error('User not found');
-  
+     
     const waitTimeMinutes = 15;
   
     // אם יש לו לבבות – אין צורך להמתין
