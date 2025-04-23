@@ -54,6 +54,8 @@ router.get('/api/users/:id/points', authenticateToken, userController.getPoints)
 router.get('/leaderboard/:id', userController.getLeaderboard);
   
 
-
+router.post('/lose-life/:userId', userController.handleLoseLife);
+router.get('/lives/:userId', userController.handleGetLives);
+router.get('/time-until-life/:userId', userController.handleGetTimeUntilNextLife);
 
 module.exports = router;

@@ -12,9 +12,12 @@ async function generateToken(req, res) {
 
 async function registerUser(req, res) {
     const user = await userService.registerUser(req.body);
+   
     if (!user) {
         return res.status(400).json({ error: 'Username already exists' });
     }
+    console.log("saved user:", user);
+
     res.json(user);
 }
 
@@ -123,6 +126,34 @@ async function getLeaderboard(req, res) {
         res.status(500).json({ error: "Server error" });
     }
 }
+async function handleLoseLife(req, res) {
+    try {
+      const userId = req.params.userId;
+      const result = await userService.loseLife(userId);
+      res.json(result);
+    } catch (error) {
+      res.status(403).json(error);
+    }
+  }
+  async function handleGetLives(req, res) {
+    try {
+      const userId = req.params.userId;
+      const result = await userService.getLives(userId);
+      res.json(result);
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
+  }
+  
+  async function handleGetTimeUntilNextLife(req, res) {
+    try {
+      const userId = req.params.userId;
+      const result = await userService.getTimeUntilNextLife(userId);
+      res.json(result);
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
+  }
 
 
 
@@ -142,5 +173,8 @@ module.exports = {
     updatePoints,
     updateUserPoints,
     getPoints,
-    getLeaderboard
+    getLeaderboard,
+    handleLoseLife,
+    handleGetLives,
+    handleGetTimeUntilNextLife
 };
