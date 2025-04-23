@@ -116,7 +116,9 @@ const handleSubmit = async (e) => {
       password,
       displayName,
       profilePic, 
-      points:0
+      points:0,
+      lives:3,
+      lastLifeLostAt:null
     };
 
     // Post user to server

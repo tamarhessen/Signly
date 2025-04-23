@@ -8,6 +8,8 @@ import Confetti from "react-confetti";
 function Lesson() {
     const location = useLocation();
     const navigate = useNavigate();
+    const [lives, setLives] = useState(3);
+const [isOutOfLives, setIsOutOfLives] = useState(false);
     const { letter, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } = location.state || {};
     
     const levels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -25,6 +27,8 @@ function Lesson() {
     const [errorMessage, setErrorMessage] = useState("");
     const [canTryAgain, setCanTryAgain] = useState(true);
     const [showConfetti, setShowConfetti] = useState(false); // מצב לזיקוקים
+    const [hearts, setHearts] = useState(3);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -42,12 +46,26 @@ function Lesson() {
                 } else {
                     throw new Error('Failed to fetch points');
                 }
+    
+                // נקבל את הלבבות
+                const lifeRes = await fetch(`http://localhost:5000/lives/${currentUsername}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        authorization: `bearer ${currentToken}`,
+                    },
+                });
+                if (lifeRes.ok) {
+                    const livesLeft = await lifeRes.text();
+                    setLives(Number(livesLeft));
+                }
+    
             } catch (error) {
                 console.error(error);
             }
         };
         fetchData();
     }, [currentUsername, currentToken]);
+    
 
     useEffect(() => {
         if (cameraActive && canTryAgain) {
@@ -61,16 +79,35 @@ function Lesson() {
                             setLevelCompleted(true);
                             setCanTryAgain(false);
                             setErrorMessage("");
-                            
-                            setShowConfetti(true);
-                            setTimeout(() => {
-                                setShowConfetti(false);
-                                setTimeout(() => setShowConfetti(true), 500); // Restart after 0.5s for a smoother effect
-                            }, 5000); // Confetti runs for 5 seconds before resetting
-                        } // כיבוי לאחר 3 שניות
-                        else if (data.gesture !== 'Nothing') {
+                            setShowConfetti(true); // הצגת זיקוקים 🎉
+                            setTimeout(() => setShowConfetti(false), 3000); // כיבוי לאחר 3 שניות
+                        } else if (data.gesture !== 'Nothing') {
                             setErrorMessage(`❌ Incorrect! Try signing '${levels[currentLevel]}' again.`);
                             setCanTryAgain(false); 
+                             // הורדת לב
+    if (lives > 0) {
+        const newLives = lives - 1;
+        setLives(newLives);
+
+        try {
+             fetch('http://localhost:5000/time-until-life/${currentUsername}', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `bearer ${currentToken}`,
+                },
+                body: JSON.stringify({ username: currentUsername, lives: newLives }),
+            });
+        } catch (error) {
+            console.error('Failed to update lives', error);
+        }
+
+        // נגמרו לבבות
+        if (newLives === 0) {
+            setIsOutOfLives(true);
+            setCameraActive(false);
+        }
+    }
                         }
                     })
                     .catch(error => console.error('Error fetching gesture:', error));
@@ -133,15 +170,37 @@ function Lesson() {
             {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
     
             <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
-                <h1 className="text-3xl font-bold mb-8 text-gray-800">
+                <h1 className="text-3xl font-bold mb-4 text-gray-800">
                     Level {currentLevel + 1} - Sign: {levels[currentLevel]}
                 </h1>
+    
+                {/* תצוגת לבבות */}
+                <div className="flex items-center mb-6">
+                    {Array.from({ length: hearts }).map((_, idx) => (
+                        <span key={idx} className="text-red-500 text-3xl mx-1">❤️</span>
+                    ))}
+                    {Array.from({ length: 3 - hearts }).map((_, idx) => (
+                        <span key={idx} className="text-gray-400 text-3xl mx-1">🖤</span>
+                    ))}
+                </div>
+    
                 <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center">
                     <p className="text-2xl font-semibold text-gray-700">Points:</p>
                     <p className="text-3xl font-bold text-blue-600">{userPoints}</p>
                 </div>
     
-                {showSignImage ? (
+                {/* אם סיימנו את כל הלבבות */}
+                {hearts === 0 ? (
+                    <div className="mt-12 text-center">
+                        <p className="text-4xl text-red-600 font-bold mb-6">😢 You've run out of hearts!</p>
+                        <button onClick={() => {
+                            setHearts(3);
+                            setShowSignImage(true);
+                            setCameraActive(false);
+                            setErrorMessage('');
+                        }} className="start-button">Try Again from This Level</button>
+                    </div>
+                ) : showSignImage ? (
                     <div className="text-center mb-8 flex justify-center items-center">
                         <img src={`/signs/${levels[currentLevel]}.png`} alt={`Sign for ${levels[currentLevel]}`} className="w-[400px] h-[400px] object-cover rounded-lg mb-6" />
                         <button onClick={startCamera} className="start-button">TRY IT YOURSELF</button>
@@ -157,7 +216,10 @@ function Lesson() {
                         {errorMessage && (
                             <div className="text-center mt-6">
                                 <p className="text-3xl text-red-600 font-semibold">{errorMessage}</p>
-                                <button onClick={retryGesture} className="start-button">Try Again</button>
+                                <button onClick={() => {
+                                    setErrorMessage('');
+                                    setHearts(prev => Math.max(0, prev - 1));
+                                }} className="start-button">Try Again</button>
                             </div>
                         )}
                         {levelCompleted && (
@@ -174,6 +236,7 @@ function Lesson() {
             <Footer />
         </>
     );
+    
     
 }
 

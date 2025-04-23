@@ -212,8 +212,73 @@ async function getUserPoints(userId) {
     return user.points;
 }
 
+async function loseLife(userId) {
+    const user = await User.findOne({ username: userId });
+    if (!user) throw new Error('User not found');
+      
+    const waitTimeMinutes = 15;
+  
+    if (user.lives > 0) {
+      user.lives -= 1;
+      if (user.lives === 0) {
+        user.lastLifeLostAt = new Date();
+      }
+      await user.save();
+      return { lives: user.lives, reset: false };
+    } else {
+      const now = new Date();
+      const elapsedMinutes = (now - user.lastLifeLostAt) / (1000 * 60);
+  
+      if (elapsedMinutes >= waitTimeMinutes) {
+        user.lives = 3;
+        user.lastLifeLostAt = null;
+        await user.save();
+        return { lives: user.lives, reset: true };
+      } else {
+        throw {
+          message: `You must wait ${Math.ceil(waitTimeMinutes - elapsedMinutes)} more minutes.`,
+          lives: 0
+        };
+      }
+    }
+  }
+  async function getLives(userId) {
+    // Look up by username instead of ID
+    const user = await User.findOne({ username: userId });
+    if (!user) throw new Error('User not found');
+  
+    // Return just the number of lives to match what frontend expects
+    return user.lives;
+  }
 
-
+  
+  async function getTimeUntilNextLife(userId) {
+    const user = await User.findOne({ username: userId });
+    if (!user) throw new Error('User not found');
+     
+    const waitTimeMinutes = 15;
+  
+    // אם יש לו לבבות – אין צורך להמתין
+    if (user.lives > 0 || !user.lastLifeLostAt) {
+      return { waitTime: 0, lives: user.lives };
+    }
+  
+    const now = new Date();
+    const elapsed = (now - user.lastLifeLostAt) / (1000 * 60);
+    const remaining = Math.max(0, waitTimeMinutes - elapsed);
+  
+    // אם הזמן עבר – מחזירים חיים
+    if (remaining <= 0) {
+      user.lives = 3;
+      user.lastLifeLostAt = null;
+      await user.save();
+      return { waitTime: 0, lives: 3 };
+    }
+  
+    // אם עדיין לא עבר זמן – מחזירים זמן שנותר
+    return { waitTime: Math.ceil(remaining), lives: user.lives };
+  }
+  
 
 
 module.exports = {
@@ -228,5 +293,8 @@ module.exports = {
     updateUserById,
     updateUserPoints,
     getUserPoints,
-    getLeaderboard
+    getLeaderboard,
+    loseLife,
+    getLives,
+    getTimeUntilNextLife
 };

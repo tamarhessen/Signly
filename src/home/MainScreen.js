@@ -75,7 +75,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
     
         setPoints(points);
         setLevel(Math.floor(points / 26) + 1);
-        setNextLevelPoints(100);
+        setNextLevelPoints(104);
         setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Fetch error:", error);
@@ -136,7 +136,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
         </main>
      
         {/* Conditionally render RightPanel only after data is fetched */}
-        {!loading && <RightPanel level={level} points={points} nextLevelPoints={nextLevelPoints} navigate={navigate} />}
+        {!loading && <RightPanel username={username} level={level} points={points} nextLevelPoints={nextLevelPoints} navigate={navigate} />}
       </div>
 
       <div className="useful-links">
