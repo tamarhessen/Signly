@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 function About({ userImg, username, displayName, token }) {
    const navigate = useNavigate();
   return (
-    <>
+    <div className="page-wrapper">
        
        <TopPanel userImg={`${userImg}?t=${new Date().getTime()}`} username={username} displayName={displayName} navigate={navigate} token={token} />    <div className="about-page">
       
@@ -18,7 +18,7 @@ function About({ userImg, username, displayName, token }) {
       
     </div>
     <Footer />
-    </>
+    </div>
   );
 }
 

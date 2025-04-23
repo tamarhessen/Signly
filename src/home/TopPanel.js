@@ -40,12 +40,13 @@ function TopPanel({ userImg, username, displayName, token }) {
           Home
         </span>
 
-        <span onClick={() => navigate("/about", { state: { userImg, username, displayName, token } })} 
+        <span onClick={() => navigate("/about", { state: { userImg: currentUserImg, username: currentUsername, displayName: currentDisplayName, token: currentToken } })} 
       className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}>
   About
 </span>
 <span 
-  onClick={() => navigate("/contact", { state: { userImg, username, displayName, token } })} 
+  onClick={() => navigate("/contact", { state: { userImg: currentUserImg, username: currentUsername, displayName: currentDisplayName, token: currentToken } })
+} 
   className={`nav-link ${location.pathname === "/contact" ? "active" : ""}`}
 >
   Contact Us

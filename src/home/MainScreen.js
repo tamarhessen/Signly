@@ -75,7 +75,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
     
         setPoints(points);
         setLevel(Math.floor(points / 26) + 1);
-        setNextLevelPoints(104);
+        setNextLevelPoints(26);
         setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Fetch error:", error);
