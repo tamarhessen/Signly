@@ -38,7 +38,16 @@ const UserSchema = new Schema({
     points: {
         type: Number,
         default: 0
+    },
+    lives: {
+        type: Number,
+        default: 3
+    },
+      lastLifeLostAt: {
+        type: Date,
+        default: null
     }
+
 });
 
 
