@@ -11,9 +11,6 @@ npm install
 npm start
 ```
 
-# No need to download here anything, by running the items in the server you can get the same code running in localhost:5000
-## This is only if you want to read the code, although it will run on localhost:3000.
-
 ## App.js:
 This file is the base of the app and present the page depending on the path.
 
@@ -48,11 +45,6 @@ All the function that check the users data in login and signup is checked there.
 
 ## App/Login/signup.css
 All the visualization of the pages of app, login, and signup happens in those files.
-
-## feed folder
-## FeedScreen.js
-This file separates the feed page into two parts, the navigation bar on top, and the main screen on the bottom.
-
 
 
 ## LightModeFeed/NightModeFeed.css
