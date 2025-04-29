@@ -25,7 +25,7 @@ Otherwise, it will redirect to /.
 ## Login.js:
 If the path of the url is / then this file will be called.
 
-In this file we show the starting screen of facebook.
+In this file we show the starting screen.
 
 When pressing on new account it will show the Sign-up modal.
 
