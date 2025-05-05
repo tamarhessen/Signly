@@ -82,3 +82,13 @@ button:active {
 button:focus {
   outline: none;
 }
+/* RightPanel.css */
+.time-wait {
+  font-weight: bold;
+  color: red;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.5; }
+}

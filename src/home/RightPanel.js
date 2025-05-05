@@ -1,67 +1,53 @@
 import React, { useEffect, useState } from 'react';
 import './RightPanel.css';
-//write
+
 function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
   const [lives, setLives] = useState(3);
   const [timeLeft, setTimeLeft] = useState(null);
-  let pointsperlevel=(points-((level-1)*26)-1);
-  // Fetch lives
-  useEffect(() => {
-    const abortController = new AbortController();
+  let pointsperlevel = (points - ((level - 1) * 26));
 
-    async function fetchLives() {
-      try {
-        console.log("Fetching lives for user:", username);
+  // פונקציה חיצונית שנוכל לקרוא גם מתוך useEffect אחר
+  async function fetchLives(abortSignal = null) {
+    try {
+      const res = await fetch(`http://localhost:5000/api/users/lives/${username}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        signal: abortSignal
+      });
 
-        const res = await fetch(`http://localhost:5000/api/users/lives/${username}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          signal: abortController.signal,
-        });
-
-        console.log("Lives response status:", res.status);
-        const data = await res.json();
-        console.log("Lives data:", data);
-
-        const livesValue = typeof data === 'number' ? data : data.lives;
-        setLives(livesValue);
-      } catch (err) {
-        if (err.name !== 'AbortError') {
-          console.error('Failed to fetch lives:', err);
-        }
+      const data = await res.json();
+      const livesValue = typeof data === 'number' ? data : data.lives;
+      setLives(livesValue);
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        console.error('Failed to fetch lives:', err);
       }
     }
+  }
 
+  // קריאה ראשונית להבאת לבבות
+  useEffect(() => {
+    const abortController = new AbortController();
     if (username) {
-      fetchLives();
+      fetchLives(abortController.signal);
     }
-
     return () => abortController.abort();
   }, [username]);
 
-  // Fetch time until next life (only when lives = 0)
+  // הבאת זמן להמתנה רק אם אין לבבות
   useEffect(() => {
     const abortController = new AbortController();
 
     async function fetchTimeLeft() {
       try {
-        console.log("Fetching time until next life for:", username);
-
         const res = await fetch(`http://localhost:5000/api/users/time-until-life/${username}`, {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           signal: abortController.signal,
         });
 
-        console.log("Time response status:", res.status);
         const data = await res.json();
-        console.log("Time data:", data);
-
-        setTimeLeft(data.timeLeft);
+        setTimeLeft(data.waitTime);
       } catch (err) {
         if (err.name !== 'AbortError') {
           console.error('Failed to fetch time until next life:', err);
@@ -78,15 +64,22 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
     return () => abortController.abort();
   }, [username, lives]);
 
-  // Timer that decreases timeLeft by 1 each second
+  // טיימר שמעדכן כל שנייה, ואם נגמר הזמן – טען לבבות מחדש
   useEffect(() => {
-    let timer;
-    if (timeLeft !== null && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
-      }, 1000);
-    }
-    return () => clearInterval(timer);
+    if (timeLeft === null || timeLeft <= 0) return;
+
+    const interval = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          fetchLives(); // כשנגמר הזמן – טען חיים מחדש
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, [timeLeft]);
 
   const formatTime = (seconds) => {
@@ -104,7 +97,13 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
         <p>{pointsperlevel} points</p>
       </div>
       <div className="lives-info">
-        <p>Lives: {'❤️'.repeat(lives)} {lives}/3</p>
+        <p>
+          Lives:{' '}
+          {[...Array(3)].map((_, i) => (
+            <span key={i}>{i < lives ? '❤️' : '🤍'}</span>
+          ))} {lives}/3
+        </p>
+
         {lives === 0 && timeLeft !== null && timeLeft > 0 && (
           <p className="time-wait">⏳ Please wait: {formatTime(timeLeft)}</p>
         )}

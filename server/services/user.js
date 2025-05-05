@@ -264,19 +264,19 @@ async function loseLife(userId) {
     }
   
     const now = new Date();
-    const elapsed = (now - user.lastLifeLostAt) / (1000 * 60);
-    const remaining = Math.max(0, waitTimeMinutes - elapsed);
-  
-    // אם הזמן עבר – מחזירים חיים
-    if (remaining <= 0) {
-      user.lives = 3;
-      user.lastLifeLostAt = null;
-      await user.save();
-      return { waitTime: 0, lives: 3 };
-    }
-  
-    // אם עדיין לא עבר זמן – מחזירים זמן שנותר
-    return { waitTime: Math.ceil(remaining), lives: user.lives };
+    const remainingSeconds = Math.max(0, waitTimeMinutes * 60 - (now - user.lastLifeLostAt) / 1000);
+
+// אם הזמן עבר – מחזירים חיים
+if (remainingSeconds <= 0) {
+  user.lives = 3;
+  user.lastLifeLostAt = null;
+  await user.save();
+  return { waitTime: 0, lives: 3 };
+}
+
+// אם עדיין לא עבר זמן – מחזירים זמן שנותר
+return { waitTime: Math.ceil(remainingSeconds), lives: user.lives };
+
   }
   
 
