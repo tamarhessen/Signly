@@ -27,6 +27,7 @@ function Lesson2() {
     console.log("points3: " ,currentPoints);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+        const [errorMessage, setErrorMessage] = useState("");
     const [currentLevel, setCurrentLevel] = useState(0);
     const [currentWord, setCurrentWord] = useState(word ? word.toUpperCase() : levels[currentLevel].toUpperCase());
     const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
@@ -39,6 +40,8 @@ function Lesson2() {
     const [completedLevels, setCompletedLevels] = useState([]);
     const [incorrectLetter, setIncorrectLetter] = useState(false);
     const [isLocked, setIsLocked] = useState(false);
+    const [lives, setLives] = useState();
+    const [isOutOfLives, setIsOutOfLives] = useState(false);
      const [showConfetti, setShowConfetti] = useState(false); // מצב לזיק
          const [canTryAgain, setCanTryAgain] = useState(true);
     
@@ -55,6 +58,35 @@ function Lesson2() {
             setCurrentLevel(levels.indexOf(word.toLowerCase()));
         }
     }, [word]);
+     useEffect(() => {
+            const fetchLives = async () => {
+                try {
+                    const res = await fetch(`http://localhost:5000/api/users/lives/${currentUsername}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            authorization: `bearer ${currentToken}`,
+                        },
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        setLives(data); // הנחת שיש שדה "lives" ב־response
+                    } else {
+                        throw new Error('Failed to fetch lives');
+                    }
+                } catch (error) {
+                    console.error('Error fetching lives:', error);
+                }
+            };
+        
+            fetchLives();
+        }, [currentUsername, currentToken]);
+           useEffect(() => {
+                console.log('Lives:', lives);  // תוסיף כאן
+                if (lives < 0 || isNaN(lives)) {
+                    setLives(0);  // תיקון אם מספר החיים לא תקין
+                }
+            }, [lives]);
 
     useEffect(() => {
         if (cameraActive && canTryAgain) {
@@ -73,6 +105,19 @@ function Lesson2() {
                                     setIncorrectLetter(true);
                                     setIsLocked(true);
                                     setCanTryAgain(false);
+                                    setLives(prev => {
+                                        const newLives = prev - 1;
+                                        if (newLives <= 0) {
+                                            setIsOutOfLives(true);
+                                            setCameraActive(false);
+                                            setErrorMessage("💀 You're out of lives! Please try again later.");
+                                        } else {
+                                            setErrorMessage(`❌ Incorrect! Try signing '${levels[currentLevel]}' again.`);
+                                        }
+                                        updateLives(newLives);
+        
+                                        return newLives;
+                                    });
                                 }
                             }
     
@@ -94,7 +139,26 @@ function Lesson2() {
         }
     }, [cameraActive, currentLetterIndex, canTryAgain, currentWord, isLocked, levelCompleted]);
     
+    const updateLives = async (newLives) => {
+        try {
+            const res = await fetch(`http://localhost:5000/api/users/lose-life/${currentUsername}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `bearer ${currentToken}`,
+                },
+                body: JSON.stringify({ lives: newLives }),
+            });
     
+            if (res.ok) {
+                console.log('Lives updated successfully');
+            } else {
+                throw new Error('Failed to update lives');
+            }
+        } catch (error) {
+            console.error('Error updating lives:', error);
+        }
+    };
     const fetchData = async () => {
         try {
             console.log("Fetching points for user:", currentUsername);
@@ -158,6 +222,10 @@ function Lesson2() {
     }, []);
 
     const startCamera = () => {
+        if (isOutOfLives) {
+            setErrorMessage("💀 You're out of lives!");
+            return;
+        }
         setShowSignImage(false);
         setCameraActive(true);
     };
@@ -241,6 +309,16 @@ function Lesson2() {
                     <p className="text-2xl font-semibold text-gray-700">Points:</p>
                     <p className="text-3xl font-bold text-blue-600">{userPoints}</p>
                 </div>
+                <div className="flex items-center justify-center bg-white shadow-md rounded-lg p-4 text-center min-w-[180px] min-h-[100px]">
+    <div className="flex items-center gap-2 text-[120px]">
+        {Array.from({ length: lives }).map((_, i) => (
+            <span key={i} className="text-red-500">❤️</span>
+        ))}
+        {Array.from({ length: 3 - lives }).map((_, i) => (
+            <span key={`empty-${i}`} className="text-gray-300">🤍</span>
+        ))}
+    </div>
+</div>
                 {showSignImage ? (
                     <div className="text-center mb-8">
                         <div className="flex justify-center items-center space-x-2">
@@ -279,13 +357,12 @@ function Lesson2() {
 
                         </div>
                         {incorrectLetter && (
-                            <div className="text-center mt-4">
-                                <p className="text-red-600 text-2xl font-bold" style={{ fontSize: '2rem' }}>❌ Wrong Sign! Try Again</p>
-                                <button onClick={retryGesture} className="mt-2 bg-red-500 text-pink px-4 py-2 rounded-lg">
-                                    Try Again
-                                </button>
-                            </div>
-                        )}
+    <div className="text-center mt-4">
+        <p className="text-red-600 text-2xl font-bold" style={{ fontSize: '2rem' }}>❌ Wrong Sign! Try Again</p>
+        {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
+    </div>
+)}
+
                     </div>
                 ) : null}
                 {levelCompleted && (

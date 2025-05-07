@@ -32,7 +32,7 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
       fetchLives(abortController.signal);
     }
     return () => abortController.abort();
-  }, [username]);
+  }, [username]); // טריגר לכל שינוי ב-username
 
   // הבאת זמן להמתנה רק אם אין לבבות
   useEffect(() => {
@@ -64,7 +64,7 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
     return () => abortController.abort();
   }, [username, lives]);
 
-  // טיימר שמעדכן כל שנייה, ואם נגמר הזמן – טען לבבות מחדש
+  // טיימר שמעדכן כל שנייה, ואם נגמר הזמן – טען לבבות מחדש ונווט לעמוד הבית
   useEffect(() => {
     if (timeLeft === null || timeLeft <= 0) return;
 
@@ -72,7 +72,8 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
       setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(interval);
-          fetchLives(); // כשנגמר הזמן – טען חיים מחדש
+          fetchLives(); // טוען את הלבבות מחדש ברגע שנגמר הזמן
+         
           return 0;
         }
         return prev - 1;
@@ -80,7 +81,7 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeLeft]);
+  }, [timeLeft, navigate]);
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -94,7 +95,7 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
       <div className="progress-info">
         <p>Level: {level}</p>
         <progress value={pointsperlevel} max={nextLevelPoints} className="progress-bar" />
-        <p>{pointsperlevel} points</p>
+        <p>{pointsperlevel}/26 points</p>
       </div>
       <div className="lives-info">
         <p>
@@ -112,4 +113,4 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
   );
 }
 
-export default RightPanel;
+export default RightPanel;  

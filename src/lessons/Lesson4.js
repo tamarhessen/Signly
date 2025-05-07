@@ -36,6 +36,7 @@ function Lesson4() {
     const [completedWords, setCompletedWords] = useState([]);
     const [recognizedLetters, setRecognizedLetters] = useState([]);
     const [showSignImage, setShowSignImage] = useState(true);
+        const [errorMessage, setErrorMessage] = useState("");
     const [showConfetti, setShowConfetti] = useState(false);
     const [userPoints, setUserPoints] = useState(currentPoints || 0);
     const [levelCompleted, setLevelCompleted] = useState(false);
@@ -45,6 +46,8 @@ function Lesson4() {
     const [isLocked, setIsLocked] = useState(false);
     const [canTryAgain, setCanTryAgain] = useState(true);
     const [wordCompleted, setWordCompleted] = useState(false);
+        const [lives, setLives] = useState();
+            const [isOutOfLives, setIsOutOfLives] = useState(false);
   
 
 
@@ -95,6 +98,19 @@ function Lesson4() {
                             normalizedGesture !== normalizedLetter &&
                             (currentLetterIndex === 0 || normalizedGesture !== letters[currentLetterIndex - 1]?.toUpperCase())
                         ) {
+                            setLives(prev => {
+                                const newLives = prev - 1;
+                                if (newLives <= 0) {
+                                    setIsOutOfLives(true);
+                                    setCameraActive(false);
+                                    setErrorMessage("💀 You're out of lives! Please try again later.");
+                                } else {
+                                    setErrorMessage(`❌ Incorrect! Try signing '${levels[currentLevel]}' again.`);
+                                }
+                                updateLives(newLives);
+
+                                return newLives;
+                            });
                             setIncorrectLetter(true);
                             setIsLocked(true);
                             setCanTryAgain(false);
@@ -119,10 +135,64 @@ function Lesson4() {
     
 
     const startCamera = () => {
+        if (isOutOfLives) {
+            setErrorMessage("💀 You're out of lives!");
+            return;
+        }
+
         setShowSignImage(false);
         setCameraActive(true);
         setRecognizedLetters(new Array(letters.length).fill(false));
     };
+    useEffect(() => {
+                    const fetchLives = async () => {
+                        try {
+                            const res = await fetch(`http://localhost:5000/api/users/lives/${currentUsername}`, {
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    authorization: `bearer ${currentToken}`,
+                                },
+                            });
+                            if (res.ok) {
+                                const data = await res.json();
+                                setLives(data); // הנחת שיש שדה "lives" ב־response
+                            } else {
+                                throw new Error('Failed to fetch lives');
+                            }
+                        } catch (error) {
+                            console.error('Error fetching lives:', error);
+                        }
+                    };
+                
+                    fetchLives();
+                }, [currentUsername, currentToken]);
+                   useEffect(() => {
+                        console.log('Lives:', lives);  // תוסיף כאן
+                        if (lives < 0 || isNaN(lives)) {
+                            setLives(0);  // תיקון אם מספר החיים לא תקין
+                        }
+                    }, [lives]);
+                    const updateLives = async (newLives) => {
+                        try {
+                            const res = await fetch(`http://localhost:5000/api/users/lose-life/${currentUsername}`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    authorization: `bearer ${currentToken}`,
+                                },
+                                body: JSON.stringify({ lives: newLives }),
+                            });
+                    
+                            if (res.ok) {
+                                console.log('Lives updated successfully');
+                            } else {
+                                throw new Error('Failed to update lives');
+                            }
+                        } catch (error) {
+                            console.error('Error updating lives:', error);
+                        }
+                    };
 
     const nextWord = () => {
         if (currentWordIndex < words.length - 1) {
@@ -204,6 +274,16 @@ function Lesson4() {
                     <p className="text-2xl font-semibold text-gray-700">Points:</p>
                     <p className="text-3xl font-bold text-blue-600">{userPoints}</p>
                 </div>
+                <div className="flex items-center justify-center bg-white shadow-md rounded-lg p-4 text-center min-w-[180px] min-h-[100px]">
+    <div className="flex items-center gap-2 text-[120px]">
+        {Array.from({ length: lives }).map((_, i) => (
+            <span key={i} className="text-red-500">❤️</span>
+        ))}
+        {Array.from({ length: 3 - lives }).map((_, i) => (
+            <span key={`empty-${i}`} className="text-gray-300">🤍</span>
+        ))}
+    </div>
+</div>
     
                 {showSignImage && (
                     <div className="text-center mb-8">
@@ -222,13 +302,15 @@ function Lesson4() {
                             ))}
                         </div>
                     </div>
-                )}
-    
-                {!cameraActive && (
-                   <button onClick={() => setCameraActive(true)} className="start-button mt-4">
-                        TRY IT YOURSELF
-                    </button>
-                )}
+              
+            )}
+              {lives > 0 && showSignImage && (
+                <button onClick={startCamera} className="start-button mt-4">
+                  TRY IT YOURSELF
+                </button>
+              )}
+              
+           
     
                 {cameraActive && (
                     <div className="text-center mb-8 flex justify-center items-center">
@@ -256,9 +338,7 @@ function Lesson4() {
                 {incorrectLetter && (
                     <div className="text-center mt-4">
                         <p className="text-red-600 text-2xl font-bold">❌ Wrong Sign! Try Again</p>
-                        <button onClick={retryGesture} className="mt-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-md">
-                            Try Again
-                        </button>
+                        {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
                     </div>
                 )}
       {cameraActive && (
