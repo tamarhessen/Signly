@@ -15,10 +15,16 @@ function Leaderboard() {
             .then(response => response.json())
             .then(data => {
                 console.log("Received data:", data);
-                setLeaderboard(Array.isArray(data) ? data : []);
+                if (Array.isArray(data)) {
+                    const sortedData = data.sort((a, b) => b.points - a.points); // מיון לפי נקודות
+                    setLeaderboard(sortedData);
+                } else {
+                    setLeaderboard([]);
+                }
             })
             .catch(err => console.error('Error fetching leaderboard:', err));
     }, [currentUsername]);
+    
 
     return (
         <div className="page-container">

@@ -92,3 +92,62 @@ button:focus {
 @keyframes blink {
   50% { opacity: 0.5; }
 }
+/* הוסף את הסגנונות האלה לקובץ RightPanel.css הקיים */
+
+/* סגנונות למודל (הודעה קופצת) */
+.time-up-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.time-up-modal {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.time-up-modal h3 {
+  color: #4CAF50;
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.time-up-modal p {
+  margin: 15px 0;
+  font-size: 1.1rem;
+}
+
+.continue-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.continue-button:hover {
+  background-color: #45a049;
+}
+
+/* סגנון לטיימר המתנה */
+.time-wait {
+  color: #f44336;
+  font-weight: bold;
+  margin-top: 5px;
+}
