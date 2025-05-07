@@ -4,9 +4,9 @@ import './RightPanel.css';
 function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
   const [lives, setLives] = useState(3);
   const [timeLeft, setTimeLeft] = useState(null);
+
   let pointsperlevel = (points - ((level - 1) * 26));
 
-  // פונקציה חיצונית שנוכל לקרוא גם מתוך useEffect אחר
   async function fetchLives(abortSignal = null) {
     try {
       const res = await fetch(`http://localhost:5000/api/users/lives/${username}`, {
@@ -25,38 +25,36 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
     }
   }
 
-  // קריאה ראשונית להבאת לבבות
+  async function fetchTimeLeft(abortSignal = null) {
+    try {
+      const res = await fetch(`http://localhost:5000/api/users/time-until-life/${username}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        signal: abortSignal
+      });
+
+      const data = await res.json();
+      setTimeLeft(data.waitTime);
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        console.error('Failed to fetch time until next life:', err);
+      }
+    }
+  }
+
   useEffect(() => {
     const abortController = new AbortController();
     if (username) {
       fetchLives(abortController.signal);
     }
     return () => abortController.abort();
-  }, [username]); // טריגר לכל שינוי ב-username
+  }, [username]);
 
-  // הבאת זמן להמתנה רק אם אין לבבות
   useEffect(() => {
     const abortController = new AbortController();
 
-    async function fetchTimeLeft() {
-      try {
-        const res = await fetch(`http://localhost:5000/api/users/time-until-life/${username}`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          signal: abortController.signal,
-        });
-
-        const data = await res.json();
-        setTimeLeft(data.waitTime);
-      } catch (err) {
-        if (err.name !== 'AbortError') {
-          console.error('Failed to fetch time until next life:', err);
-        }
-      }
-    }
-
     if (username && lives === 0) {
-      fetchTimeLeft();
+      fetchTimeLeft(abortController.signal);
     } else {
       setTimeLeft(null);
     }
@@ -64,16 +62,30 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
     return () => abortController.abort();
   }, [username, lives]);
 
-  // טיימר שמעדכן כל שנייה, ואם נגמר הזמן – טען לבבות מחדש ונווט לעמוד הבית
   useEffect(() => {
     if (timeLeft === null || timeLeft <= 0) return;
 
-    const interval = setInterval(() => {
+    const interval = setInterval(async () => {
       setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(interval);
-          fetchLives(); // טוען את הלבבות מחדש ברגע שנגמר הזמן
-         
+
+          // שלב 1: בקשת חיים מחדש
+          fetchLives();
+
+          // שלב 2: בקשת זמן מחדש
+          fetch(`http://localhost:5000/api/users/time-until-life/${username}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.waitTime <= 0) {
+                setLives(3);         // עדכון חיים
+                setTimeLeft(null);   // איפוס טיימר
+              } else {
+                setTimeLeft(data.waitTime); // עדכון זמן חדש
+              }
+            })
+            .catch(err => console.error('Error rechecking time:', err));
+
           return 0;
         }
         return prev - 1;
@@ -81,7 +93,7 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeLeft, navigate]);
+  }, [timeLeft, username]);
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -91,13 +103,15 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
 
   return (
     <div className="right-panel">
-      <h3>Your Progress</h3>
-      <div className="progress-info">
+      <h2>Your Progress</h2>
+
+      <div className="level-info">
         <p>Level: {level}</p>
         <progress value={pointsperlevel} max={nextLevelPoints} className="progress-bar" />
         <p>{pointsperlevel}/26 points</p>
       </div>
-      <div className="lives-info">
+
+      <div className="lives-section">
         <p>
           Lives:{' '}
           {[...Array(3)].map((_, i) => (
@@ -106,6 +120,7 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
         </p>
 
         {lives === 0 && timeLeft !== null && timeLeft > 0 && (
+       
           <p className="time-wait">⏳ Please wait: {formatTime(timeLeft)}</p>
         )}
       </div>
@@ -113,4 +128,4 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
   );
 }
 
-export default RightPanel;  
+export default RightPanel;
