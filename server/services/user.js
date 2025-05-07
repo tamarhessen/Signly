@@ -216,7 +216,7 @@ async function loseLife(userId) {
     const user = await User.findOne({ username: userId });
     if (!user) throw new Error('User not found');
       
-    const waitTimeMinutes = 15;
+    const waitTimeMinutes = 1;
   
     if (user.lives > 0) {
       user.lives -= 1;
@@ -256,7 +256,7 @@ async function loseLife(userId) {
     const user = await User.findOne({ username: userId });
     if (!user) throw new Error('User not found');
      
-    const waitTimeMinutes = 15;
+    const waitTimeMinutes = 1;
   
     // אם יש לו לבבות – אין צורך להמתין
     if (user.lives > 0 || !user.lastLifeLostAt) {
