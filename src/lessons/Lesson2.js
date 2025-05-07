@@ -42,16 +42,55 @@ function Lesson2() {
     const [isLocked, setIsLocked] = useState(false);
     const [lives, setLives] = useState();
     const [isOutOfLives, setIsOutOfLives] = useState(false);
-     const [showConfetti, setShowConfetti] = useState(false); // מצב לזיק
-         const [canTryAgain, setCanTryAgain] = useState(true);
-    
+    const [showConfetti, setShowConfetti] = useState(false); // מצב לזיק
+    const [canTryAgain, setCanTryAgain] = useState(true);
+    const [timeLeft, setTimeLeft] = useState(null);
+    const [showDialog, setShowDialog] = useState(false);
+    const [levelLocked, setLevelLocked] = useState(false);
     const retryGesture = () => {
         setIncorrectLetter(false);
         setIsLocked(false); // Unlock when retrying
         setCanTryAgain(true);
     };
     
-
+    const fetchTimeLeft = async () => {
+            try {
+                const res = await fetch(`http://localhost:5000/api/users/time-until-life/${currentUsername}`, {
+                    headers: { 'Content-Type': 'application/json' },
+                });
+                const data = await res.json();
+                if (typeof data.waitTime === 'number' && data.waitTime >= 0) {
+                    setTimeLeft(data.waitTime);
+                    return data.waitTime;
+                } else {
+                    setTimeLeft(0);
+                    return 0;
+                }
+            } catch (err) {
+                console.error('Failed to fetch time until next life:', err);
+                return null;
+            }
+        };
+    
+        // Handle showing the out of lives dialog
+        useEffect(() => {
+            if (isOutOfLives) {
+                const showOutOfLivesDialog = async () => {
+                    // First fetch the latest time remaining
+                    await fetchTimeLeft();
+                    
+                    // Then show the dialog
+                    setShowDialog(true);
+                    const dialog = document.getElementById("outOfLivesDialog");
+                    if (dialog && typeof dialog.showModal === "function") {
+                        dialog.showModal();
+                    }
+                };
+                
+                showOutOfLivesDialog();
+            }
+        }, [isOutOfLives]);
+    
     useEffect(() => {
         if (word) {
             setCurrentWord(word.toUpperCase());
@@ -70,7 +109,14 @@ function Lesson2() {
                     });
                     if (res.ok) {
                         const data = await res.json();
-                        setLives(data); // הנחת שיש שדה "lives" ב־response
+                        setLives(data);
+                        if (data <= 0) {
+                            setIsOutOfLives(true);
+                            setLevelLocked(true);
+                            fetchTimeLeft(); // Get time until next life
+                        }
+
+                        // הנחת שיש שדה "lives" ב־response
                     } else {
                         throw new Error('Failed to fetch lives');
                     }
@@ -87,6 +133,54 @@ function Lesson2() {
                     setLives(0);  // תיקון אם מספר החיים לא תקין
                 }
             }, [lives]);
+                useEffect(() => {
+                    if (timeLeft === null || timeLeft <= 0) return;
+                  
+                    const interval = setInterval(() => {
+                        setTimeLeft(prev => {
+                            if (prev <= 1) {
+                                clearInterval(interval);
+                                // Check if lives have been replenished
+                                const checkLives = async () => {
+                                    try {
+                                        const res = await fetch(`http://localhost:5000/api/users/lives/${currentUsername}`, {
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                authorization: `bearer ${currentToken}`,
+                                            },
+                                        });
+                                        if (res.ok) {
+                                            const data = await res.json();
+                                            if (data > 0) {
+                                                setLives(data);
+                                                setIsOutOfLives(false);
+                                                setLevelLocked(false);
+                                            } else {
+                                                // Still out of lives, fetch new time
+                                                fetchTimeLeft();
+                                            }
+                                        }
+                                    } catch (error) {
+                                        console.error('Error checking lives:', error);
+                                    }
+                                };
+                                checkLives();
+                                return 0;
+                            }
+                            return prev - 1;
+                        });
+                    }, 1000);
+                  
+                    return () => clearInterval(interval);
+                }, [timeLeft, currentUsername, currentToken]);
+                
+                // Format time for display
+                const formatTime = (seconds) => {
+                    const mins = Math.floor(seconds / 60);
+                    const secs = seconds % 60;
+                    return `${mins}:${secs.toString().padStart(2, '0')}`;
+                };
+                
 
     useEffect(() => {
         if (cameraActive && canTryAgain) {
@@ -376,6 +470,33 @@ function Lesson2() {
                     </div>
                 )}
             </div>
+            <dialog id="outOfLivesDialog" className="rounded-lg p-6">
+                <h2 className="text-xl font-semibold mb-4">Out of Lives 💀</h2>
+                <p className="text-sm mb-2">You've run out of lives. Please come back later or try a different level.</p>
+
+                {showDialog && timeLeft !== null && (
+                    <p style={{ color: 'red', fontWeight: 'bold' }}>
+  Next life in: {formatTime(timeLeft)} ⏳
+</p>
+
+                )}
+
+                <form method="dialog">
+                    <button
+                        className="bg-blue-600 text-pink px-4 py-2 rounded"
+                        onClick={() => navigate("/home", {
+                            state: {
+                                username: currentUsername,
+                                displayName: currentDisplayName,
+                                userImg: currentUserImg,
+                                token: currentToken
+                            }
+                        })}
+                    >
+                        Go Home
+                    </button>
+                </form>
+            </dialog>
             <Footer />
         </>
     );
