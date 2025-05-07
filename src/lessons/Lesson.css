@@ -57,3 +57,40 @@
 .start-button:hover, .next-button:hover {
     background-color: darkblue;
 }
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-box {
+    background: white;
+    color: black;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+    width: 350px;
+    max-width: 90%;
+    animation: pop-in 0.4s ease-out forwards;
+    text-align: center;
+}
+
+@keyframes pop-in {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+.red-timer {
+    color: red;
+    font-weight: bold;
+  }
+  
