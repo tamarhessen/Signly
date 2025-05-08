@@ -5,7 +5,6 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
   const [lives, setLives] = useState(3);
   const [timeLeft, setTimeLeft] = useState(null);
 
-
   let pointsperlevel = (points - ((level - 1) * 26));
 
   async function fetchLives(abortSignal = null) {
@@ -121,11 +120,11 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
         </p>
 
         {lives === 0 && timeLeft !== null && timeLeft > 0 && (
-
           <p>⏳ Please wait: {formatTime(timeLeft)}</p>
 
        
          // <p className="time-wait">⏳ Please wait: {formatTime(timeLeft)}</p>
+
 
         )}
       </div>
