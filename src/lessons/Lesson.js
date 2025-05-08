@@ -391,14 +391,15 @@ function Lesson() {
                 <p className="text-sm mb-2">You've run out of lives. Please come back later or try a different level.</p>
 
                 {showDialog && timeLeft !== null && (
-                    <p className="text-sm mb-4 text-red-600" style={{ fontWeight: 'bold' }}>
-                        Next life in: {formatTime(timeLeft)} ⏳
-                    </p>
+                    <p style={{ color: 'red', fontWeight: 'bold' }}>
+  Next life in: {formatTime(timeLeft)} ⏳
+</p>
+
                 )}
 
                 <form method="dialog">
                     <button
-                        className="bg-blue-600 text-white px-4 py-2 rounded"
+                        className="bg-blue-600 text-pink px-4 py-2 rounded"
                         onClick={() => navigate("/home", {
                             state: {
                                 username: currentUsername,

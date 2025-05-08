@@ -94,8 +94,8 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
 
   return (
     <div className="main-screen">
-<TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
-<div className="content-container">
+      <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
+      <div className="content-container">
         <main className="main-content">
           <div className="home-screen">
             <h1 className="animated-title">👋 Welcome to Sign Language Learning!</h1>
