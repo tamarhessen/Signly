@@ -27,29 +27,30 @@ function Leaderboard() {
     
 
     return (
-        <div className="page-container">
-            <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
-            <div className="content-wrap">
-                <div className="leaderboard-container">
-                    <h2 className="leaderboard-title">🏆 Leaderboard 🏆</h2>
-                    <ul className="leaderboard-list">
-                        {leaderboard.map((player, index) => (
-                          <li
-                          key={index}
-                          className={`leaderboard-item ${player.username === currentDisplayName ? 'highlight' : ''}`}
-                      >
-                          <span className="rank">#{index + 1}</span>
-                          <img className="pic" src={player.pic} alt="Profile" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
-                          <span className="name">{player.username}</span>
-                          <span className="points">{player.points}</span>
-                      </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-            <Footer />
+        <div className="page-wrapper">
+          <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
+      
+          <div className="leaderboard-container">
+            <h2 className="leaderboard-title">🏆 Leaderboard 🏆</h2>
+            <ul className="leaderboard-list">
+              {leaderboard.map((player, index) => (
+                <li
+                  key={index}
+                  className={`leaderboard-item ${player.username === currentDisplayName ? 'highlight' : ''}`}
+                >
+                  <span className="rank">#{index + 1}</span>
+                  <img className="pic" src={player.pic} alt="Profile" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+                  <span className="name">{player.username}</span>
+                  <span className="points">{player.points}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+      
+          <Footer />
         </div>
-    );
+      );
+      
 }
 
 export default Leaderboard;

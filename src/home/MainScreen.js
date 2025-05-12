@@ -94,6 +94,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
 
   return (
     <div className="main-screen">
+     
       <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
       <div className="content-container">
         <main className="main-content">
@@ -133,17 +134,10 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
               <h3>💡 Did you know?</h3>
               <p>{funFacts[currentFactIndex]}</p>
             </div>
-          </div>
-        </main>
-     
-        {/* Conditionally render RightPanel only after data is fetched */}
-        {!loading && <RightPanel username={username} level={level} points={points} nextLevelPoints={nextLevelPoints} navigate={navigate} />}
-      </div>
-
-      <div className="useful-links">
-        <h3>🌟 Explore More</h3>
+            <div className="useful-links">
+        
         <div className="links-container">
-          <Link to="/about" className="link-button">📘 About Sign Language</Link>
+         
           <Link to="/faq" state={{ 
     currentUserImg: userImg,
     currentUsername: username,
@@ -160,9 +154,18 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
   }}  className="link-button">🏆 Leaderboard 🏆</Link>
         </div>
       </div>
+          </div>
+        </main>
+     
+        {/* Conditionally render RightPanel only after data is fetched */}
+        {!loading && <RightPanel username={username} level={level} points={points} nextLevelPoints={nextLevelPoints} navigate={navigate} />}
+      </div>
 
+      
+    
       <Footer />
-    </div>
+      </div>
+  
   );
 }
 

@@ -17,6 +17,20 @@
   flex-direction: row;
   gap: 40px;
 }
+.main-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* תוודא שהדף יתפוס את כל הגובה */
+}
+
+.content-container {
+  flex-grow: 1; /* יאפשר לתוכן למלא את החלק הראשי של הדף, בלי לשבש את הפוטר */
+}
+
+.footer {
+  margin-top: auto; /* זה יגרום לפוטר להיות תמיד בתחתית */
+}
+
 
 
 
