@@ -1,5 +1,6 @@
 .leaderboard-container {
-    max-width: 500px;
+    width: 80%;
+    max-width: 600px; /* במקום 500px – יותר רחב */
     margin: 40px auto;
     padding: 20px;
     background-color: #f9fafb;
@@ -8,8 +9,14 @@
     font-family: 'Segoe UI', sans-serif;
     display: flex;
     flex-direction: column;
-    
+    box-sizing: border-box;
 }
+.page-wrapper {
+   
+    min-height: 100vh; /* גובה מינימלי של כל המסך */
+  }
+  
+
 html, body, #root {
     height: 100%;
     margin: 0;
@@ -49,6 +56,7 @@ html, body, #root {
 .leaderboard-item .rank {
     font-weight: bold;
     color: #6b7280;
+    margin-right: 20px;
 }
 
 .leaderboard-item .name {
@@ -56,7 +64,12 @@ html, body, #root {
     margin-left: 16px;
     font-size: 16px;
     color: #111827;
+    margin-right: 12px;
 }
+.leaderboard-item .pic {
+    margin-right: 12px; /* הוספת מרווח מימין לתמונה */
+}
+
 
 .leaderboard-item .points {
     font-weight: bold;
@@ -68,3 +81,14 @@ html, body, #root {
     font-weight: bold;
     border-left: 4px solid #3b82f6;
 }
+/* עטיפה של כל הדף */
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* גובה מלא של הדף */
+  }
+  
+  /* הפוטר יצמד לתחתית כשאין תוכן */
+  footer {
+    margin-top: auto;
+  }

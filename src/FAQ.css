@@ -1,11 +1,17 @@
 .faq-container {
-    max-width: 600px;
+    width: 800px;
     margin: 50px auto;
     padding: 20px;
     font-family: 'Segoe UI', sans-serif;
     background-color: #f9fafb;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+ 
+  }
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* גובה מלא של המסך */
   }
   
   .faq-title {

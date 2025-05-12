@@ -120,10 +120,10 @@ function RightPanel({ username, level, points, nextLevelPoints, navigate }) {
         </p>
 
         {lives === 0 && timeLeft !== null && timeLeft > 0 && (
-          <p>⏳ Please wait: {formatTime(timeLeft)}</p>
+        
 
        
-         // <p className="time-wait">⏳ Please wait: {formatTime(timeLeft)}</p>
+         <p className="time-wait">⏳ Please wait: {formatTime(timeLeft)}</p>
 
 
         )}
