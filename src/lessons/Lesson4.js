@@ -482,12 +482,7 @@ function Lesson4() {
                 <h2 className="text-xl font-semibold mb-4">Out of Lives 💀</h2>
                 <p className="text-sm mb-2">You've run out of lives. Please come back later or try a different level.</p>
 
-                {showDialog && timeLeft !== null && (
-                    <p style={{ color: 'red', fontWeight: 'bold' }}>
-  Next life in: {formatTime(timeLeft)} ⏳
-</p>
-
-                )}
+              
 
                 <form method="dialog">
                     <button

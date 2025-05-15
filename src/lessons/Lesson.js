@@ -228,19 +228,28 @@ function Lesson() {
     // Update lives in the database
     const updateLives = async (newLives) => {
         try {
+            // אין צורך לשלוח את החיים החדשים, השרת יחשב זאת בעצמו
             const res = await fetch(`http://localhost:5000/api/users/lose-life/${currentUsername}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    authorization: `bearer ${currentToken}`,
+                    authorization: `Bearer ${currentToken}`,
                 },
+                // אין צורך בשליחת גוף הבקשה אם השרת לא משתמש בזה
                 body: JSON.stringify({ lives: newLives }),
             });
-    
+        
             if (res.ok) {
-                console.log('Lives updated successfully');
+               
+                console.log('Lives updated successfully:');
+               
+                
+               
             } else {
-                throw new Error('Failed to update lives');
+               
+                console.error(`Failed to update lives: ${res.status}`);
+                
+               
             }
         } catch (error) {
             console.error('Error updating lives:', error);
@@ -390,12 +399,7 @@ function Lesson() {
                 <h2 className="text-xl font-semibold mb-4">Out of Lives 💀</h2>
                 <p className="text-sm mb-2">You've run out of lives. Please come back later or try a different level.</p>
 
-                {showDialog && timeLeft !== null && (
-                    <p style={{ color: 'red', fontWeight: 'bold' }}>
-  Next life in: {formatTime(timeLeft)} ⏳
-</p>
-
-                )}
+              
 
                 <form method="dialog">
                     <button
