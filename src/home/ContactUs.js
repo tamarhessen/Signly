@@ -26,6 +26,7 @@ function ContactUs({ userImg, username, displayName, token }) {
   return (
     <>
     <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
+    <div className="main-container">
     <div className="contact-container">
       <h1>Contact Us</h1>
       <p>We'd love to hear from you! Fill out the form below to get in touch.</p>
@@ -66,7 +67,7 @@ function ContactUs({ userImg, username, displayName, token }) {
         <button type="submit" className="send-button">Send</button>
       </form>
 
-     
+      </div>
     </div>
     <Footer />
     </>
