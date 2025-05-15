@@ -29,8 +29,6 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
   ];
   const [currentFactIndex, setCurrentFactIndex] = useState(0);
 
-
-
   useEffect(() => {
     const imageInterval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -98,19 +96,19 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
       <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
       <div className="content-container">
         <main className="main-content">
+        <div className="background-wrapper" style={{ backgroundImage: `url(/mainback.png)` }}>
+       
           <div className="home-screen">
-            <h1 className="animated-title">👋 Welcome to Sign Language Learning!</h1>
+          <div className="left-panel">
+            <h1 className="animated-title">👋 Welcome to Signly!</h1>
             <p className="animated-subtitle">
-              Learn sign language interactively through lessons and challenges. Earn points and level up as you progress!
-            </p>
-
-            <div className="carousel-container">
-              <img src={images[currentImageIndex]} alt="Sign Language Example" className="carousel-image" />
-            </div>
-            
-            <Link 
-  to="/levels" 
-  state={{ 
+              Learn sign language
+                  </p>
+               <p className="animated-subtitle">
+               and start building bridges!
+                </p>
+         
+            <Link to="/levels" state={{ 
     currentUserImg: userImg,
     currentUsername: username,
     currentDisplayName: displayName,
@@ -122,14 +120,58 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
   Start Lesson 🚀
 </Link>
 
-            
-            
-
             {/* Button to view image of English Alphabet in sign language */}
             <Link to="/alphabet-image" state={{ userImg, username, displayName, token }} className="start-lesson-button">
               View Alphabet in Sign Language 🅰️
             </Link>
-
+            
+            </div>    
+            {!loading && <RightPanel username={username} level={level} points={points} nextLevelPoints={nextLevelPoints} navigate={navigate} />}
+          </div>
+          </div>
+          <h2 className="section-title">Here is how it works</h2>
+            <div className="features-container">
+              <div className="feature">
+                <div className="icon">
+                  <span role="img" aria-label="camera">📷</span>
+                </div>
+                <div className="feature-content">
+                  <h3>Perfect Your Signs</h3>
+                  <p>Practice sign language by performing gestures in front of your camera. Our advanced recognition technology gives you instant feedback on your signing accuracy.</p>
+                </div>
+              </div>
+              
+              <div className="feature">
+                <div className="icon">
+                  <span role="img" aria-label="level-up">🏆</span>
+                </div>
+                <div className="feature-content">
+                  <h3>Level Up Your Skills</h3>
+                  <p>Complete signing challenges correctly to earn points and advance to new levels. Each level introduces more complex signs and phrases to master.</p>
+                </div>
+              </div>
+              
+              <div className="feature">
+                <div className="icon">
+                  <span role="img" aria-label="hearts">❤️</span>
+                </div>
+                <div className="feature-content">
+                  <h3>Life System</h3>
+                  <p>Careful with your attempts! Each incorrect sign costs you a heart. Run out of hearts and you'll need to wait before trying again. Practice makes perfect!</p>
+                </div>
+              </div>
+              
+              <div className="feature">
+                <div className="icon">
+                  <span role="img" aria-label="dictionary">📚</span>
+                </div>
+                <div className="feature-content">
+                  <h3>Sign Dictionary</h3>
+                  <p>Access our comprehensive sign language dictionary to look up specific signs or phrases anytime. Study the correct form before attempting the challenges.</p>
+                </div>
+              </div>
+           
+          </div>
             <div className="fun-fact">
               <h3>💡 Did you know?</h3>
               <p>{funFacts[currentFactIndex]}</p>
@@ -154,16 +196,20 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
   }}  className="link-button">🏆 Leaderboard 🏆</Link>
         </div>
       </div>
-          </div>
-        </main>
-     
-        {/* Conditionally render RightPanel only after data is fetched */}
-        {!loading && <RightPanel username={username} level={level} points={points} nextLevelPoints={nextLevelPoints} navigate={navigate} />}
-      </div>
+      {/* <div className="carousel-container">
+              <img src={images[currentImageIndex]} alt="Sign Language Example" className="carousel-image" />
+            </div> */}
+        
 
       
     
       <Footer />
+      </main>
+     
+        {/* Conditionally render RightPanel only after data is fetched */}
+      
+     
+      </div>
       </div>
   
   );

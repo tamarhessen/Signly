@@ -1,37 +1,79 @@
 .main-content {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+
   justify-content: center;
-  text-align: center;
-  padding: 40px 20px;
-  background-color: #faf5f5; /* Subtle background color */
+  background-color: #faf5f5; /* כמו שהגדרת */
   width: 100%;
-  max-width: none; /* מאפשר להתפרס */
+  box-sizing: border-box;
  
 }
 
 .content-container {
-  width: 100%;
   display: flex;
   flex-direction: row;
-  gap: 40px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+
+  width: 100%;
+  box-sizing: border-box;
+
 }
+
+.left-panel {
+
+  padding: 60px;
+
+
+  width: 2000px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.home-screen {
+  display: flex; /* שורת פלקס */
+  align-items: flex-start; /* מיישר לגובה עליון */
+}
+
+
 .main-screen {
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* תוודא שהדף יתפוס את כל הגובה */
 }
 
-.content-container {
-  flex-grow: 1; /* יאפשר לתוכן למלא את החלק הראשי של הדף, בלי לשבש את הפוטר */
-}
+
 
 .footer {
   margin-top: auto; /* זה יגרום לפוטר להיות תמיד בתחתית */
 }
 
+.background-wrapper {
 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  min-height: 60vh; /* כדי שיכסה את כל גובה הדף */
+  clip-path: path("M0,0 L0,250 Q50% 350 100% 250 L100% 0 Z");
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  
+}
+.background-wrapper::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 80%, rgba(255,255,255,0.7) 100%);
+  pointer-events: none; /* כדי לא להפריע ללחיצות */
+  z-index: 0;
+}
 
 
 
@@ -59,9 +101,19 @@ h1 {
 .welcome-image:hover {
   transform: scale(1.05);
 }
+.background-layer {
+  background-image: url('mainback.png');
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+
 
 .start-lesson-button {
-  margin-top: 300px;
+  margin-top: 400px;
   padding: 15px 30px;
   font-size: 20px;
   font-weight: 600;
@@ -86,29 +138,32 @@ h1 {
 
 .right-panel {
   position: relative;
-  top: 100px;
+ 
   right: 0;
-  width: 250px;
+  width: 300px;
   height: 485px;
-  padding: 25px;
+  padding: 30px;
   background-color: #fff;
-  border-radius: 20px;
+  border-radius: 60px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   animation: fadeIn 1.5s ease-in-out;
+  margin-top: -70px; /* מזיז את הרכיב למעלה */
+  margin-bottom: 100px;
+
 }
 
 .right-panel h3 {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: 700;
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .progress-info p {
-  font-size: 16px;
+  font-size: 20px;
   color: #555;
 }
 
@@ -146,12 +201,12 @@ button:active {
 .fun-fact {
   margin-top: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: #f1eaef;
   border-radius: 10px;
   text-align: center;
   font-size: 16px;
-  color: #555;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
 }
 
 .useful-links {
@@ -191,37 +246,113 @@ button:active {
 }
 
 .animated-title {
-  font-size: 60px;
-  font-weight: bold;
+  font-size: 64px;
+  font-weight: 800;
   text-align: center;
+  color: #f7f7f7;
   animation: fadeIn 1.5s ease-in-out;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
 }
 
 .animated-subtitle {
   text-align: center;
-  font-size: 18px;
-  color: #666;
-  margin-bottom: 20px;
+  font-size: 30px;
+  color: #f7f7f7;
+ 
   animation: fadeIn 1.5s ease-in-out;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
+/* Features Section */
+.section-title {
+  color: #e6cccc;
+  font-size: 2rem;
+  margin: 40px 0 30px;
+  justify-content: center;
+  display: flex;
+}
+
+.features-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.feature {
+  justify-content: center;
+  display: flex;
+  align-items: flex-start;
+  width: 450px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
+  padding: 20px;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+  width: 60px;
+  height: 60px;
+  background-color: #fbdbf0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  flex-shrink: 0;
+  font-size: 28px;
+}
+
+.feature-content h3 {
+  color: #b73466;
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.feature-content p {
+  margin: 0;
+  line-height: 1.5;
+  text-align: left;
+  color: #333;
+}
+
+
 
 .carousel-container {
   display: flex;
-  justify-content: center;
-  margin: 20px 0;
+  justify-content: flex-end; /* יישור לצד ימין */
+  padding-right: 20px; 
 }
 
 .carousel-image {
-  width: 250px;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  height: 520px;
+  object-fit: cover;
+
+  box-shadow: 0 0 30px 15px rgba(0, 0, 0, 0.15);
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carousel-image:hover {  transform: scale(1.05);
+  box-shadow: 0 0 40px 20px rgba(0, 0, 0, 0.3);
 }
 
 .start-lesson-button {
   display: block;
   width: 200px;
   margin: 20px auto;
+  margin-top: 40px auto;
   padding: 12px;
   background-color: #b73466;
   color: white;
@@ -231,6 +362,8 @@ button:active {
   text-decoration: none;
   transition: background-color 0.3s;
   animation: fadeIn 1.2s ease-in-out;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
 .start-lesson-button:hover {
@@ -238,15 +371,16 @@ button:active {
 }
 
 .fun-fact {
-  margin-top: 20px;
+  margin-top: 70px;
   padding: 15px;
-  background-color: #fff5c3;
+  background-color: #ffc3de;
   border-radius: 10px;
   text-align: center;
   font-size: 16px;
   color: #555;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   animation: fadeIn 1.2s ease-in-out;
+
 }
 
 .useful-links {
@@ -260,7 +394,7 @@ button:active {
 }
 
 .links-container {
-  display: flex;
+ 
   justify-content: center;
   gap: 15px;
   margin-top: 10px;
@@ -269,20 +403,33 @@ button:active {
 .link-button {
   background-color: #1f4e79;
   color: white;
-  padding: 10px 15px;
-  border-radius: 8px;
+  padding: 14px 24px; /* יותר גובה ורוחב פנימי */
+  border-radius: 10px;
   text-decoration: none;
-  font-weight: 600;
-  transition: background-color 0.3s;
+  font-weight: 700;
+  font-size: 18px; /* טקסט גדול יותר */
+  margin: 60px 20px 40px 20px; /* רווח: למעלה, ימין, למטה, שמאל */
+  transition: background-color 0.3s, transform 0.3s;
   animation: fadeIn 1.2s ease-in-out;
 }
 
 .link-button:hover {
-  background-color: #153b5e;
+  background-color: #246199;
+  transform: scale(1.05);
 }
+
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

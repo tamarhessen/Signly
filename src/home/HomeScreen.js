@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 import RightPanel from './RightPanel';
 import TopPanel from './TopPanel';
-import LeftPanel from "./LeftPanel";
+
 import Navigation from './Navigation';
 
 function HomeScreen({setLoggedIn}) {
