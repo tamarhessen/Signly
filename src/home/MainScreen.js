@@ -96,7 +96,7 @@ function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }
       <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
       <div className="content-container">
         <main className="main-content">
-        <div className="background-wrapper" style={{ backgroundImage: `url(/mainback.png)` }}>
+        <div className="background-wrapper" style={{ backgroundImage: `url(/background.png)` }}>
        
           <div className="home-screen">
           <div className="left-panel">
