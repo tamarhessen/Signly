@@ -120,33 +120,69 @@ function LevelsPage() {
         return <p>Error: {error}</p>;
     }
 
-    return (
-        
-        <div className="levels-page">
-        <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
-            
-            <h1>Choose Your Level</h1>
-            <div className="levels-container">
-                {levels.map((levelData) => (
-                    <div key={levelData.level} className="level-container">
-                        <button
-                            onClick={() => navigateToLevel(levelData)}
-                            className={`levellll-button ${userPoints >= levelData.requiredPoints ? '' : 'disabled'}`}
-                            disabled={userPoints < levelData.requiredPoints}
-                        >
-                            Level {levelData.level}
-                        </button>
-                        <p className="level-label">Need {levelData.requiredPoints} points</p>
-                    </div>
-                ))}
-            </div>
-            <p className="points-message">
-                You have {userPoints} points. Earn more points to unlock higher levels!
-            </p>
-            <Footer />
+ return (
+    <div className="root-title-class">
+      <div className="mainscreen-headed">
+        <TopPanel
+          userImg={currentUserImg}
+          username={currentUsername}
+          displayName={currentDisplayName}
+          navigate={navigate}
+          token={currentToken}
+        />
+      </div>
 
+      <div className="contentcontainer levels-page">
+        <h1 className="levels-title">Choose Your Level</h1>
+
+        <div className="levels-grid">
+          {levels.map((levelData) => {
+            const isUnlocked = userPoints >= levelData.requiredPoints;
+            return (
+              <div
+                key={levelData.level}
+                className={`level-card ${isUnlocked ? '' : 'locked'}`}
+                onClick={() => {
+                  if (isUnlocked) navigateToLevel(levelData);
+                  else alert(`You need ${levelData.requiredPoints - userPoints} more points to unlock this level.`);
+                }}
+              >
+                <div className="level-info">
+                  <h2>Level {levelData.level}</h2>
+                  <p>
+                    {levelData.level === 1 &&
+                      'Learn the basics of sign language by mastering all 26 letters of the alphabet.'}
+                    {levelData.level === 2 &&
+                      'Practice basic everyday words to strengthen your sign language vocabulary.'}
+                    {levelData.level === 3 &&
+                      'Learn advanced words to expand your fluency and expressiveness in sign language.'}
+                    {levelData.level === 4 &&
+                      'Practice full sentences to become fluent in everyday sign language conversations.'}
+                  </p>
+                  <button disabled={!isUnlocked}>
+                    {isUnlocked ? `Start Level ${levelData.level}` : 'Locked'}
+                  </button>
+                </div>
+                <div className="level-image">
+                  <img
+                    src={`/level${levelData.level}.png`}
+                    alt={`Level ${levelData.level} illustration`}
+                    className="level-illustration"
+                  />
+                </div>
+              </div>
+            );
+          })}
         </div>
-    );
+
+        <p className="points-message">
+          You have {userPoints} points. Earn more points to unlock higher levels!
+        </p>
+  </div>
+        <Footer />
+    
+    </div>
+  );
 }
 
 export default LevelsPage;
