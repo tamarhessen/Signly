@@ -1,37 +1,225 @@
-/* הגדרה של המסגרת הגלקטית */
-.levels-circle-wrapper {
-    position: relative;
-    width: 700px; /* גודל המסגרת */
-    height: 700px; /* גודל המסגרת */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    margin-top: 70px; /* מרווח בין המעגל לסקשן ה-Poins */
+
+/* Galaxy levels layout */
+.levels-galaxy-wrapper {
+  position: relative;
+  width: 750px;
+  height: 750px;
+  margin: 40px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
 
-/* עיצוב כפתורים במסלול גלקסיה */
-.levels-button {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    transition: transform 0.5s ease-in-out, background-color 0.3s ease;
-    border: none;
+/* Galaxy center point */
+.galaxy-center {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%,(#b27b90) 50%, (#b73466) 100%);
+  border-radius: 50%;
+  z-index: 20;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+              0 0 40px rgba(86, 204, 242, 0.6);
+  animation: pulseCenter 4s ease-in-out infinite;
 }
 
-/* אפקט hover */
-button:hover {
-    transform: scale(1.1);
+@keyframes pulseCenter {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
 }
 
-/* כפתור לא נגיש */
-button:disabled {
-    background-color: #e0e0e0;
-    color: #a0a0a0;
+/* Orbit paths */
+.orbit-paths {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.orbit-path {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px dashed rgba(242, 86, 122, 0.723);
+  border-radius: 50%;
+  animation: rotatePath 120s linear infinite;
+}
+
+@keyframes rotatePath {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Level buttons (planets) */
+.level-planet {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 15;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border: none;
+  overflow: visible;
+}
+
+/* Unlocked levels */
+.level-planet.unlocked {
+  background: linear-gradient(135deg, #b27b90, #b73466);
+  color: white;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.level-planet.unlocked:hover {
+  transform: scale(1.15) translateZ(0);
+  box-shadow: 0 0 15px rgba(67, 206, 162, 0.6),
+              0 0 30px rgba(67, 206, 162, 0.3);
+}
+
+/* Locked levels */
+.level-planet.locked {
+  background: #2c3e50;
+  color: #a3b1c6;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Glow effect for unlocked planets */
+.planet-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 15px rgba(67, 206, 162, 0.6),
+              0 0 30px rgba(67, 206, 162, 0.2);
+  animation: pulse 2s infinite ease-in-out;
+  z-index: -1;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 0.4; }
+}
+
+/* Next level indicator */
+.level-planet.next-level {
+  animation: nextLevelPulse 1.5s infinite ease-in-out;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.7),
+              0 0 40px rgba(255, 215, 0, 0.3);
+}
+
+.next-indicator {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px dashed gold;
+  animation: rotateIndicator 10s linear infinite;
+  z-index: -1;
+}
+
+@keyframes nextLevelPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+@keyframes rotateIndicator {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Level progress panel */
+.level-info-panel {
+  width: 80%;
+  max-width: 500px;
+  background: rgba(25, 40, 65, 0.8);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 30px;
+  z-index: 10;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(86, 204, 242, 0.3);
+}
+
+.level-progress {
+  display: flex;
+  flex-direction: column;
+}
+
+.progress-label {
+  font-size: 1rem;
+  color: #aec7ed;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.progress-bar {
+  height: 12px;
+  background: rgba(37, 47, 61, 0.8);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, #b27b90, #b73466);
+  border-radius: 6px;
+  transition: width 1s ease-in-out;
+}
+
+.progress-stats {
+  font-size: 0.9rem;
+  color: #fff;
+  text-align: right;
+}
+
+/* Responsive adjustments */
+@media (max-width: 800px) {
+  .levels-galaxy-wrapper {
+    width: 95vw;
+    height: 95vw;
+    max-width: 600px;
+    max-height: 600px;
+  }
+  
+  .game-title h1 {
+    font-size: 2rem;
+  }
+  
+  .level-planet {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .level-planet {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .points-container {
+    padding: 8px 15px;
+  }
+  
+  .points-icon {
+    font-size: 1.8rem;
+  }
+  
+  .points-value {
+    font-size: 1.8rem;
+  }
 }
