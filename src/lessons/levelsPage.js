@@ -159,9 +159,12 @@ function LevelsPage() {
                     {levelData.level === 4 &&
                       'Practice full sentences to become fluent in everyday sign language conversations.'}
                   </p>
-                  <button disabled={!isUnlocked}>
-                    {isUnlocked ? `Start Level ${levelData.level}` : 'Locked'}
-                  </button>
+<button
+  className="level-button"
+  disabled={!isUnlocked}
+>
+  {isUnlocked ? `Start Level ${levelData.level}` : 'Locked'}
+</button>
                 </div>
                 <div className="level-image">
                   <img

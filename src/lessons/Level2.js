@@ -2,41 +2,28 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
-import './Level2.css';
+import './Levels.css'; // Use same CSS as letter levels
 
 function Levels() {
     const navigate = useNavigate();
-      
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const location = useLocation();
     const { currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } = location.state || {};
-    console.log(currentPoints);
-    console.log(currentUsername);
-
-    // Example 3-letter words array (can be expanded or replaced)
-    const levels = ['dad', 'dog', 'bat', 'rat', 'mat', 'hat', 'pat', 'sat', 'fat', 'dada', 
-        'lap', 'map', 'tap', 'cap', 'nap', 'zap', 'sap', 'gap', 'wrap', 
-        'trap', 'flap', 'clap', 'slap', 'snap', 'stap'];  // Removed one "nap"
-
-
 
     const [userPoints, setUserPoints] = useState(currentPoints);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [initialized, setInitialized] = useState(false);
 
-    // Calculate position (same as before, adjusted for the word size)
-    const calculatePosition = (index) => {
-        const angle = index * 0.5; // Adjust angle
-        const radius = 150 + Math.pow(index, 1.5) * 2;
+    const levels = [
+        'dad', 'dog', 'bat', 'rat', 'mat', 'hat', 'pat', 'sat', 'fat', 'dada',
+        'lap', 'map', 'tap', 'cap', 'nap', 'zap', 'sap', 'gap', 'wrap',
+        'trap', 'flap', 'clap', 'slap', 'snap', 'stap'
+    ];
 
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-        return { transform: `translate(${x}px, ${y}px)` };
-    };
+    const unlockedLevels = userPoints - 25; // Words unlock after A–Z (26 letters)
 
     const fetchData = async () => {
         try {
-            console.log("Fetching points for user:", currentUsername);
-
             const res = await fetch(`http://localhost:5000/api/users/${currentUsername}/points`, {
                 method: 'GET',
                 headers: {
@@ -45,13 +32,9 @@ function Levels() {
                 },
             });
 
-            console.log("Response status:4", res.status);
-            console.log("Current Token:", currentToken);
-
             if (res.ok) {
-                const points = await res.text(); // API returns a plain number
-                console.log("API Response4:", points);
-                setUserPoints(Number(points)); // Convert the response to a number
+                const points = await res.text();
+                setUserPoints(Number(points));
             } else {
                 throw new Error('Failed to fetch points');
             }
@@ -64,57 +47,82 @@ function Levels() {
 
     useEffect(() => {
         fetchData();
-    }, []); // Runs once when the component loads
-    
-    console.log("points: ",userPoints);
-
-    // Calculate the number of unlocked levels based on userPoints
-    const unlockedLevels = userPoints + 1;
+        setTimeout(() => setInitialized(true), 100);
+    }, []);
 
     return (
         <>
-        <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
-   
+            <TopPanel
+                userImg={currentUserImg}
+                username={currentUsername}
+                displayName={currentDisplayName}
+                navigate={navigate}
+                token={currentToken}
+            />
 
-            <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center mb-6">
-                <p className="text-2xl font-semibold text-gray-700">Points:</p>
-                <p className="text-3xl font-bold text-blue-600">{userPoints}</p>
-            </div>
-            <div className="absolute left-0">
-      <button
-        className="bg-blue-500 px-2 py-1 rounded  text-sm w-auto"
-        onClick={() => navigate('/levels', {
-          state: {
-            currentUserImg,
-            currentUsername,
-            currentDisplayName,
-            currentToken,
-            userPoints
-          }
-        })}
-      >
-        Back to 
-        levels' page
-      </button>
-    </div>
+            <div className="game-container">
+                <div className="game-title">
+                    <h1>Pick a word and start learning</h1>
+                    <div className="title-decoration"></div>
+                </div>
 
-            <div className="levels-circle-wrapper relative">
-            
-                {levels.map((level, index) => (
+                <div className="points-counter">
+                    <div className="points-label">POINTS</div>
+                    <div className="points-value">{userPoints}</div>
+                </div>
+
+                <div className="back-levels-button">
                     <button
-                        key={level}
-                        onClick={() => navigate(`/lesson2/${level}`, { state: { word: level, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } })}
-                        className={`levels-button absolute p-4 text-xl font-bold w-20 h-20 rounded-full 
-                            ${index < unlockedLevels ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-200 text-gray-600 cursor-not-allowed'}`}
-                        disabled={index+26 >= unlockedLevels}
-                        style={calculatePosition(index)}
+                        onClick={() => navigate('/levels', {
+                            state: {
+                                currentUserImg,
+                                currentUsername,
+                                currentDisplayName,
+                                currentToken,
+                                userPoints,
+                            },
+                        })}
                     >
-                        {level}
+                        <span className="back-icon">◀</span> Back to levels
                     </button>
-                ))}
+                </div>
+
+                <div className={`snake-path-container ${initialized ? 'initialized' : ''}`}>
+                    <div className="levels-container">
+                        {levels.map((level, index) => {
+                            const isUnlocked = index < unlockedLevels;
+                            const isNext = index === unlockedLevels - 1;
+
+                            return (
+                                <button
+                                    key={level}
+                                    onClick={() => {
+                                        if (isUnlocked) {
+                                            navigate(`/lesson2/${level}`, {
+                                                state: {
+                                                    word: level,
+                                                    currentUserImg,
+                                                    currentUsername,
+                                                    currentDisplayName,
+                                                    currentToken,
+                                                    currentPoints: userPoints,
+                                                },
+                                            });
+                                        }
+                                    }}
+                                    className={`level-node ${isUnlocked ? 'unlocked' : 'locked'} ${isNext ? 'next-level' : ''}`}
+                                    disabled={!isUnlocked}
+                                >
+                                    {level}
+                                    {isUnlocked && <div className="completed-check"></div>}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
             </div>
-      
-        <Footer />
+
+            <Footer />
         </>
     );
 }

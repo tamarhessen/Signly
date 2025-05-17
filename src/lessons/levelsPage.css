@@ -106,7 +106,7 @@ body {
 }
 
 .level-info button:hover:not(:disabled) {
-  background: #a31825; /* Slightly darker shade of #ba1b2b */
+  background: #9a2d58; /* Slightly darker shade of #ba1b2b */
   box-shadow: 0 6px 14px rgba(186, 27, 43, 0.4); /* subtle glow */
 }
 
@@ -187,3 +187,30 @@ footer {
     width: 100%;
   }
 }
+.level-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Enabled state */
+.level-button:enabled {
+  background-color: #b73466;
+  color: #f9f9f9;
+}
+
+/* Hover effect only when enabled */
+.level-button:enabled:hover {
+  background-color: #9a2d58;
+}
+
+/* Disabled state */
+.level-button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
