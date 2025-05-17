@@ -13,16 +13,10 @@ function Levels() {
     
     const levels = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)); // 'A' (65) to 'Z' (90)
     const [userPoints, setUserPoints] = useState(currentPoints);
-    const [starAnimation, setStarAnimation] = useState(false);
+    const [initialized, setInitialized] = useState(false);
     
-    // Calculate spiral position for galaxy theme
-    const calculatePosition = (index) => {
-        const angle = index * 0.5; // Angular change
-        const radius = 170 + Math.pow(index, 1.5) * 2.2;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-        return { transform: `translate(${x}px, ${y}px)` };
-    };
+    // Calculate the number of unlocked levels based on userPoints
+    const unlockedLevels = userPoints + 1;
 
     const fetchData = async () => {
         try {
@@ -50,71 +44,38 @@ function Levels() {
     useEffect(() => {
         fetchData();
         
-        // Create random star background
-        createStars();
-        
-        // Trigger initial star animation
+
+        // Trigger initial animation
         setTimeout(() => {
-            setStarAnimation(true);
+            setInitialized(true);
         }, 100);
     }, []);
     
-    const createStars = () => {
-        const starsContainer = document.querySelector('.galaxy-background');
-        if (!starsContainer) return;
-        
-        // Clear existing stars
-        starsContainer.innerHTML = '';
-        
-        // Create new stars
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            
-            // Random position
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.left = `${Math.random() * 100}%`;
-            
-            // Random size
-            const size = Math.random() * 3 + 1;
-            star.style.width = `${size}px`;
-            star.style.height = `${size}px`;
-            
-            // Random animation delay
-            star.style.animationDelay = `${Math.random() * 10}s`;
-            
-            starsContainer.appendChild(star);
-        }
-    };
-
-    // Calculate the number of unlocked levels based on userPoints
-    const unlockedLevels = userPoints + 1;
-
+   
     return (
+         <>
+        <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
         <div className="game-container">
-            <TopPanel 
-                userImg={currentUserImg} 
-                username={currentUsername} 
-                displayName={currentDisplayName} 
-                navigate={navigate} 
-                token={currentToken} 
-            />
+
+           
             
-            <div className="galaxy-background"></div>
+            <div className="game-title">
+                <h1>Pick a letter and start learning</h1>
+                <div className="title-decoration"></div>
+            </div>
             
-            <div className="points-display">
-                <div className="points-container">
-                    <div className="points-icon">⭐</div>
+
+
+
                     <div className="points-counter">
                         <div className="points-label">POINTS</div>
                         <div className="points-value">{userPoints}</div>
                     </div>
-                </div>
-            </div>
-            
-            <div className="back-button">
+
+
+             <div className="back-levels-button">
                 <button
-                    onClick={() => navigate('/home', {
+                    onClick={() => navigate('/levels', {
                         state: {
                             currentUserImg,
                             currentUsername,
@@ -124,66 +85,56 @@ function Levels() {
                         }
                     })}
                 >
-                    <span className="back-icon">◀</span> Home
+                    <span className="back-icon">◀</span> Back to levels
                 </button>
             </div>
-            
-            <div className="game-title">
-                <h1>Galaxy Letters</h1>
-                <div className="title-decoration"></div>
-            </div>
-            
-            <div className="levels-galaxy-wrapper">
-                <div className="galaxy-center"></div>
+
+            {/* Snake-like learning path */}
+            <div className={`snake-path-container ${initialized ? 'initialized' : ''}`}>
+                {/* Path background */}
+              
+
                 
-                {levels.map((level, index) => {
-                    const isUnlocked = index < unlockedLevels;
-                    const isNext = index === unlockedLevels - 1;
-                    
-                    return (
-                        <button
-                            key={level}
-                            onClick={() => navigate(`/lesson/${level}`, { 
-                                state: { 
-                                    letter: level, 
-                                    currentUserImg, 
-                                    currentUsername, 
-                                    currentDisplayName, 
-                                    currentToken, 
-                                    currentPoints: userPoints 
-                                } 
-                            })}
-                            className={`level-planet ${isUnlocked ? 'unlocked' : 'locked'} ${isNext ? 'next-level' : ''}`}
-                            disabled={!isUnlocked}
-                            style={calculatePosition(index)}
-                        >
-                            {level}
-                            {isUnlocked && <div className="planet-glow"></div>}
-                            {isNext && <div className="next-indicator"></div>}
-                        </button>
-                    );
-                })}
-                
-                <div className="orbit-paths">
-                    {[...Array(5)].map((_, i) => (
-                        <div key={i} className="orbit-path" style={{ width: `${340 + i * 120}px`, height: `${340 + i * 120}px` }}></div>
-                    ))}
-                </div>
+                {/* Levels positioned along the path */}
+<div className="levels-container">
+  {levels.map((level, index) => {
+    const isUnlocked = index < unlockedLevels;
+    const isNext = index === unlockedLevels - 1;
+
+    return (
+      <button
+        key={level}
+        onClick={() => {
+          if (isUnlocked) {
+            navigate(`/lesson/${level}`, {
+              state: {
+                letter: level,
+                currentUserImg,
+                currentUsername,
+                currentDisplayName,
+                currentToken,
+                currentPoints: userPoints
+              }
+            });
+          }
+        }}
+        className={`level-node ${isUnlocked ? 'unlocked' : 'locked'} ${isNext ? 'next-level' : ''}`}
+        disabled={!isUnlocked}
+      >
+        {level}
+        {isUnlocked && <div className="completed-check"></div>}
+      </button>
+    );
+  })}
+</div>
             </div>
             
-            <div className="level-info-panel">
-                <div className="level-progress">
-                    <div className="progress-label">Progress</div>
-                    <div className="progress-bar">
-                        <div className="progress-fill" style={{ width: `${(unlockedLevels / levels.length) * 100}%` }}></div>
-                    </div>
-                    <div className="progress-stats">{unlockedLevels} / {levels.length} levels</div>
-                </div>
-            </div>
-            
-            <Footer />
+           
         </div>
+        <Footer />
+        </>
     );
 }
+    
 
 export default Levels;
