@@ -133,6 +133,8 @@ function LevelsPage() {
       </div>
 
       <div className="contentcontainer levels-page">
+      <div className="background-be" style={{ backgroundImage: `url(/background.png)` }}/>
+        
         <h1 className="levels-title">Choose Your Level</h1>
 
         <div className="levels-grid">
@@ -159,9 +161,12 @@ function LevelsPage() {
                     {levelData.level === 4 &&
                       'Practice full sentences to become fluent in everyday sign language conversations.'}
                   </p>
-                  <button disabled={!isUnlocked}>
-                    {isUnlocked ? `Start Level ${levelData.level}` : 'Locked'}
-                  </button>
+<button
+  className="level-button"
+  disabled={!isUnlocked}
+>
+  {isUnlocked ? `Start Level ${levelData.level}` : 'Locked'}
+</button>
                 </div>
                 <div className="level-image">
                   <img

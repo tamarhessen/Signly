@@ -8,14 +8,38 @@ body {
 }
 
 .levels-page {
+  position:relative;
   max-width: none;
   margin: 0 auto;
   padding: 48px 24px 72px;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 85vh;
+}
+.background-be {
+  position: absolute; /* or absolute relative to parent */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(13px);
+  z-index: 0;
 }
 
+.background-be::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 1;
+  pointer-events: none;
+}
 .levels-page h1 {
   font-weight: 700;
   font-size: 2.8rem;
@@ -38,6 +62,7 @@ body {
 }
 
 .level-card {
+  position: relative;
   display: flex;
   grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
   justify-content: space-between;
@@ -106,7 +131,7 @@ body {
 }
 
 .level-info button:hover:not(:disabled) {
-  background: #a31825; /* Slightly darker shade of #ba1b2b */
+  background: #9a2d58; /* Slightly darker shade of #ba1b2b */
   box-shadow: 0 6px 14px rgba(186, 27, 43, 0.4); /* subtle glow */
 }
 
@@ -135,6 +160,7 @@ body {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 2rem;
+  margin-top: 4rem;
   color: #ba1b2b;
 }
 
@@ -187,3 +213,30 @@ footer {
     width: 100%;
   }
 }
+.level-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Enabled state */
+.level-button:enabled {
+  background-color: #b73466;
+  color: #f9f9f9;
+}
+
+/* Hover effect only when enabled */
+.level-button:enabled:hover {
+  background-color: #9a2d58;
+}
+
+/* Disabled state */
+.level-button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
