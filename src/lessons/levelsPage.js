@@ -133,6 +133,8 @@ function LevelsPage() {
       </div>
 
       <div className="contentcontainer levels-page">
+      <div className="background-be" style={{ backgroundImage: `url(/background.png)` }}/>
+        
         <h1 className="levels-title">Choose Your Level</h1>
 
         <div className="levels-grid">

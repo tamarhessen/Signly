@@ -1,96 +1,261 @@
-.lesson-container {
-    text-align: center;
-    padding: 20px;
-}
+.background-bll {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(13px); /* דרגת הטשטוש */
+    z-index: -1;
+  }
+  
+  .background-bll::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(255, 255, 255, 0.3); /* כהות עדינה */
+  }
+  
+  .cc-container {
+    overflow: hidden;
+min-height: 84%;
+  width: 100%;
+  background-color: #f4f4f7;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  overflow-x: hidden;
+  z-index: 2;
 
-.snake-path {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
 
-.level-circle {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: gray;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    color: white;
-    transition: background-color 0.5s ease-in-out;
-}
-
-.level-circle.completed {
-    background-color: green;
-}
-
-.sign-container {
-    margin-bottom: 20px;
-}
-
-.sign-image, .camera-feed {
-    width: 300px;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.gesture-box {
-    font-size: 24px;
+  }
+  
+  .lesson-title {
+    font-size: 3rem;
     font-weight: bold;
-    margin-top: 10px;
-}
-
-.start-button, .next-button {
-    padding: 10px 20px;
-    margin-top: 10px;
-    background-color: blue;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.start-button:hover, .next-button:hover {
-    background-color: darkblue;
-}
-.popup-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 50;
+    padding: 1.5rem 0;
+    color: #1f2937;
+    text-align: center;
+    font-family: 'Poppins', serif;
+  }
+  
+  .stats-container {
     display: flex;
-    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .points-box {
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    width: 8rem;
+    text-align: center;
+  }
+  
+  .points-label {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #4b5563;
+  }
+  
+  .points-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2563eb;
+  }
+  
+  .lives-box {
+    min-width: 180px;
+    min-height: 100px;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
     justify-content: center;
-}
-
-.popup-box {
-    background: white;
-    color: black;
+    align-items: center;
+  }
+  
+  .lives-icons {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 30px;
+  }
+  
+  .heart {
+    color: #ef4444;
+  }
+  
+  .heart-empty {
+    color: #d1d5db;
+  }
+  
+  .locked-level-container {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .locked-box {
+    background-color: white;
     padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.25);
-    width: 350px;
-    max-width: 90%;
-    animation: pop-in 0.4s ease-out forwards;
+    border-radius: 0.5rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    max-width: 28rem;
+    width: 100%;
+    margin-top: 2rem;
     text-align: center;
-}
-
-@keyframes pop-in {
-    from {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-.red-timer {
-    color: red;
+  }
+  
+  .locked-title {
+    font-size: 1.5rem;
     font-weight: bold;
+    color: #dc2626;
+    margin-bottom: 1rem;
+  }
+  
+  .locked-msg {
+    color: #374151;
+    margin-bottom: 1.5rem;
+  }
+  
+  .next-heart-box {
+    background-color: #f3f4f6;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .next-heart-label {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+  
+  .next-heart-time {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: #dc2626;
+  }
+  
+  .btn-primary {
+    background-color: #1f4e79;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-primary:hover {
+    background-color: #246199;
+  }
+  
+  .btn-primary:active {
+    transform: scale(0.97);
+    transition: all 0.2s;
+  }
+  
+  .sign-preview-container {
+    text-align: center;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .sign-image {
+    width: 400px;
+    height: 400px;
+   
+    border-radius: 0.5rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    margin-right: 10px;
+    margin-top: 10px;
+  }
+  
+  .camera-container {
+    text-align: center;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .camera-feed {
+    width: 650px;
+    height: 650px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+  
+  .gesture-display {
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .gesture-text {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1f2937;
+    background-color: #f3f4f6;
+    border-radius: 9999px;
+    height: 6rem;
+    width: 6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .error-msg-box {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  .error-text {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #dc2626;
+  }
+  
+  .success-msg-box {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  .success-text {
+    font-size: 3rem;
+    font-weight: 600;
+    color: #16a34a;
+  }
+  
+  .dialog-box {
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+  }
+  
+  .dialog-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .dialog-msg {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
   }
   

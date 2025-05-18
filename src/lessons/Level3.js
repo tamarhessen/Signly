@@ -61,6 +61,7 @@ function Levels() {
             />
 
             <div className="game-container">
+            <div className="background-b" style={{ backgroundImage: `url(/background.png)` }}></div>
                 <div className="game-title">
                     <h1>Pick a word and continue your journey</h1>
                     <div className="title-decoration"></div>

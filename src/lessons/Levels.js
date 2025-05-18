@@ -57,7 +57,7 @@ function Levels() {
         <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
         <div className="game-container">
 
-           
+        <div className="background-b" style={{ backgroundImage: `url(/background.png)` }}></div>
             
             <div className="game-title">
                 <h1>Pick a letter and start learning</h1>

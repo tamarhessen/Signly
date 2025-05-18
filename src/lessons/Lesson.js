@@ -3,8 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
 import Confetti from "react-confetti";
+import './Lesson.css';
 
 function Lesson() {
+    
     const location = useLocation();
     const navigate = useNavigate();
     const [lives, setLives] = useState();
@@ -310,117 +312,134 @@ function Lesson() {
 
     return (
         <>
-            <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
-            {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
-
-            <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
-                <h1 className="text-3xl font-bold mb-8 text-gray-800">
-                    Level {currentLevel + 1} - Sign: {levels[currentLevel]}
-                </h1>
-
-                <div className="flex gap-4">
-                    <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center">
-                        <p className="text-2xl font-semibold text-gray-700">Points:</p>
-                        <p className="text-3xl font-bold text-blue-600">{userPoints}</p>
-                    </div>
-
-                    <div className="flex items-center justify-center bg-white shadow-md rounded-lg p-4 text-center min-w-[180px] min-h-[100px]">
-                        <div className="flex items-center gap-2 text-[120px]">
-                            {Array.from({ length: lives }).map((_, i) => (
-                                <span key={i} className="text-red-500">❤️</span>
-                            ))}
-                            {Array.from({ length: 3 - lives }).map((_, i) => (
-                                <span key={`empty-${i}`} className="text-gray-300">🤍</span>
-                            ))}
-                        </div>
-                    </div>
+          <TopPanel
+            userImg={currentUserImg}
+            username={currentUsername}
+            displayName={currentDisplayName}
+            navigate={navigate}
+            token={currentToken}
+          />
+          {showConfetti && (
+            <Confetti width={window.innerWidth} height={window.innerHeight} />
+          )}
+      
+      <div className="cc-container">
+          <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }}/>
+        
+      
+            <h1 className="lesson-title">
+              Level {currentLevel + 1} - Sign: {levels[currentLevel]}
+            </h1>
+      
+            <div className="stats-container">
+              <div className="points-box">
+                <p className="points-label">Points:</p>
+                <p className="points-value">{userPoints}</p>
+              </div>
+      
+              <div className="lives-box">
+                <div className="lives-icons">
+                  {Array.from({ length: lives }).map((_, i) => (
+                    <span key={i} className="heart">❤️</span>
+                  ))}
+                  {Array.from({ length: 3 - lives }).map((_, i) => (
+                    <span key={`empty-${i}`} className="heart-empty">🤍</span>
+                  ))}
                 </div>
-
-                {levelLocked ? (
-                    <div className="text-center mb-8 flex flex-col items-center">
-                        <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full mt-8">
-                            <h2 className="text-2xl font-bold text-red-600 mb-4">Level Locked 🔒</h2>
-                            <p className="text-gray-700 mb-6">You're out of lives! You need at least one heart to attempt this level.</p>
-                            
-                            {timeLeft !== null && (
-                                <div className="bg-gray-100 p-4 rounded-lg mb-6">
-                                    <p className="text-lg font-semibold">Next heart in:</p>
-                                    <p className="text-3xl font-bold text-red-600">{formatTime(timeLeft)}</p>
-                                </div>
-                            )}
-                            
-                            <button 
-                                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-blue-700 transition-colors"
-                                onClick={() => navigate("/home", {
-                                    state: {
-                                        username: currentUsername,
-                                        displayName: currentDisplayName,
-                                        userImg: currentUserImg,
-                                        token: currentToken
-                                    }
-                                })}
-                            >
-                                Return Home
-                            </button>
-                        </div>
-                    </div>
-                ) : showSignImage ? (
-                    <div className="text-center mb-8 flex flex-col items-center">
-                        <img src={`/signs/${levels[currentLevel]}.png`} alt={`Sign for ${levels[currentLevel]}`} className="w-[400px] h-[400px] object-cover rounded-lg mb-6" />
-                        <button onClick={startCamera} className="start-button">TRY IT YOURSELF</button>
-                    </div>
-                ) : cameraActive ? (
-                    <div className="text-center mb-8 flex flex-col items-center">
-                        <img src="http://127.0.0.1:5001/video_feed" alt="Camera Feed" className="w-[700px] h-[700px] rounded-lg object-cover" />
-                        <div className="text-center w-full mt-4">
-                            <div className="flex justify-center items-center h-24 w-24 mx-auto bg-gray-100 rounded-full">
-                                <span className="text-4xl font-bold text-gray-800">{gesture === 'Nothing' ? '-' : gesture}</span>
-                            </div>
-                        </div>
-                        {errorMessage && (
-                            <div className="text-center mt-6">
-                                <p className="text-3xl text-red-600 font-semibold">{errorMessage}</p>
-                                {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
-                            </div>
-                        )}
-                        {levelCompleted && (
-                            <div className="text-center mt-6">
-                                <p className="text-6xl text-green-600 font-semibold">✅ Correct! You signed {levels[currentLevel]}.</p>
-                                <button onClick={nextLevel} className="start-button">
-                                    {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                ) : null}
+              </div>
             </div>
-            
-            <dialog id="outOfLivesDialog" className="rounded-lg p-6">
-                <h2 className="text-xl font-semibold mb-4">Out of Lives 💀</h2>
-                <p className="text-sm mb-2">You've run out of lives. Please come back later or try a different level.</p>
-
-              
-
-                <form method="dialog">
-                    <button
-                        className="bg-blue-600 text-pink px-4 py-2 rounded"
-                        onClick={() => navigate("/home", {
-                            state: {
-                                username: currentUsername,
-                                displayName: currentDisplayName,
-                                userImg: currentUserImg,
-                                token: currentToken
-                            }
-                        })}
-                    >
-                        Go Home
+      
+            {levelLocked ? (
+              <div className="locked-level-container">
+                <div className="locked-box">
+                  <h2 className="locked-title">Level Locked 🔒</h2>
+                  <p className="locked-msg">
+                    You're out of lives! You need at least one heart to attempt this level.
+                  </p>
+      
+                  {timeLeft !== null && (
+                    <div className="next-heart-box">
+                      <p className="next-heart-label">Next heart in:</p>
+                      <p className="next-heart-time">{formatTime(timeLeft)}</p>
+                    </div>
+                  )}
+      
+                  <button className="btn-primary" onClick={() => navigate("/home", {
+                    state: {
+                      username: currentUsername,
+                      displayName: currentDisplayName,
+                      userImg: currentUserImg,
+                      token: currentToken
+                    }
+                  })}>
+                    Return Home
+                  </button>
+                </div>
+              </div>
+            ) : showSignImage ? (
+              <div className="sign-preview-container">
+                <img
+                  src={`/signs/${levels[currentLevel]}.png`}
+                  alt={`Sign for ${levels[currentLevel]}`}
+                  className="sign-image"
+                />
+                <button onClick={startCamera} className="btn-primary">
+                  TRY IT YOURSELF
+                </button>
+              </div>
+            ) : cameraActive ? (
+              <div className="camera-container">
+                <img
+                  src="http://127.0.0.1:5001/video_feed"
+                  alt="Camera Feed"
+                  className="camera-feed"
+                />
+                <div className="gesture-display">
+                  <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
+                </div>
+                {errorMessage && (
+                  <div className="error-msg-box">
+                    <p className="error-text">{errorMessage}</p>
+                    {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
+                  </div>
+                )}
+                {levelCompleted && (
+                  <div className="success-msg-box">
+                    <p className="success-text">✅ Correct! You signed {levels[currentLevel]}.</p>
+                    <button onClick={nextLevel} className="start-button">
+                      {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
                     </button>
-                </form>
-            </dialog>
-
-            <Footer />
+                  </div>
+                )}
+              </div>
+            ) : null}
+          </div>
+      
+          <dialog id="outOfLivesDialog" className="dialog-box">
+            <h2 className="dialog-title">Out of Lives 💀</h2>
+            <p className="dialog-msg">You've run out of lives. Please come back later or try a different level.</p>
+            <form method="dialog">
+              <button
+                className="btn-primary"
+                onClick={() => navigate("/home", {
+                  state: {
+                    username: currentUsername,
+                    displayName: currentDisplayName,
+                    userImg: currentUserImg,
+                    token: currentToken
+                  }
+                })}
+              >
+                Go Home
+              </button>
+            </form>
+          </dialog>
+      
+          <Footer />
         </>
-    );
+      );
+      
+   
 }
 
 export default Lesson;

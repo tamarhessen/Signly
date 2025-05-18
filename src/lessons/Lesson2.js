@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
 import Confetti from "react-confetti";
+import './Lesson.css';
+
 
 const signImages = {
   A: '/signs/A.png', B: '/signs/B.png', C: '/signs/C.png', D: '/signs/D.png', 
@@ -393,26 +395,32 @@ function Lesson2() {
                 token={currentToken} 
             />
             {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
-            <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
-                <h1 className="text-3xl font-bold mb-8 text-gray-800">
+            <div className="cc-container">
+          <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }}/>
+        
+      
+            <h1 className="lesson-title">
                     Level {currentLevel + 1} - Word: {currentWord.split('').map((letter, index) => (
                         <span key={index} className="text-lg font-bold">{letter} </span>
                     ))}
                 </h1>
-                <div className="bg-white shadow-md rounded-lg p-4 w-32 text-center">
-                    <p className="text-2xl font-semibold text-gray-700">Points:</p>
-                    <p className="text-3xl font-bold text-blue-600">{userPoints}</p>
+                <div className="stats-container">
+              <div className="points-box">
+                <p className="points-label">Points:</p>
+                <p className="points-value">{userPoints}</p>
+              </div>
+      
+              <div className="lives-box">
+                <div className="lives-icons">
+                  {Array.from({ length: lives }).map((_, i) => (
+                    <span key={i} className="heart">❤️</span>
+                  ))}
+                  {Array.from({ length: 3 - lives }).map((_, i) => (
+                    <span key={`empty-${i}`} className="heart-empty">🤍</span>
+                  ))}
                 </div>
-                <div className="flex items-center justify-center bg-white shadow-md rounded-lg p-4 text-center min-w-[180px] min-h-[100px]">
-    <div className="flex items-center gap-2 text-[120px]">
-        {Array.from({ length: lives }).map((_, i) => (
-            <span key={i} className="text-red-500">❤️</span>
-        ))}
-        {Array.from({ length: 3 - lives }).map((_, i) => (
-            <span key={`empty-${i}`} className="text-gray-300">🤍</span>
-        ))}
-    </div>
-</div>
+              </div>
+            </div>
                 {showSignImage ? (
                     <div className="text-center mb-8">
                         <div className="flex justify-center items-center space-x-2">
@@ -421,25 +429,25 @@ function Lesson2() {
                                     key={index}
                                     src={signImages[letter]}
                                     alt={`Sign for ${letter}`}
-                                    className="w-40 h-40 object-cover border border-gray-300 rounded-lg bg-white"
+                                     className="sign-image"
                                 />
                             ))}
                         </div>
-                        <button onClick={startCamera} className="start-button mt-4">TRY IT YOURSELF</button>
+                        <button onClick={startCamera} className="btn-primary">
+                  TRY IT YOURSELF
+                </button>
                     </div>
                 ) : cameraActive ? (
-                    <div className="text-center mb-8 flex justify-center items-center">
+                    <div className="camera-container">
                         <img 
                             src="http://127.0.0.1:5001/video_feed" 
                             alt="Camera Feed" 
-                            className="w-[700px] h-[700px] rounded-lg object-cover" 
+                            className="camera-feed"
                         />
                         <div className="text-center w-full mt-4">
-                            <div className="flex justify-center items-center h-24 w-24 mx-auto bg-gray-100 rounded-full">
-                                <span className="text-4xl font-bold text-gray-800">
-                                    {gesture === 'Nothing' ? '-' : gesture}
-                                </span>
-                            </div>
+                        <div className="gesture-display">
+                  <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
+                </div>
                         </div>
                         <div className="mt-4">
                             <p className="text-xl font-semibold text-gray-700" style={{ fontSize: '2rem' }}>
@@ -451,17 +459,17 @@ function Lesson2() {
 
                         </div>
                         {incorrectLetter && (
-    <div className="text-center mt-4">
-        <p className="text-red-600 text-2xl font-bold" style={{ fontSize: '2rem' }}>❌ Wrong Sign! Try Again</p>
-        {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
-    </div>
+    <div className="error-msg-box">
+    <p className="error-text">{errorMessage}</p>
+    {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
+  </div>
 )}
 
                     </div>
                 ) : null}
                 {levelCompleted && (
-                    <div className="text-center mt-6">
-                        <p className="text-6xl text-green-600 font-semibold flex items-center justify-center">
+                     <div className="success-msg-box">
+                        <p className="success-text">
                             ✅ Correct! You signed {levels[currentLevel]}.
                         </p>
                         <button onClick={nextLevel} className="start-button">
@@ -470,28 +478,25 @@ function Lesson2() {
                     </div>
                 )}
             </div>
-            <dialog id="outOfLivesDialog" className="rounded-lg p-6">
-                <h2 className="text-xl font-semibold mb-4">Out of Lives 💀</h2>
-                <p className="text-sm mb-2">You've run out of lives. Please come back later or try a different level.</p>
-
-             
-
-                <form method="dialog">
-                    <button
-                        className="bg-blue-600 text-pink px-4 py-2 rounded"
-                        onClick={() => navigate("/home", {
-                            state: {
-                                username: currentUsername,
-                                displayName: currentDisplayName,
-                                userImg: currentUserImg,
-                                token: currentToken
-                            }
-                        })}
-                    >
-                        Go Home
-                    </button>
-                </form>
-            </dialog>
+            <dialog id="outOfLivesDialog" className="dialog-box">
+            <h2 className="dialog-title">Out of Lives 💀</h2>
+            <p className="dialog-msg">You've run out of lives. Please come back later or try a different level.</p>
+            <form method="dialog">
+              <button
+                className="btn-primary"
+                onClick={() => navigate("/home", {
+                  state: {
+                    username: currentUsername,
+                    displayName: currentDisplayName,
+                    userImg: currentUserImg,
+                    token: currentToken
+                  }
+                })}
+              >
+                Go Home
+              </button>
+            </form>
+          </dialog>
             <Footer />
         </>
     );

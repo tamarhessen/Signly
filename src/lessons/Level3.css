@@ -9,7 +9,28 @@
     margin: 0 auto;
     margin-top: 70px; /* מרווח בין המעגל לסקשן ה-Poins */
 }
+.background-b {
+    position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(13px); /* דרגת הטשטוש */
+  z-index: 0;
+  }
+  .background-b::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(255, 255, 255, 0.4); /* כהות עדינה */
+  }
 /* עיצוב כפתורים במסלול גלקסיה */
 .levels-button {
     position: absolute;

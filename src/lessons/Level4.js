@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
-import './Levels.css'; // Reuse shared styling for consistency
+import './Level4.css'; // Reuse shared styling for consistency
 
 function Level4() {
     const navigate = useNavigate();
@@ -54,6 +54,7 @@ function Level4() {
 
     return (
         <>
+        
             <TopPanel
                 userImg={currentUserImg}
                 username={currentUsername}
@@ -62,7 +63,9 @@ function Level4() {
                 token={currentToken}
             />
 
+
             <div className="game-container">
+            <div className="background-b" style={{ backgroundImage: `url(/background.png)` }}></div>
                 <div className="game-title">
                     <h1>Pick a sentence and continue your journey</h1>
                     <div className="title-decoration"></div>
