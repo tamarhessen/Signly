@@ -27,6 +27,8 @@ function ContactUs({ userImg, username, displayName, token }) {
     <>
     <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
     <div className="main-container">
+    <div className="background-b" style={{ backgroundImage: `url(/background.png)` }}></div>
+            
     <div className="contact-container">
       <h1>Contact Us</h1>
       <p>We'd love to hear from you! Fill out the form below to get in touch.</p>

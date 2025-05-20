@@ -98,7 +98,21 @@ body {
   height: 60px !important;
   border-radius: 50%;
 }
+.profile-image:hover {
+  transform: scale(1.2);
+}
+.profile-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer; /* ✅ חשוב כדי לשנות את סמן העכבר */
+  transition: background-color 0.3s ease;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
 
+.profile-container:active {
+  transform: scale(1.2);
+}
 .profile-name {
   font-weight: 600;
   margin-left: 8px;

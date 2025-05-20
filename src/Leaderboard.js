@@ -27,9 +27,10 @@ function Leaderboard() {
     
 
     return (
-        <div className="page-wrapper">
+        <>
           <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
-      
+          <div className="main-container">
+          <div className="background-b" style={{ backgroundImage: `url(/background.png)` }}></div>
           <div className="leaderboard-container">
             <h2 className="leaderboard-title">🏆 Leaderboard 🏆</h2>
             <ul className="leaderboard-list">
@@ -46,9 +47,9 @@ function Leaderboard() {
               ))}
             </ul>
           </div>
-      
+          </div>
           <Footer />
-        </div>
+          </>
       );
       
 }

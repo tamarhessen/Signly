@@ -1,90 +1,146 @@
-/* Body */
+/* בסיס כללי */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f0f2f5;
     margin: 0;
     padding: 0;
     color: #333;
 }
 
-/* Profile Header */
+/* פרופיל - מעטפת עמוד */
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+
+/* קופסת פרופיל */
 .profile-header {
-    background-color: #fff;
-    border-radius: 10px; /* Soft rounded corners */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    padding: 30px 40px;
-    margin-bottom: 30px; /* Added more space below */
-    text-align: center; /* Center align header content */
+    padding: 40px;
+    font-size: 20px;
+   
+    border-radius: 8px;
+ 
+    max-width: 900px;
+    margin: 40px auto;
+    text-align: center;
+    color: #333;
+    position: relative;
 }
 
-.profile-header h1 {
-    font-size: 2.5rem; /* Larger title */
-    margin-bottom: 15px;
-    color: #333; /* Darker text for the title */
-}
-
-.profile-header p {
-    font-size: 1rem;
-    color: #666;
-}
-
-/* Profile Image */
-.profile-image {
-    width: 200px;  /* Slightly reduced size */
-    height: 200x; /* Same as width */
-    border-radius: 100%; /* Circular image */
+/* תמונת פרופיל */
+.profile-imagee {
+    width:250px;
+    height:250px;
+    border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 20px; /* Added space below image */
-    border: 4px solid #ddd; /* Soft border around image */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border: 4px solid #e0e0e0;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
 }
 
+.profile-imagee:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
 
+/* כותרת */
+.profile-header h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-/* Buttons */
+/* כפתורים */
+.bb-button, .btn {
+    padding: 10px 18px;
+    margin: 8px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.bb-button, .btn {
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.bb-button:hover,
+.btn:hover {
+    transform: scale(1.05);
+}
 .bb-button {
     background-color: #1f4e79;
-    color: #fff;
-    border: none;
-    border-radius: 5px; /* Rounded corners */
-  
-    font-size: 1rem; /* Better button text size */
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Smooth hover transition */
+    color: white;
 }
 
 .bb-button:hover {
     background-color: #153b5e;
 }
 
-/* Responsive Design */
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #b02a37;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+/* חלון עריכה */
+input[type="text"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* מודל */
+.img-cont img {
+    width: 100%;
+    max-width: 250px;
+    border-radius: 10px;
+    margin: 10px auto;
+    display: block;
+}
+
+/* רספונסיביות */
 @media (max-width: 768px) {
     .profile-header {
         padding: 20px;
     }
 
+    .profile-imagee {
+        width: 140px;
+        height: 140px;
+    }
+
     .profile-header h1 {
-        font-size: 2rem; /* Smaller title on smaller screens */
+        font-size: 2rem;
     }
 
-    .profile-image {
-        width: 300px;
-        height: 300px;
+    input[type="text"] {
+        width: 100%;
     }
-
-  
 }
-html, body {
-    height: 100%;
-  }
-  
-  .page-wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  
-  .profile-details {
-    flex: 1; /* דוחף את ה-footer למטה כשאין תוכן */
-  }
-  

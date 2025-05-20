@@ -1,15 +1,17 @@
 /* About Page Styling */
 .about-page {
-  padding: 30px;
+  padding: 40px;
   font-size: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  max-width: 900px;
   margin: 40px auto;
   text-align: center;
   color: #333;
+  position: relative;
 }
+
 
 .about-page h1 {
   color: #b73466;

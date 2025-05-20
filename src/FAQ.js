@@ -69,9 +69,11 @@ function FAQ() {
   };
 
   return (
-    <div className="page-wrapper">
+  <>
       <TopPanel userImg={currentUserImg} username={currentUsername} displayName={currentDisplayName} navigate={navigate} token={currentToken} />
-      
+      <div className="main-container">
+      <div className="background-b" style={{ backgroundImage: `url(/background.png)` }}></div>
+     
       <div className="faq-container">
         <h2 className="faq-title">Frequently Asked Questions</h2>
         <div className="faq-list">
@@ -91,9 +93,9 @@ function FAQ() {
           ))}
         </div>
       </div>
-  
+      </div>
       <Footer />
-    </div>
+      </>
   );
   
 }
