@@ -2,7 +2,7 @@
 .levels-circle-wrapper {
     position: relative;
     width: 700px; /* גודל המסגרת */
-    height: 700px; /* גודל המסגרת */
+    height: 800px; /* גודל המסגרת */
     display: flex;
     justify-content: center;
     align-items: center;

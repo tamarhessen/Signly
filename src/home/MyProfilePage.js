@@ -240,40 +240,66 @@ const handleEditProfilePicture = async (file) => {
         navigate("/");
     }
     return (
-      <div className="page-wrapper">
-        <TopPanel userImg={userImg} username={username} displayName={displayName} navigate={navigate} token={token} />
+     <>
+        <TopPanel
+          userImg={userImg}
+          username={username}
+          displayName={displayName}
+          navigate={navigate}
+          token={token}
+        />
     
-        <div className="profile-details">
+    <div className="main-container">
+        <div className="background-b" style={{ backgroundImage: `url(/background.png)` }}></div>
           <div className="profile-header">
+            
             <img
               src={userImg}
               alt="Profile Image"
-              className={"Logo profile-image"}
+              className="profile-imagee"
               onClick={() => setShowModal(true)}
-              style={{ width: "100%", height: "100%" }}
             />
-            {showEditWindow ? (
-              <div>
-                <input
-                  type="text"
-                  value={editedDisplayName}
-                  onChange={handleDisplayNameChange}
-                />
-                <button onClick={handleSaveDisplayName}>Save</button>
-                <button onClick={handleCloseEditWindow}>Cancel</button>
-              </div>
-            ) : (
-              <div>
-                <h1>{displayName}</h1>
-                <button onClick={handleOpenEditWindow} className="bb-button">Edit Display name</button>
-                <button onClick={handleDelete} className={"btn btn-danger"}>Delete user</button>
-                <button onClick={logout} className="btn btn-warning">Logout</button>
-              </div>
-            )}
-          
+            <div className="profile-content">
+              {showEditWindow ? (
+                <>
+                  <input
+                    type="text"
+                    value={editedDisplayName}
+                    onChange={handleDisplayNameChange}
+                  />
+                  <div className="buttons">
+                    <button onClick={handleSaveDisplayName} className="bb-button">
+                      Save
+                    </button>
+                    <button onClick={handleCloseEditWindow} className="btn btn-warning">
+                      Cancel
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h1>{displayName}</h1>
+                  <div className="buttons">
+                    <button onClick={handleOpenEditWindow} className="bb-button">
+                      Edit Display Name
+                    </button>
+                    <button onClick={handleDelete} className="btn btn-danger">
+                      Delete User
+                    </button>
+                    <button onClick={logout} className="btn btn-warning">
+                      Logout
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
-          </div>
-          <Footer />
+        </div>
+    
+        <Footer />
+    
+   
+    
       
         
     
@@ -307,7 +333,7 @@ const handleEditProfilePicture = async (file) => {
             </Button>
           </Modal.Footer>
         </Modal>
-        </div>
+        </>
     );
     
           }

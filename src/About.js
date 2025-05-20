@@ -7,9 +7,12 @@ import { useNavigate } from 'react-router-dom';
 function About({ userImg, username, displayName, token }) {
    const navigate = useNavigate();
   return (
-    <div className="page-wrapper">
+    <>
+       <TopPanel userImg={`${userImg}?t=${new Date().getTime()}`} username={username} displayName={displayName} navigate={navigate} token={token} />   
        
-       <TopPanel userImg={`${userImg}?t=${new Date().getTime()}`} username={username} displayName={displayName} navigate={navigate} token={token} />    <div className="about-page">
+<div className="main-container">
+<div className="background-b" style={{ backgroundImage: `url(/background.png)` }}></div>
+        <div className="about-page">
       
       <h1>✨ About Us ✨</h1>
       <p><span role="img" aria-label="hand">🖐️</span> Welcome to Signly! Our mission is to help people learn sign language easily and effectively using cutting-edge technology.</p>
@@ -17,8 +20,9 @@ function About({ userImg, username, displayName, token }) {
       <p><span role="img" aria-label="heart">❤️</span> We are committed to making sign language education accessible to everyone!</p>
       
     </div>
-    <Footer />
     </div>
+    <Footer />
+    </>
   );
 }
 

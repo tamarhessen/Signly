@@ -1,7 +1,7 @@
 /* General game container */
 .game-container {
   overflow: hidden;
-
+min-height: 85%;
   width: 100%;
   background-color: #f4f4f7;
   position: relative;
@@ -21,7 +21,7 @@ height: 100%;
 background-size: cover;
 background-position: center;
 background-repeat: no-repeat;
-filter: blur(13px); /* דרגת הטשטוש */
+filter: blur(10px); /* דרגת הטשטוש */
 z-index: 0;
 }
 .background-b::after {

@@ -1,17 +1,17 @@
 .contact-container {
-    max-width: 500px;
+    max-width: 600px;
     margin: 50px auto;
-    padding: 20px;
+    padding: 25px;
     text-align: center;
     background: #f9f9f9;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
   }
   .main-container {
     min-height: 82%;
     ;
-    
+    position: relative;
   }
   
   .contact-form {
@@ -43,7 +43,7 @@
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    background-color: #ff69b4;
+    background-color: #1f4e79;
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -51,6 +51,6 @@
   }
   
   .send-button:hover, .back-button:hover {
-    background-color: #ff1493;
+    background-color: #153b5e;
   }
   
