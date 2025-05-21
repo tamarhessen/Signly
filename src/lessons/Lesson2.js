@@ -455,11 +455,11 @@ function Lesson2() {
                         
   <div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <div className="mt-4">
-                            <p className="text-xl font-semibold text-gray-700" style={{ fontSize: '2rem' }}>
-                                Signed so far: {correctLetters}
-                            </p>
-                            <p className="text-lg text-gray-600" style={{ fontSize: '2rem' }}>
-    {isLocked ? "" : `Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
+<p className="signed-count">
+   Signed so far: {correctLetters}
+</p>
+<p className="text-lg text-gray-600 sign-instruction">
+  {isLocked ? "" : `Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
 </p>
 
                         </div>

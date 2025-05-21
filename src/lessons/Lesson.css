@@ -269,4 +269,80 @@ min-height: 84%;
     font-size: 0.875rem;
     margin-bottom: 0.5rem;
   }
-  
+.signed-count {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #b73466; /* Tailwind's blue-700 */
+  background-color: #c591a644; /* Tailwind's blue-100 */
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+  top: -25vh; 
+  margin-bottom: 1rem;
+}
+.sign-instruction {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #b73466; /* Tailwind's blue-700 */
+  background-color: #c591a644; /* Tailwind's red-100 */
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+  top: -25vh; 
+}
+/* Instruction: "Sign the letter" */
+.sign-instruction {
+  font-size: 2rem;
+  font-weight: 700;
+  background-color: #fff7ed; /* soft orange background */
+  color: #c2410c; /* Tailwind orange-700 */
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Word Progress Section */
+.word-progress-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #334155; /* Tailwind slate-700 */
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.word-progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+  padding: 0 1rem;
+}
+
+.word-letter-box {
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  min-width: 60px;
+}
+
+/* Correct Letter */
+.word-letter-box.correct {
+  background-color: #dcfce7; /* green-100 */
+  color: #166534; /* green-700 */
+}
+
+/* Incorrect Letter */
+.word-letter-box.incorrect {
+  background-color: #fee2e2; /* red-100 */
+  color: #991b1b; /* red-700 */
+}
