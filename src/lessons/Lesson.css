@@ -161,7 +161,18 @@ min-height: 84%;
   .btn-primary:hover {
     background-color: #246199;
   }
+ .left-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   
+  .right-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
   .btn-primary:active {
     transform: scale(0.97);
     transition: all 0.2s;
@@ -187,11 +198,11 @@ min-height: 84%;
   }
   
   .camera-container {
-    text-align: center;
-    margin-bottom: 2rem;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    gap: 40px; /* רווח בין הצדדים */
+    padding: 20px;
   }
   
   .camera-feed {

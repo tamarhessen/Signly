@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './TopPanel.css';
 
 function TopPanel({ userImg, username, displayName, token }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
 
   // בדיקה אם יש state או נתונים מ-localStorage
   const state = location.state || {};
@@ -13,7 +14,6 @@ function TopPanel({ userImg, username, displayName, token }) {
   const currentDisplayName = state.displayName || localStorage.getItem("displayName") || displayName;
   const currentToken = state.token || localStorage.getItem("token") || token;
 
-  
   // שמירת הנתונים ב-localStorage כדי לוודא שהם נשמרים לאחר ניווטים
   useEffect(() => {
     if (currentUsername) localStorage.setItem("username", currentUsername);
@@ -21,6 +21,20 @@ function TopPanel({ userImg, username, displayName, token }) {
     if (currentUserImg) localStorage.setItem("userImg", currentUserImg);
     if (currentToken) localStorage.setItem("token", currentToken);
   }, [currentUsername, currentDisplayName, currentUserImg, currentToken]);
+
+  const handleSearch = () => {
+    if (searchQuery.trim() !== "") {
+      navigate("/sign-word", {
+        state: {
+          word: searchQuery.trim(),
+          username: currentUsername,
+          displayName: currentDisplayName,
+          userImg: currentUserImg,
+          token: currentToken
+        }
+      });
+    }
+  };
 
   return (
     <header className="header">
@@ -33,24 +47,35 @@ function TopPanel({ userImg, username, displayName, token }) {
             className="logo-image" 
           />
         </div>
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search a word..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+        <button onClick={handleSearch} className="search-button">
+  <img src="/magnifier.png" alt="Search" className="search-icon" />
+</button>
+
+        </div>
       </div>
 
       <nav className="nav-bar">
         <span onClick={() => navigate("/home", { state: { username: currentUsername, displayName: currentDisplayName, userImg: currentUserImg, token: currentToken } })} className={`nav-link ${location.pathname === "/" ? "active" : ""}`}>
           Home
         </span>
-
         <span onClick={() => navigate("/about", { state: { userImg: currentUserImg, username: currentUsername, displayName: currentDisplayName, token: currentToken } })} 
-      className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}>
-  About
-</span>
-<span 
-  onClick={() => navigate("/contact", { state: { userImg: currentUserImg, username: currentUsername, displayName: currentDisplayName, token: currentToken } })
-} 
-  className={`nav-link ${location.pathname === "/contact" ? "active" : ""}`}
->
-  Contact Us
-</span>
+          className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}>
+          About
+        </span>
+        <span 
+          onClick={() => navigate("/contact", { state: { userImg: currentUserImg, username: currentUsername, displayName: currentDisplayName, token: currentToken } })}
+          className={`nav-link ${location.pathname === "/contact" ? "active" : ""}`}
+        >
+          Contact Us
+        </span>
       </nav>
 
       <div className="profile-container" onClick={() => navigate("/MyProfilePage", { state: { username: currentUsername, displayName: currentDisplayName, userImg: currentUserImg, token: currentToken } })}>

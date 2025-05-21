@@ -120,3 +120,37 @@ body {
   color: #ffffff;
   font-family: 'Poppins', sans-serif;
 }
+.search-container {
+  display: inline-flex;
+  align-items: center;
+
+}
+
+.search-input {
+  height: 40px;
+  width: 250px; /* תגדירי את הרוחב שרוצים */
+  padding: 0 12px;
+  font-size: 1rem;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border: 5px solid #ccc;
+}
+
+.search-button {
+  width: 40px;   /* הכפתור קצת יותר גדול מהאייקון כדי שיהיה נוח ללחיצה */
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-icon {
+  width: 40px;
+  height: 40px;
+}
+
+

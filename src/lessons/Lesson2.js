@@ -394,8 +394,9 @@ function Lesson2() {
                 navigate={navigate} 
                 token={currentToken} 
             />
-            {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+
             <div className="cc-container">
+            {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
           <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }}/>
         
       
@@ -439,6 +440,7 @@ function Lesson2() {
                     </div>
                 ) : cameraActive ? (
                     <div className="camera-container">
+                          <div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <img 
                             src="http://127.0.0.1:5001/video_feed" 
                             alt="Camera Feed" 
@@ -448,7 +450,10 @@ function Lesson2() {
                         <div className="gesture-display">
                   <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
                 </div>
+                </div>
                         </div>
+                        
+  <div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <div className="mt-4">
                             <p className="text-xl font-semibold text-gray-700" style={{ fontSize: '2rem' }}>
                                 Signed so far: {correctLetters}
@@ -465,8 +470,8 @@ function Lesson2() {
   </div>
 )}
 
-                    </div>
-                ) : null}
+                  
+               
                 {levelCompleted && (
                      <div className="success-msg-box">
                         <p className="success-text">
@@ -475,9 +480,12 @@ function Lesson2() {
                         <button onClick={nextLevel} className="start-button">
                             {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
                         </button>
+                        
                     </div>
                 )}
-            </div>
+                </div>  
+            </div> ) : null}
+             </div>
             <dialog id="outOfLivesDialog" className="dialog-box">
             <h2 className="dialog-title">Out of Lives 💀</h2>
             <p className="dialog-msg">You've run out of lives. Please come back later or try a different level.</p>

@@ -355,9 +355,10 @@ function Lesson4() {
     return (
         <>
             <TopPanel userImg={currentUserImg} username={currentUsername} navigate={navigate} token={currentToken} />
-            {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+          
     
             <div className="cc-container">
+            {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
           <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }}/>
         
       
@@ -412,6 +413,7 @@ function Lesson4() {
     
                 {cameraActive && (
                      <div className="camera-container">
+                        
                         <img src="http://127.0.0.1:5001/video_feed" alt="Camera Feed"  className="camera-feed" />
                         <div className="text-center w-full mt-4">
                         <div className="gesture-display">
