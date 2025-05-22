@@ -19,7 +19,7 @@ const signImages = {
 function SignWordSearch() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { word, currentUserImg, currentUsername, currentDisplayName, currentToken } = location.state || {};
+  const { word, username: currentUsername, userImg: currentUserImg, displayName: currentDisplayName, token: currentToken } = location.state || {};
 
   const [currentWord, setCurrentWord] = useState('');
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
@@ -33,7 +33,7 @@ function SignWordSearch() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [canTryAgain, setCanTryAgain] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-
+console.log(currentUsername+"sss");
   useEffect(() => {
     if (word) {
       setCurrentWord(word.toUpperCase());
@@ -85,20 +85,9 @@ function SignWordSearch() {
     setIsLocked(false);
     setCanTryAgain(true);
   };
-  
+ 
   const goBackToSearch = () => {
-    navigate('/home', {
-      state: {
-        currentUsername,
-        currentDisplayName,
-        currentUserImg,
-        currentToken,
-
-
-       
-      
-      }
-    });
+    navigate('/home', { state: { username: currentUsername, displayName:currentDisplayName, profilePictureURL: currentUserImg, token: currentToken } });
   };
 
   return (
