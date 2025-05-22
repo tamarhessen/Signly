@@ -352,158 +352,156 @@ function Lesson4() {
         }
     };
 
-    return (
-        <>
-            <TopPanel userImg={currentUserImg} username={currentUsername} navigate={navigate} token={currentToken} />
-            {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
-    
-            <div className="cc-container">
-          <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }}/>
-        
+ return (
+    <>
+        <TopPanel userImg={currentUserImg} username={currentUsername} navigate={navigate} token={currentToken} />
       
-            <h1 className="lesson-title">
-                    Level {currentLevel + 1} - Sentence: {currentSentence}
-                </h1>
+        <div className="cc-container">
+        {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+        <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }}/>
     
-                <div className="stats-container">
-              <div className="points-box">
-                <p className="points-label">Points:</p>
-                <p className="points-value">{userPoints}</p>
-              </div>
-      
-              <div className="lives-box">
-                <div className="lives-icons">
-                  {Array.from({ length: lives }).map((_, i) => (
-                    <span key={i} className="heart">❤️</span>
-                  ))}
-                  {Array.from({ length: 3 - lives }).map((_, i) => (
-                    <span key={`empty-${i}`} className="heart-empty">🤍</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-    
-                {showSignImage && (
-                    <div className="text-center mb-8">
-                        <div className="flex justify-center items-center space-x-2">
-                            {words.map((word, index) => (
-                                <div key={index} className="flex flex-col items-center">
-                                    {word.split('').map((letter, letterIndex) => (
-                                        <img
-                                            key={letterIndex}
-                                            src={signImages[letter.toUpperCase()]}
-                                            alt={`Sign for ${letter}`}
-                                             className="sign-image"
-                                        />
-                                    ))}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-              
-            )}
-              {lives > 0 && showSignImage && (
-                <button onClick={startCamera} className="btn-primary">
-                TRY IT YOURSELF
-              </button>
-              )}
-              
-           
-    
-                {cameraActive && (
-                     <div className="camera-container">
-                        <img src="http://127.0.0.1:5001/video_feed" alt="Camera Feed"  className="camera-feed" />
-                        <div className="text-center w-full mt-4">
-                        <div className="gesture-display">
-                        <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
-                            </div>
-                        </div>
-                    </div>
-                )}
-    {cameraActive && (
-              
-                <div className="text-center mt-4">
-    <p className={`font-semibold mt-2 ${isLocked ? 'text-red-600' : 'text-gray-800'}`} style={{ fontSize: '2rem' }}>
-        {isLocked ?"" : `✍️ Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
-    </p>
-</div>
-)}
+        <h1 className="lesson-title">
+                Level {currentLevel + 1} - Sentence: {currentSentence}
+            </h1>
 
-    
-                {/* Wrong Letter Message */}
-                {incorrectLetter && (
-                    <div className="text-center mt-4">
-                        <p className="error-text">❌ Wrong Sign! Try Again</p>
-                        {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
-                    </div>
-                )}
-      {cameraActive && (
-               
-                <div className="mt-6 text-center">
-                    <p className="font-bold text-xl text-gray-700 mb-2">Word Progress:</p>
-                    <div className="grid grid-cols-[repeat(auto-fit,minmax(60px,1fr))] gap-3 justify-center">
-                        {letters.map((letter, index) => (
-                            <div
-                                key={index}
-                                className={`px-3 py-2 rounded-xl text-xl font-semibold shadow-md ${
-                                    recognizedLetters[index]
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'bg-red-100 text-red-600'
-                                }`}
-                            >
-                                {letter.toUpperCase()} {recognizedLetters[index] ? '✔️' : '❌'}
+            <div className="stats-container">
+          <div className="points-box">
+            <p className="points-label">Points:</p>
+            <p className="points-value">{userPoints}</p>
+          </div>
+  
+          <div className="lives-box">
+            <div className="lives-icons">
+              {Array.from({ length: lives }).map((_, i) => (
+                <span key={i} className="heart">❤️</span>
+              ))}
+              {Array.from({ length: 3 - lives }).map((_, i) => (
+                <span key={`empty-${i}`} className="heart-empty">🤍</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+            {showSignImage && (
+                <div className="text-center mb-8">
+                    <div className="flex justify-center items-center space-x-2">
+                        {words.map((word, index) => (
+                            <div key={index} className="flex flex-col items-center">
+                                {word.split('').map((letter, letterIndex) => (
+                                    <img
+                                        key={letterIndex}
+                                        src={signImages[letter.toUpperCase()]}
+                                        alt={`Sign for ${letter}`}
+                                        className="sign-image"
+                                    />
+                                ))}
                             </div>
                         ))}
                     </div>
                 </div>
-                )}
-    
-                {/* Word Completed */}
-                {wordCompleted && !levelCompleted && (
-                    <div className="mt-6 text-center">
-                        <p className="success-text">
-                            ✅ You finished the word "{currentWord}"!
-                        </p>
-                        <button onClick={nextWord} className="start-button mt-2">
-                            Next Word
-                        </button>
+          
+        )}
+          {lives > 0 && showSignImage && (
+            <button onClick={startCamera} className="btn-primary">
+            TRY IT YOURSELF
+          </button>
+          )}
+          
+        {/* Modified camera section to match Lesson2's layout */}
+        {cameraActive && (
+            <div className="camera-container">
+                {/* Left side with camera and gesture display */}
+                <div className="left-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <img 
+                        src="http://127.0.0.1:5001/video_feed" 
+                        alt="Camera Feed" 
+                        className="camera-feed" 
+                    />
+                    <div className="gesture-display">
+                        <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
                     </div>
-                )}
-            </div>
-    
-            {/* Level Completed */}
-            {levelCompleted && (
-                < div className="success-msg-box">
-                <p className="success-text">
-                        ✅ Correct! You signed {levels[currentLevel]}.
-                    </p>
-                    <button onClick={nextLevel} className="start-button mt-4">
-                        {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
-                    </button>
                 </div>
-            )}
-                 <dialog id="outOfLivesDialog" className="dialog-box">
-            <h2 className="dialog-title">Out of Lives 💀</h2>
-            <p className="dialog-msg">You've run out of lives. Please come back later or try a different level.</p>
-            <form method="dialog">
-              <button
-                className="btn-primary"
-                onClick={() => navigate("/home", {
-                  state: {
-                    username: currentUsername,
-                    displayName: currentDisplayName,
-                    userImg: currentUserImg,
-                    token: currentToken
-                  }
-                })}
-              >
-                Go Home
-              </button>
-            </form>
-          </dialog>
-            <Footer />
-        </>
-    );
-    }
-    
+                
+                {/* Right side with instructions and feedback */}
+                <div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+<div className="mt-4 word-progress-wrapper">
+  <p className="sign-instruction">
+    {isLocked ? "" : `✍️ Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
+  </p>
+
+  <p className="word-progress-title">Word Progress:</p>
+
+  <div className="word-progress-grid">
+    {letters.map((letter, index) => (
+      <div
+        key={index}
+        className={`word-letter-box ${recognizedLetters[index] ? 'correct' : 'incorrect'}`}
+      >
+        {letter.toUpperCase()} {recognizedLetters[index] ? '✔️' : '❌'}
+      </div>
+    ))}
+  </div>
+
+
+                    </div>
+
+                    {/* Wrong Letter Message */}
+                    {incorrectLetter && (
+                        <div className="error-msg-box">
+                            <p className="error-text">❌ Wrong Sign! Try Again</p>
+                            {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
+                        </div>
+                    )}
+
+                    {/* Word Completed */}
+                    {wordCompleted && !levelCompleted && (
+                        <div className="success-msg-box">
+                            <p className="success-text">
+                                ✅ You finished the word "{currentWord}"!
+                            </p>
+                            <button onClick={nextWord} className="start-button mt-2">
+                                Next Word
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Level Completed */}
+                    {levelCompleted && (
+                        <div className="success-msg-box">
+                            <p className="success-text">
+                                ✅ Correct! You signed {levels[currentLevel]}.
+                            </p>
+                            <button onClick={nextLevel} className="start-button mt-4">
+                                {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        )}
+        </div>
+
+        <dialog id="outOfLivesDialog" className="dialog-box">
+        <h2 className="dialog-title">Out of Lives 💀</h2>
+        <p className="dialog-msg">You've run out of lives. Please come back later or try a different level.</p>
+        <form method="dialog">
+          <button
+            className="btn-primary"
+            onClick={() => navigate("/home", {
+              state: {
+                username: currentUsername,
+                displayName: currentDisplayName,
+                userImg: currentUserImg,
+                token: currentToken
+              }
+            })}
+          >
+            Go Home
+          </button>
+        </form>
+      </dialog>
+        <Footer />
+    </>
+);
+}
 export default Lesson4;

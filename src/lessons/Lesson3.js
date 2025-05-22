@@ -387,8 +387,9 @@ function Lesson3() {
                 navigate={navigate} 
                 token={currentToken} 
             />
-            {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+      
             <div className="cc-container">
+            {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
           <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }}/>
         
       
@@ -432,45 +433,53 @@ function Lesson3() {
                     </div>
                 ) : cameraActive ? (
                     <div className="camera-container">
-                        <img 
-                            src="http://127.0.0.1:5001/video_feed" 
-                            alt="Camera Feed" 
-                            className="camera-feed"
-                        />
-                        <div className="text-center w-full mt-4">
-                        <div className="gesture-display">
-                  <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
-                </div>
-                        </div>
-                        <div className="mt-4">
-                            <p className="text-xl font-semibold text-gray-700" style={{ fontSize: '2rem' }}>
-                                Signed so far: {correctLetters}
-                            </p>
-                            <p className="text-lg text-gray-600" style={{ fontSize: '2rem' }}>
-    {isLocked ? "" : `Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
+                    <div className="left-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <img 
+                      src="http://127.0.0.1:5001/video_feed" 
+                      alt="Camera Feed" 
+                      className="camera-feed"
+                  />
+                  <div className="text-center w-full mt-4">
+                  <div className="gesture-display">
+            <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
+          </div>
+          </div>
+                  </div>
+                  
+<div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <div className="mt-4">
+<p className="signed-count">
+   Signed so far: {correctLetters}
+</p>
+<p className="text-lg text-gray-600 sign-instruction">
+  {isLocked ? "" : `Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
 </p>
 
-                        </div>
-                        {incorrectLetter && (
-    <div className="error-msg-box">
-    <p className="error-text">{errorMessage}</p>
-    {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
-  </div>
+
+                  </div>
+                  {incorrectLetter && (
+<div className="error-msg-box">
+<p className="error-text">{errorMessage}</p>
+{!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
+</div>
 )}
 
-                    </div>
-                ) : null}
-                {levelCompleted && (
-                     <div className="success-msg-box">
-                        <p className="success-text">
-                            ✅ Correct! You signed {levels[currentLevel]}.
-                        </p>
-                        <button onClick={nextLevel} className="start-button">
-                            {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
-                        </button>
-                    </div>
-                )}
-            </div>
+            
+         
+          {levelCompleted && (
+               <div className="success-msg-box">
+                  <p className="success-text">
+                      ✅ Correct! You signed {levels[currentLevel]}.
+                  </p>
+                  <button onClick={nextLevel} className="start-button">
+                      {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
+                  </button>
+                  
+              </div>
+          )}
+          </div>  
+      </div> ) : null}
+       </div>
             <dialog id="outOfLivesDialog" className="dialog-box">
             <h2 className="dialog-title">Out of Lives 💀</h2>
             <p className="dialog-msg">You've run out of lives. Please come back later or try a different level.</p>

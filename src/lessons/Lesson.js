@@ -319,11 +319,12 @@ function Lesson() {
             navigate={navigate}
             token={currentToken}
           />
-          {showConfetti && (
-            <Confetti width={window.innerWidth} height={window.innerHeight} />
-          )}
+          
       
       <div className="cc-container">
+      {showConfetti && (
+            <Confetti width={window.innerWidth} height={window.innerHeight} />
+          )}
           <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }}/>
         
       
@@ -389,29 +390,36 @@ function Lesson() {
               </div>
             ) : cameraActive ? (
               <div className="camera-container">
-                <img
-                  src="http://127.0.0.1:5001/video_feed"
-                  alt="Camera Feed"
-                  className="camera-feed"
-                />
-                <div className="gesture-display">
-                  <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
-                </div>
-                {errorMessage && (
-                  <div className="error-msg-box">
-                    <p className="error-text">{errorMessage}</p>
-                    {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
-                  </div>
-                )}
-                {levelCompleted && (
-                  <div className="success-msg-box">
-                    <p className="success-text">✅ Correct! You signed {levels[currentLevel]}.</p>
-                    <button onClick={nextLevel} className="start-button">
-                      {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
-                    </button>
-                  </div>
-                )}
-              </div>
+               {/* צד שמאל - מצלמה והאות הנוכחית */}
+  <div className="left-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <img
+      src="http://127.0.0.1:5001/video_feed"
+      alt="Camera Feed"
+      className="camera-feed"
+    />
+    <div className="gesture-display">
+      <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
+    </div>
+  </div>
+
+  {/* צד ימין - שגיאות, לחצנים והודעות הצלחה */}
+  <div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    {errorMessage && (
+      <div className="error-msg-box">
+        <p className="error-text">{errorMessage}</p>
+        {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
+      </div>
+    )}
+    {levelCompleted && (
+      <div className="success-msg-box">
+        <p className="success-text">✅ Correct! You signed {levels[currentLevel]}.</p>
+        <button onClick={nextLevel} className="start-button">
+          {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
+        </button>
+      </div>
+    )}
+  </div>
+</div>
             ) : null}
           </div>
       

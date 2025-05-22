@@ -23,7 +23,7 @@ import Level3 from './lessons/Level3.js';
 import Lesson3 from './lessons/Lesson3';
 import Level4 from './lessons/Level4.js';
 import Lesson4 from './lessons/Lesson4';
-
+import SignWordSearch from './home/SignWordSearch.js';
 import LevelsPage from './lessons/levelsPage'; // Import LevelsPage component
 import Leaderboard from './Leaderboard.js';
 import FAQ from './FAQ.js';
@@ -149,6 +149,8 @@ function App() {
         <Route path="/levels26" element={<Levels />} />
         <Route path="/achive" element={<Leaderboard />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/sign-word" element={<SignWordSearch />} />
+
 
         <Route path="/lesson/:letter" element={<Lesson />} />
 
