@@ -13,15 +13,11 @@ import Navigation from './Navigation';
 function HomeScreen({setLoggedIn}) {
     const [mode, setMode] = useState(true);
     const location = useLocation();
-    const { state } = location;
+    const state = location.state || {};
     const { username,displayName, profilePictureURL,token } = state;
     console.log(token);
     console.log(username+"r");
-    
-      const [points, setPoints] = useState(0);
-      const [level, setLevel] = useState(1);
-      const [nextLevelPoints, setNextLevelPoints] = useState(1000);
-      const [error, setError] = useState(null);
+   
    
     return (
         <>
@@ -30,7 +26,7 @@ function HomeScreen({setLoggedIn}) {
                 {/* Assuming profilePicture is a file object */}
                
               
-                <MainScreen setLoggedIn={setLoggedIn} username={username} displayName={displayName} userImg={profilePictureURL} mode={mode} setMode={setMode} token={token} ></MainScreen>
+                <MainScreen  username={username} displayName={displayName} userImg={profilePictureURL} token={token} ></MainScreen>
 
             </div>
         </>
