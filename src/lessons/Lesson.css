@@ -172,6 +172,7 @@ min-height: 84%;
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    margin-top: -300px;
   }
   .btn-primary:active {
     transform: scale(0.97);
@@ -277,8 +278,7 @@ min-height: 84%;
   padding: 1rem 1.5rem;
   border-radius: 0.75rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  position: relative;
-  top: -25vh; 
+  position: relative; 
   margin-bottom: 1rem;
 }
 .sign-instruction {
@@ -290,7 +290,6 @@ min-height: 84%;
   border-radius: 0.75rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   position: relative;
-  top: -25vh; 
 }
 /* Instruction: "Sign the letter" */
 .sign-instruction {
@@ -345,4 +344,11 @@ min-height: 84%;
 .word-letter-box.incorrect {
   background-color: #fee2e2; /* red-100 */
   color: #991b1b; /* red-700 */
+}
+.word-progress-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem; /* space below */
+  gap: 1rem;
 }

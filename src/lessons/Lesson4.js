@@ -411,7 +411,7 @@ function Lesson4() {
         {cameraActive && (
             <div className="camera-container">
                 {/* Left side with camera and gesture display */}
-                <div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div className="left-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <img 
                         src="http://127.0.0.1:5001/video_feed" 
                         alt="Camera Feed" 
@@ -424,22 +424,24 @@ function Lesson4() {
                 
                 {/* Right side with instructions and feedback */}
                 <div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div className="mt-4">
-<p className="sign-instruction">
-  {isLocked ? "" : `✍️ Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
-</p>
+<div className="mt-4 word-progress-wrapper">
+  <p className="sign-instruction">
+    {isLocked ? "" : `✍️ Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
+  </p>
 
-<p className="word-progress-title">Word Progress:</p>
-<div className="word-progress-grid">
-  {letters.map((letter, index) => (
-    <div
-      key={index}
-      className={`word-letter-box ${recognizedLetters[index] ? 'correct' : 'incorrect'}`}
-    >
-      {letter.toUpperCase()} {recognizedLetters[index] ? '✔️' : '❌'}
-    </div>
-  ))}
-</div>
+  <p className="word-progress-title">Word Progress:</p>
+
+  <div className="word-progress-grid">
+    {letters.map((letter, index) => (
+      <div
+        key={index}
+        className={`word-letter-box ${recognizedLetters[index] ? 'correct' : 'incorrect'}`}
+      >
+        {letter.toUpperCase()} {recognizedLetters[index] ? '✔️' : '❌'}
+      </div>
+    ))}
+  </div>
+
 
                     </div>
 

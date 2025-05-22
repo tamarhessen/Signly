@@ -433,7 +433,7 @@ function Lesson3() {
                     </div>
                 ) : cameraActive ? (
                     <div className="camera-container">
-                    <div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div className="left-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <img 
                       src="http://127.0.0.1:5001/video_feed" 
                       alt="Camera Feed" 
