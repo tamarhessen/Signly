@@ -88,16 +88,12 @@ function SignWordSearch() {
   
   const goBackToSearch = () => {
     navigate('/home', {
-      state: {
-        currentUsername,
-        currentDisplayName,
-        currentUserImg,
-        currentToken,
-
-
-       
-      
-      }
+                    state: {
+                      username: currentUsername,
+                      displayName: currentDisplayName,
+                      userImg: currentUserImg,
+                      token: currentToken
+                    }
     });
   };
 

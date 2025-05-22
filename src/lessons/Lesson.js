@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
@@ -12,12 +12,13 @@ function Lesson() {
     const [lives, setLives] = useState();
     const [isOutOfLives, setIsOutOfLives] = useState(false);
     const { letter, currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } = location.state || {};
-    
+    const [remainingLetters, setRemainingLetters] = useState([]);
     const levels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
     const signImages = levels.reduce((acc, letter) => {
         acc[letter] = `/signs/${letter}.png`;
         return acc;
     }, {});
+    
     const [currentLevel, setCurrentLevel] = useState(levels.indexOf(letter) || 0);
     const [userPoints, setUserPoints] = useState(0);
     const [completedLevels, setCompletedLevels] = useState([]);
@@ -31,6 +32,72 @@ function Lesson() {
     const [timeLeft, setTimeLeft] = useState(null);
     const [showDialog, setShowDialog] = useState(false);
     const [levelLocked, setLevelLocked] = useState(false);
+    const [awaitingContinue, setAwaitingContinue] = useState(false);
+    
+    // New state for cumulative learning
+    const [currentTargetLetter, setCurrentTargetLetter] = useState('');
+    const [practiceLetters, setPracticeLetters] = useState([]);
+    const [correctSignsCount, setCorrectSignsCount] = useState(0);
+    const [requiredSigns, setRequiredSigns] = useState(3); // Number of correct signs needed to complete level
+    const [isFirstSign, setIsFirstSign] = useState(true); // Track if this is the first sign of the level
+    const [showHelpModal, setShowHelpModal] = useState(false);
+    const [helpLetter, setHelpLetter] = useState('');
+    const helpDialogRef = useRef(null);
+
+const handleContinue = () => {
+    // Remove the current letter from remainingLetters
+    setRemainingLetters(prev => {
+        const updated = prev.filter(l => l !== currentTargetLetter);
+        // Pick next letter from updated list
+        const nextLetter = updated.length > 0 ? updated[Math.floor(Math.random() * updated.length)] : '';
+        setCurrentTargetLetter(nextLetter);
+        setCanTryAgain(true);
+        setAwaitingContinue(false);
+        return updated;
+    });
+};
+    
+    // Generate practice letters for current level (all letters up to current level)
+useEffect(() => {
+    const lettersToLearn = levels.slice(0, currentLevel + 1);
+    setPracticeLetters(lettersToLearn);
+
+    // Set required signs to match the level (A=1, B=2, C=3, etc.)
+    setRequiredSigns(currentLevel + 1);
+
+    // Always start with the current level's letter (the new letter they're learning)
+    setCurrentTargetLetter(levels[currentLevel]);
+    setIsFirstSign(true);
+
+    // Initialize remaining letters (excluding the first one, which is shown first)
+    setRemainingLetters(lettersToLearn.filter(l => l !== levels[currentLevel]));
+}, [currentLevel]);
+    
+    // Function to get next random letter
+const getNextRandomLetter = () => {
+    if (remainingLetters.length === 0) return '';
+    const randomIndex = Math.floor(Math.random() * remainingLetters.length);
+    return remainingLetters[randomIndex];
+};
+    
+    // Open the dialog when showHelpModal is true
+    useEffect(() => {
+        if (showHelpModal && helpDialogRef.current) {
+            helpDialogRef.current.showModal();
+        } else if (!showHelpModal && helpDialogRef.current) {
+            helpDialogRef.current.close();
+        }
+    }, [showHelpModal]);
+
+    const openHelp = (letter) => {
+        setHelpLetter(letter);
+        setShowHelpModal(true);
+    };
+
+    const closeHelp = () => {
+        setShowHelpModal(false);
+        setHelpLetter('');
+    };
     
     // Fetch time left for life regeneration
     const fetchTimeLeft = async () => {
@@ -184,7 +251,7 @@ function Lesson() {
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
     
-    // Gesture detection
+    // Gesture detection - Modified for cumulative learning
     useEffect(() => {
         if (cameraActive && canTryAgain) {
             const interval = setInterval(() => {
@@ -193,16 +260,28 @@ function Lesson() {
                     .then(data => {
                         setGesture(data.gesture);
 
-                        if (data.gesture === levels[currentLevel]) {
-                            setLevelCompleted(true);
-                            setCanTryAgain(false);
-                            setErrorMessage("");
+if (data.gesture === currentTargetLetter) {
+    // Correct sign!
+    const newCorrectCount = correctSignsCount + 1;
+    setCorrectSignsCount(newCorrectCount);
+    setErrorMessage("");
+    setIsFirstSign(false); // No longer the first sign
 
-                            setShowConfetti(true);
-                            setTimeout(() => {
-                                setShowConfetti(false);
-                                setTimeout(() => setShowConfetti(true), 500);
-                            }, 5000);
+    if (newCorrectCount >= requiredSigns) {
+        // Level completed!
+        setLevelCompleted(true);
+        setCanTryAgain(false);
+        setShowConfetti(true);
+        setTimeout(() => {
+            setShowConfetti(false);
+            setTimeout(() => setShowConfetti(true), 500);
+        }, 5000);
+    } else {
+        // Pause and show Continue button
+        setAwaitingContinue(true);
+        setCanTryAgain(false);
+    }
+
                         } else if (data.gesture !== 'Nothing') {
                             setLives(prev => {
                                 const newLives = prev - 1;
@@ -211,7 +290,7 @@ function Lesson() {
                                     setCameraActive(false);
                                     setErrorMessage("💀 You're out of lives! Please try again later.");
                                 } else {
-                                    setErrorMessage(`❌ Incorrect! Try signing '${levels[currentLevel]}' again.`);
+                                    setErrorMessage(`❌ Incorrect! Try signing '${currentTargetLetter}' again.`);
                                 }
                                 updateLives(newLives);
 
@@ -225,33 +304,24 @@ function Lesson() {
 
             return () => clearInterval(interval);
         }
-    }, [cameraActive, currentLevel, canTryAgain, levelCompleted]);
+    }, [cameraActive, currentTargetLetter, canTryAgain, levelCompleted, correctSignsCount, requiredSigns]);
 
     // Update lives in the database
     const updateLives = async (newLives) => {
         try {
-            // אין צורך לשלוח את החיים החדשים, השרת יחשב זאת בעצמו
             const res = await fetch(`http://localhost:5000/api/users/lose-life/${currentUsername}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     authorization: `Bearer ${currentToken}`,
                 },
-                // אין צורך בשליחת גוף הבקשה אם השרת לא משתמש בזה
                 body: JSON.stringify({ lives: newLives }),
             });
         
             if (res.ok) {
-               
                 console.log('Lives updated successfully:');
-               
-                
-               
             } else {
-               
                 console.error(`Failed to update lives: ${res.status}`);
-                
-               
             }
         } catch (error) {
             console.error('Error updating lives:', error);
@@ -267,6 +337,8 @@ function Lesson() {
         setShowSignImage(false);
         setCameraActive(true);
         setErrorMessage("");
+        setCorrectSignsCount(0); // Reset progress
+        setIsFirstSign(true); // Reset to first sign
     };
 
     // Retry gesture button handler
@@ -304,6 +376,7 @@ function Lesson() {
                 setCameraActive(false);
                 setShowSignImage(true);
                 setErrorMessage("");
+                setCorrectSignsCount(0);
             }
 
             navigate('/levels26', { state: { currentUserImg, currentUsername, currentDisplayName, currentToken, userPoints } });
@@ -358,23 +431,9 @@ function Lesson() {
                     You're out of lives! You need at least one heart to attempt this level.
                   </p>
       
-                  {timeLeft !== null && (
-                    <div className="next-heart-box">
-                      <p className="next-heart-label">Next heart in:</p>
-                      <p className="next-heart-time">{formatTime(timeLeft)}</p>
-                    </div>
-                  )}
+
       
-                  <button className="btn-primary" onClick={() => navigate("/home", {
-                    state: {
-                      username: currentUsername,
-                      displayName: currentDisplayName,
-                      userImg: currentUserImg,
-                      token: currentToken
-                    }
-                  })}>
-                    Return Home
-                  </button>
+
                 </div>
               </div>
             ) : showSignImage ? (
@@ -390,38 +449,79 @@ function Lesson() {
               </div>
             ) : cameraActive ? (
               <div className="camera-container">
-               {/* צד שמאל - מצלמה והאות הנוכחית */}
-  <div className="left-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-    <img
-      src="http://127.0.0.1:5001/video_feed"
-      alt="Camera Feed"
-      className="camera-feed"
-    />
-    <div className="gesture-display">
-      <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
-    </div>
-  </div>
+             
+               
+                {/* Left side - Camera and detected gesture */}
+                <div className="left-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <img
+                    src="http://127.0.0.1:5001/video_feed"
+                    alt="Camera Feed"
+                    className="camera-feed"
+                  />
+                  <div className="gesture-display">
+                    <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
+                  </div>
+                </div>
 
-  {/* צד ימין - שגיאות, לחצנים והודעות הצלחה */}
-  <div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-    {errorMessage && (
-      <div className="error-msg-box">
-        <p className="error-text">{errorMessage}</p>
-        {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
+                {/* Right side - Messages and buttons */}
+                <div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+ {!levelCompleted && (
+  <>
+    {/* Current target and help button */}
+    <div className="current-target">
+      <h2>Sign the letter: <span className="target-letter">{currentTargetLetter}</span></h2>
+
+      {/* Help button for current target letter */}
+      <button 
+        className="help-btn"
+        onClick={() => openHelp(currentTargetLetter)}
+      >
+        Need Help? 📖
+      </button>
+    </div>
+
+    {/* Progress indicator */}
+    <div className="progress-bar-levels">
+      <p>Progress: {correctSignsCount}/{requiredSigns} correct signs</p>
+      <div className="progress-bar-outer">
+        <div
+          className="progress-bar-inner"
+          style={{ width: `${(correctSignsCount / requiredSigns) * 100}%` }}
+        />
       </div>
-    )}
-    {levelCompleted && (
-      <div className="success-msg-box">
-        <p className="success-text">✅ Correct! You signed {levels[currentLevel]}.</p>
-        <button onClick={nextLevel} className="start-button">
-          {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
-        </button>
-      </div>
-    )}
+    </div>
+  </>
+)}
+
+
+                  {errorMessage && (
+                    <div className="error-msg-box">
+                      <p className="error-text">{errorMessage}</p>
+                      {!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
+                    </div>
+                  )}
+                  {levelCompleted && (
+                    <div className="success-msg-box">
+                      <p className="success-text">🎉 Level Complete! You mastered all the letters!</p>
+                      <button onClick={nextLevel} className="start-button">
+                        {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
+                      </button>
+                    </div>
+                  )}
+                  {awaitingContinue && !levelCompleted && (
+  <div className="continue-box">
+    <p className="success-text">✅ Correct! Well done.</p>
+    <button className="btn-primary" onClick={handleContinue}>
+      Continue
+    </button>
   </div>
-</div>
+)}
+                </div>
+              </div>
             ) : null}
           </div>
+      
+
       
           <dialog id="outOfLivesDialog" className="dialog-box">
             <h2 className="dialog-title">Out of Lives 💀</h2>
@@ -441,6 +541,21 @@ function Lesson() {
                 Go Home
               </button>
             </form>
+          </dialog>
+
+          {/* Help Modal as a dialog */}
+          <dialog ref={helpDialogRef} className="help-dialog" onClose={closeHelp}>
+            <div className="help-modal-header">
+                <h3>How to sign: {helpLetter}</h3>
+                <button className="close-help-btn" onClick={closeHelp}>×</button>
+            </div>
+            <div className="help-modal-content">
+                <img
+                    src={`/signs/${helpLetter}.png`}
+                    alt={`Sign for ${helpLetter}`}
+                    className="help-sign-image"
+                />
+            </div>
           </dialog>
       
           <Footer />
