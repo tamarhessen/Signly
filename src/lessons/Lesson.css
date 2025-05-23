@@ -436,3 +436,27 @@ min-height: 84%;
   transition: width 0.3s;
   border-radius: 9px 0 0 9px;
 }
+.hearts-display {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.heart-icon {
+  font-size: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.heart-icon.filled {
+  color: #8b5cf6;
+}
+
+.heart-icon.empty {
+  color: #d1d5db;
+  font-size: 1.8rem;
+}
+
+.hearts-count {
+  margin-left: 8px;
+  font-weight: bold;
+}

@@ -10,28 +10,53 @@ function LevelsPage() {
    
     const {  currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } = location.state || {};
 
-
     const [userPoints, setUserPoints] = useState(currentPoints);
+    const [userHearts, setUserHearts] = useState(3); // Add hearts state
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [hasCompletedTraining, setHasCompletedTraining] = useState(false); // Track training completion
 
     const navigate = useNavigate();
 
-    // Levels array to represent levels from 1 to 6
+    // Updated levels array - Level 1 is now training, others require training completion
     const levels = [
-        { level: 1, requiredPoints: 0 },
-        { level: 2, requiredPoints: 26 },
-        { level: 3, requiredPoints: 52 },
-        { level: 4, requiredPoints: 78 },
-
+        { 
+            level: 1, 
+            requiredPoints: 0, 
+            isTraining: true,
+            title: "Training Level",
+            description: "Master the basics and earn hearts! Complete this level to unlock others."
+        },
+        { 
+            level: 2, 
+            requiredPoints: 26, 
+            isTraining: false,
+            title: "Basic Words",
+            description: "Practice basic everyday words to strengthen your sign language vocabulary."
+        },
+        { 
+            level: 3, 
+            requiredPoints: 52, 
+            isTraining: false,
+            title: "Advanced Words", 
+            description: "Learn advanced words to expand your fluency and expressiveness in sign language."
+        },
+        { 
+            level: 4, 
+            requiredPoints: 78, 
+            isTraining: false,
+            title: "Full Sentences",
+            description: "Practice full sentences to become fluent in everyday sign language conversations."
+        },
     ];
 
-    // Function to fetch points from the server
+    // Function to fetch user data from the server
     const fetchData = async () => {
         try {
-            console.log("Fetching points for user:", currentUsername);
+            console.log("Fetching user data for:", currentUsername);
 
-            const res = await fetch(`http://localhost:5000/api/users/${currentUsername}/points`, {
+            // Fetch points
+            const pointsRes = await fetch(`http://localhost:5000/api/users/${currentUsername}/points`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,17 +64,25 @@ function LevelsPage() {
                 },
             });
 
-            console.log("Response status:7", res.status);
-            console.log("Current Token:", currentToken);
-
-
-            if (res.ok) {
-                const points = await res.text(); // API returns a plain number
-                console.log("API Response11:", points);
-                setUserPoints(Number(points)); // Convert the response to a number
-            } else {
-                throw new Error('Failed to fetch points');
+            if (pointsRes.ok) {
+                const points = await pointsRes.text();
+                setUserPoints(Number(points));
             }
+
+            // Fetch hearts - you'll need to add this endpoint to your backend
+            const heartsRes = await fetch(`http://localhost:5000/api/users/lives/${currentUsername}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `bearer ${currentToken}`,
+                },
+            });
+
+            if (heartsRes.ok) {
+                const hearts = await heartsRes.text();
+                setUserHearts(Number(hearts));
+            }
+
         } catch (error) {
             setError(error.message);
         } finally {
@@ -57,137 +90,162 @@ function LevelsPage() {
         }
     };
 
-    // Function to increase points on the server and update the local state
-    const increasePoints = async (additionalPoints) => {
+    // Function to mark training as completed
+    const completeTraining = async () => {
         try {
-            const res = await fetch(`http://localhost:5000/api/users/${currentUsername}/points`, {
-                method: 'PUT', // Update points
+            const res = await fetch(`http://localhost:5000/api/users/${currentUsername}/complete-training`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     authorization: `bearer ${currentToken}`,
                 },
-                body: JSON.stringify({ points: userPoints + additionalPoints }), // Add additional points
             });
 
             if (res.ok) {
-                const points = await res.text(); // API returns a plain number
-                console.log("Updated points:", points);
-                setUserPoints(Number(points)); // Convert the response to a number and update the state
-            } else {
-                throw new Error('Failed to update points');
+                setHasCompletedTraining(true);
+                // Award hearts for completing training
+                setUserHearts(prev => Math.min(prev + 2, 5)); // Add 2 hearts, max 5
             }
         } catch (error) {
-            console.error("Error updating points:", error);
+            console.error("Error completing training:", error);
         }
     };
 
-    // Fetch points when the component is mounted
+    // Fetch data when component mounts
     useEffect(() => {
         fetchData();
-    }, [currentUsername, currentToken]); // Dependency array to fetch when username or token changes
-    console.log(currentUsername+"ddd");
+    }, [currentUsername, currentToken]);
+
     const navigateToLevel = (level) => {
-        if (level.level === 1) {
-            
-            navigate('/levels26', { state: { currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } });
-
-        }
-        else if (level.level === 2) {
-            
-            navigate('/level2', { state: { currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } });
-
-        } 
-        else if (level.level === 3) {
-            
-            navigate('/level3', { state: { currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } });
-
-        }
-        else if (level.level === 4) {
-            
-            navigate('/level4', { state: { currentUserImg, currentUsername, currentDisplayName, currentToken, currentPoints } });
-
-        }else {
+        if (userPoints < level.requiredPoints) {
             alert(`You need ${level.requiredPoints - userPoints} more points to unlock this level.`);
+            return;
         }
+
+        // Navigate to appropriate level
+        const levelRoutes = {
+            1: '/levels26',
+            2: '/level2',
+            3: '/level3',
+            4: '/level4'
+        };
+
+        navigate(levelRoutes[level.level], { 
+            state: { 
+                currentUserImg, 
+                currentUsername, 
+                currentDisplayName, 
+                currentToken, 
+                currentPoints: userPoints,
+                currentHearts: userHearts
+            } 
+        });
     };
-    
+
+const isLevelUnlocked = (level) => {
+    return userPoints >= level.requiredPoints;
+};
+
+const getLevelStatus = (level) => {
+    if (userPoints < level.requiredPoints) {
+        return "Locked - Need More Points";
+    }
+    return `Start Level ${level.level}`;
+};
 
     if (loading) {
-        return <p>Loading points...</p>;
+        return <p>Loading user data...</p>;
     }
 
     if (error) {
         return <p>Error: {error}</p>;
     }
 
- return (
-    <div className="root-title-class">
-      <div className="mainscreen-headed">
-        <TopPanel
-          userImg={currentUserImg}
-          username={currentUsername}
-          displayName={currentDisplayName}
-          navigate={navigate}
-          token={currentToken}
-        />
-      </div>
+    return (
+        <div className="root-title-class">
+            <div className="mainscreen-headed">
+                <TopPanel
+                    userImg={currentUserImg}
+                    username={currentUsername}
+                    displayName={currentDisplayName}
+                    navigate={navigate}
+                    token={currentToken}
+                />
+            </div>
 
-      <div className="contentcontainer levels-page">
-      <div className="background-be" style={{ backgroundImage: `url(/background.png)` }}/>
-        
-        <h1 className="levels-title">Choose Your Level</h1>
+            <div className="contentcontainer levels-page">
+                <div className="background-be" style={{ backgroundImage: `url(/background.png)` }}/>
+                
+                <h1 className="levels-title">Choose Your Level</h1>
+                
+                {/* Training Status Banner */}
+                <div className={`training-status ${hasCompletedTraining ? 'completed' : 'pending'}`}>
+                    {hasCompletedTraining ? (
+                        <p>🎉 Training Completed! You can now access all levels.</p>
+                    ) : (
+                        <p>⚠️ Complete the Training Level first to unlock other levels and earn hearts!</p>
+                    )}
+                </div>
 
-        <div className="levels-grid">
-          {levels.map((levelData) => {
-            const isUnlocked = userPoints >= levelData.requiredPoints;
-            return (
-              <div
-                key={levelData.level}
-                className={`level-card ${isUnlocked ? '' : 'locked'}`}
-                onClick={() => {
-                  if (isUnlocked) navigateToLevel(levelData);
-                  else alert(`You need ${levelData.requiredPoints - userPoints} more points to unlock this level.`);
-                }}
-              >
-                <div className="level-info">
-                  <h2>Level {levelData.level}</h2>
-                  <p>
-                    {levelData.level === 1 &&
-                      'Learn the basics of sign language by mastering all 26 letters of the alphabet.'}
-                    {levelData.level === 2 &&
-                      'Practice basic everyday words to strengthen your sign language vocabulary.'}
-                    {levelData.level === 3 &&
-                      'Learn advanced words to expand your fluency and expressiveness in sign language.'}
-                    {levelData.level === 4 &&
-                      'Practice full sentences to become fluent in everyday sign language conversations.'}
-                  </p>
-<button
-  className="level-button"
-  disabled={!isUnlocked}
->
-  {isUnlocked ? `Start Level ${levelData.level}` : 'Locked'}
-</button>
+                <div className="levels-grid">
+                    {levels.map((levelData) => {
+                        const isUnlocked = isLevelUnlocked(levelData);
+                        const status = getLevelStatus(levelData);
+                        
+                        return (
+                            <div
+                                key={levelData.level}
+                                className={`level-card ${isUnlocked ? '' : 'locked'} ${levelData.isTraining ? 'training-level' : ''}`}
+                                onClick={() => {
+                                    if (isUnlocked || levelData.isTraining) {
+                                        navigateToLevel(levelData);
+                                    } else if (!hasCompletedTraining) {
+                                        alert("Complete the Training Level first!");
+                                    } else {
+                                        alert(`You need ${levelData.requiredPoints - userPoints} more points to unlock this level.`);
+                                    }
+                                }}
+                            >
+                                <div className="level-info">
+                                    <h2>
+                                        {levelData.isTraining ? "🎓 " : ""}
+                                        {levelData.title}
+                                        {levelData.isTraining && hasCompletedTraining ? " ✓" : ""}
+                                    </h2>
+                                    <p>{levelData.description}</p>
+                                    {levelData.isTraining && (
+                                        <p className="training-reward">
+                                            💖 Earn hearts by completing training exercises!
+                                        </p>
+                                    )}
+                                    <button
+                                        className={`level-button ${levelData.isTraining ? 'training-button' : ''}`}
+                                        disabled={!isUnlocked && !levelData.isTraining}
+                                    >
+                                        {status}
+                                    </button>
+                                </div>
+                                <div className="level-image">
+                                    <img
+                                        src={levelData.isTraining ? '/training.png' : `/level${levelData.level}.png`}
+                                        alt={`${levelData.title} illustration`}
+                                        className="level-illustration"
+                                    />
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
-                <div className="level-image">
-                  <img
-                    src={`/level${levelData.level}.png`}
-                    alt={`Level ${levelData.level} illustration`}
-                    className="level-illustration"
-                  />
+
+                <div className="user-stats">
+                    <p className="points-message">
+                        💯 Points: {userPoints} | 💖 Hearts: {userHearts}
+                    </p>
                 </div>
-              </div>
-            );
-          })}
+            </div>
+            <Footer />
         </div>
-
-        <p className="points-message">
-          You have {userPoints} points. Earn more points to unlock higher levels!
-        </p>
-  </div>
-        <Footer />
-    
-    </div>
-  );
+    );
 }
 
 export default LevelsPage;
