@@ -17,7 +17,7 @@ function Levels() {
     const levels = [
         'dad', 'dog', 'bat', 'rat', 'mat', 'hat', 'pat', 'sat', 'fat', 'dada',
         'lap', 'map', 'tap', 'cap', 'nap', 'zap', 'sap', 'gap', 'wrap',
-        'trap', 'flap', 'clap', 'slap', 'snap', 'stap'
+        'trap', 'flap', 'clap', 'slap', 'snap', 'stap','love'
     ];
 
     const unlockedLevels = userPoints - 25; // Words unlock after A–Z (26 letters)

@@ -18,7 +18,7 @@ const signImages = {
 
 const levels = ['dad', 'dog', 'bat', 'rat', 'mat', 'hat', 'pat', 'sat', 'fat', 'vat', 
     'lap', 'map', 'tap', 'cap', 'nap', 'zap', 'sap', 'gap', 'wrap', 
-    'trap', 'flap', 'clap', 'slap', 'snap', 'stap'];
+    'trap', 'flap', 'clap', 'slap', 'snap', 'stap','love'];
 
 function Lesson2() {
     const location = useLocation();
@@ -446,7 +446,7 @@ function Lesson2() {
                 <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }}/>
         
                 <h1 className="lesson-title">
-                    Level {currentLevel + 1} - Word: {currentWord.split('').map((letter, index) => (
+                    Level {currentLevel + 1} - Word: {currentWord.split().map((letter, index) => (
                         <span key={index} className="text-lg font-bold">{letter} </span>
                     ))}
                 </h1>
