@@ -576,7 +576,7 @@ const getNextRandomLetter = () => {
                   {errorMessage && (
                     <div className="error-msg-box">
                       <p className="error-text">{errorMessage}</p>
-                      {(isTraining) && <button onClick={retryGesture} className="start-button">Try Again</button>}
+                      { <button onClick={retryGesture} className="start-button">Try Again</button>}
                     </div>
                   )}
                   
