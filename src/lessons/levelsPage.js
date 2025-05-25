@@ -25,7 +25,7 @@ function LevelsPage() {
             requiredPoints: 0, 
             isTraining: true,
             title: "Training Level",
-            description: "Master the basics and earn hearts! Complete this level to unlock others."
+            description: "Master the basics and earn points! Complete this level to unlock others."
         },
         { 
             level: 2, 
@@ -213,11 +213,7 @@ const getLevelStatus = (level) => {
                                         {levelData.isTraining && hasCompletedTraining ? " ✓" : ""}
                                     </h2>
                                     <p>{levelData.description}</p>
-                                    {levelData.isTraining && (
-                                        <p className="training-reward">
-                                            💖 Earn hearts by completing training exercises!
-                                        </p>
-                                    )}
+                                  
                                     <button
                                         className={`level-button ${levelData.isTraining ? 'training-button' : ''}`}
                                         disabled={!isUnlocked && !levelData.isTraining}

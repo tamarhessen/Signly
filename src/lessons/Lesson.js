@@ -107,16 +107,7 @@ function Lesson() {
         }
     };
 
-    // Award hearts for correct training answers
-    const awardTrainingHeart = () => {
-        if (isTraining && !showHeartReward) {
-            setHeartsEarned(prev => prev + 1);
-            setShowHeartReward(true);
-            setTimeout(() => setShowHeartReward(false), 2000);
-            updateHearts(hearts + 1);
-        }
-    };
-
+ 
 const handleContinue = () => {
     // Remove the current letter from remainingLetters
     setRemainingLetters(prev => {
@@ -265,7 +256,7 @@ const getNextRandomLetter = () => {
                         
                         if (data <= 0) {
                             setIsOutOfLives(true);
-                            setLevelLocked(true);
+                           
                             fetchTimeLeft();
                         }
                     }
@@ -277,16 +268,11 @@ const getNextRandomLetter = () => {
         }
     }, [currentUsername, currentToken, isTraining]);
 
-    // Handle lives validation
-    useEffect(() => {
-        if (!isTraining && (lives < 0 || isNaN(lives))) {
-            setLives(0);
-        }
-    }, [lives, isTraining]);
+
     
     // Timer countdown for life regeneration (only for non-training mode)
     useEffect(() => {
-        if (isTraining || timeLeft === null || timeLeft <= 0) return;
+        if (isTraining ) return;
       
         const interval = setInterval(() => {
             setTimeLeft(prev => {
@@ -305,7 +291,7 @@ const getNextRandomLetter = () => {
                                 if (data > 0) {
                                     setLives(data);
                                     setIsOutOfLives(false);
-                                    setLevelLocked(false);
+                                  
                                 } else {
                                     fetchTimeLeft();
                                 }
@@ -347,10 +333,7 @@ const getNextRandomLetter = () => {
                             setErrorMessage("");
                             setIsFirstSign(false);
 
-                            // Award heart every 2 correct signs in training mode
-                            if (isTraining && newCorrectCount % 2 === 0) {
-                                awardTrainingHeart();
-                            }
+                           
 
                             if (newCorrectCount >= requiredSigns) {
                                 // Level/Training completed!
@@ -413,10 +396,7 @@ const getNextRandomLetter = () => {
 
     // Start camera button handler
     const startCamera = () => {
-        if (!isTraining && isOutOfLives) {
-            setErrorMessage("💀 You're out of lives!");
-            return;
-        }
+      
         setShowSignImage(false);
         setCameraActive(true);
         setErrorMessage("");
@@ -456,7 +436,7 @@ const getNextRandomLetter = () => {
             }
 
             // Give a heart for completing level (if less than 3)
-            if (!isTraining && hearts < 3) {
+            if (!isTraining) {
                 const newHearts = hearts + 1;
                 try {
                     await updateHearts(newHearts);
@@ -523,40 +503,11 @@ const getNextRandomLetter = () => {
                 <p className="points-value">{userPoints}</p>
               </div>
       
-              {/* Show hearts for training mode, lives for normal mode */}
-              {isTraining ? (
-                <div className="hearts-box">
-                  <p className="hearts-label">Hearts:</p>
-                  <div className="hearts-display">
-                    {Array.from({ length: hearts }).map((_, i) => (
-                      <span key={i} className="heart">💖</span>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div className="lives-box">
-                  <div className="lives-icons">
-                    {Array.from({ length: lives }).map((_, i) => (
-                      <span key={i} className="heart">❤️</span>
-                    ))}
-                    {Array.from({ length: 3 - lives }).map((_, i) => (
-                      <span key={`empty-${i}`} className="heart-empty">🤍</span>
-                    ))}
-                  </div>
-                </div>
-              )}
+         
             </div>
       
-            {(userPoints>=26) && levelLocked ? (
-              <div className="locked-level-container">
-                <div className="locked-box">
-                  <h2 className="locked-title">Level Locked 🔒</h2>
-                  <p className="locked-msg">
-                    You're out of lives! You need at least one heart to attempt this level.
-                  </p>
-                </div>
-              </div>
-            ) : showSignImage ? (
+          
+           { showSignImage ? (
               <div className="sign-preview-container">
                 <img
                   src={`/signs/${isTraining ? currentTargetLetter : levels[currentLevel]}.png`}
@@ -625,7 +576,7 @@ const getNextRandomLetter = () => {
                   {errorMessage && (
                     <div className="error-msg-box">
                       <p className="error-text">{errorMessage}</p>
-                      {(isTraining || !isOutOfLives) && <button onClick={retryGesture} className="start-button">Try Again</button>}
+                      {(isTraining) && <button onClick={retryGesture} className="start-button">Try Again</button>}
                     </div>
                   )}
                   

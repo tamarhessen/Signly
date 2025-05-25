@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import TopPanel from '../home/TopPanel';
 import Footer from '../home/Footer';
 import Confetti from "react-confetti";
+import './Lesson.css';
+
 
 const signImages = {
   A: '/signs/A.png', B: '/signs/B.png', C: '/signs/C.png', D: '/signs/D.png', 
@@ -13,6 +15,7 @@ const signImages = {
   U: '/signs/U.png', V: '/signs/V.png', W: '/signs/W.png', X: '/signs/X.png', 
   Y: '/signs/Y.png', Z: '/signs/Z.png'
 };
+
 const levels = [
     'daddy', 'rocket', 'jungle', 'garden', 'castle', 'forest', 'butterfly', 'diamond', 'sunshine', 'rainbow',
     'mountain', 'friendship', 'computer', 'elephant', 'building', 'fireworks', 'backpack', 'treasure', 'vacation',
@@ -27,8 +30,8 @@ function Lesson3() {
     console.log("word: " ,word);
     console.log("points3: " ,currentPoints);
     const [loading, setLoading] = useState(true);
-    const [errorMessage, setErrorMessage] = useState("");
     const [error, setError] = useState(null);
+    const [errorMessage, setErrorMessage] = useState("");
     const [currentLevel, setCurrentLevel] = useState(0);
     const [currentWord, setCurrentWord] = useState(word ? word.toUpperCase() : levels[currentLevel].toUpperCase());
     const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
@@ -41,101 +44,80 @@ function Lesson3() {
     const [completedLevels, setCompletedLevels] = useState([]);
     const [incorrectLetter, setIncorrectLetter] = useState(false);
     const [isLocked, setIsLocked] = useState(false);
-    const [showConfetti, setShowConfetti] = useState(false); // מצב לזיק
-    const [canTryAgain, setCanTryAgain] = useState(true);
     const [lives, setLives] = useState();
     const [isOutOfLives, setIsOutOfLives] = useState(false);
+    const [showConfetti, setShowConfetti] = useState(false);
+    const [canTryAgain, setCanTryAgain] = useState(true);
     const [timeLeft, setTimeLeft] = useState(null);
     const [showDialog, setShowDialog] = useState(false);
     const [levelLocked, setLevelLocked] = useState(false);
-        // Format time for display
-        const formatTime = (seconds) => {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
-        };    
+    
+    // New states for second chance logic
+    const [firstMistake, setFirstMistake] = useState(false);
+    const [showCorrectSignDemo, setShowCorrectSignDemo] = useState(false);
+    const [isSecondChance, setIsSecondChance] = useState(false);
+    
     const retryGesture = () => {
         setIncorrectLetter(false);
-        setIsLocked(false); // Unlock when retrying
+        setIsLocked(false);
         setCanTryAgain(true);
-    };
-    const fetchTimeLeft = async () => {
-            try {
-                const res = await fetch(`http://localhost:5000/api/users/time-until-life/${currentUsername}`, {
-                    headers: { 'Content-Type': 'application/json' },
-                });
-                const data = await res.json();
-                if (typeof data.waitTime === 'number' && data.waitTime >= 0) {
-                    setTimeLeft(data.waitTime);
-                    return data.waitTime;
-                } else {
-                    setTimeLeft(0);
-                    return 0;
-                }
-            } catch (err) {
-                console.error('Failed to fetch time until next life:', err);
-                return null;
-            }
-        };
-     useEffect(() => {
-            if (timeLeft === null || timeLeft <= 0) return;
-          
-            const interval = setInterval(() => {
-                setTimeLeft(prev => {
-                    if (prev <= 1) {
-                        clearInterval(interval);
-                        // Check if lives have been replenished
-                        const checkLives = async () => {
-                            try {
-                                const res = await fetch(`http://localhost:5000/api/users/lives/${currentUsername}`, {
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        authorization: `bearer ${currentToken}`,
-                                    },
-                                });
-                                if (res.ok) {
-                                    const data = await res.json();
-                                    if (data > 0) {
-                                        setLives(data);
-                                        setIsOutOfLives(false);
-                                        setLevelLocked(false);
-                                    } else {
-                                        // Still out of lives, fetch new time
-                                        fetchTimeLeft();
-                                    }
-                                }
-                            } catch (error) {
-                                console.error('Error checking lives:', error);
-                            }
-                        };
-                        checkLives();
-                        return 0;
-                    }
-                    return prev - 1;
-                });
-            }, 1000);
-          
-            return () => clearInterval(interval);
-        }, [timeLeft, currentUsername, currentToken]);
+        setShowCorrectSignDemo(false);
+        // Reset mistake states when manually retrying
+        setFirstMistake(false);
+        setIsSecondChance(false);
         
-        // Handle showing the out of lives dialog
-        useEffect(() => {
-            if (isOutOfLives) {
-                const showOutOfLivesDialog = async () => {
-                    // First fetch the latest time remaining
-                    await fetchTimeLeft();
-                    
-                    // Then show the dialog
-                    setShowDialog(true);
-                    const dialog = document.getElementById("outOfLivesDialog");
-                    if (dialog && typeof dialog.showModal === "function") {
-                        dialog.showModal();
-                    }
-                };
-                
-                showOutOfLivesDialog();
+        // If restarting after losing a life (when correctLetters is empty), show sign images
+        if (correctLetters === '') {
+            setShowSignImage(true);
+            setCameraActive(false);
+        }
+    };
+    
+    const continueAfterDemo = () => {
+        setShowCorrectSignDemo(false);
+        setIsLocked(false);
+        setCanTryAgain(true);
+        setIsSecondChance(true); // Mark this as second chance
+        setIncorrectLetter(false);
+    };
+    
+    const fetchTimeLeft = async () => {
+        try {
+            const res = await fetch(`http://localhost:5000/api/users/time-until-life/${currentUsername}`, {
+                headers: { 'Content-Type': 'application/json' },
+            });
+            const data = await res.json();
+            if (typeof data.waitTime === 'number' && data.waitTime >= 0) {
+                setTimeLeft(data.waitTime);
+                return data.waitTime;
+            } else {
+                setTimeLeft(0);
+                return 0;
             }
-        }, [isOutOfLives]);
+        } catch (err) {
+            console.error('Failed to fetch time until next life:', err);
+            return null;
+        }
+    };
+
+    // Handle showing the out of lives dialog
+    useEffect(() => {
+        if (isOutOfLives) {
+            const showOutOfLivesDialog = async () => {
+                // First fetch the latest time remaining
+                await fetchTimeLeft();
+                
+                // Then show the dialog
+                setShowDialog(true);
+                const dialog = document.getElementById("outOfLivesDialog");
+                if (dialog && typeof dialog.showModal === "function") {
+                    dialog.showModal();
+                }
+            };
+            
+            showOutOfLivesDialog();
+        }
+    }, [isOutOfLives]);
 
     useEffect(() => {
         if (word) {
@@ -143,6 +125,87 @@ function Lesson3() {
             setCurrentLevel(levels.indexOf(word.toLowerCase()));
         }
     }, [word]);
+    
+    useEffect(() => {
+        const fetchLives = async () => {
+            try {
+                const res = await fetch(`http://localhost:5000/api/users/lives/${currentUsername}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        authorization: `bearer ${currentToken}`,
+                    },
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    setLives(data);
+                    if (data <= 0) {
+                        setIsOutOfLives(true);
+                        setLevelLocked(true);
+                        fetchTimeLeft();
+                    }
+                } else {
+                    throw new Error('Failed to fetch lives');
+                }
+            } catch (error) {
+                console.error('Error fetching lives:', error);
+            }
+        };
+    
+        fetchLives();
+    }, [currentUsername, currentToken]);
+    
+    useEffect(() => {
+        console.log('Lives:', lives);
+        if (lives < 0 || isNaN(lives)) {
+            setLives(0);
+        }
+    }, [lives]);
+    
+    useEffect(() => {
+        if (timeLeft === null || timeLeft <= 0) return;
+      
+        const interval = setInterval(() => {
+            setTimeLeft(prev => {
+                if (prev <= 1) {
+                    clearInterval(interval);
+                    const checkLives = async () => {
+                        try {
+                            const res = await fetch(`http://localhost:5000/api/users/lives/${currentUsername}`, {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    authorization: `bearer ${currentToken}`,
+                                },
+                            });
+                            if (res.ok) {
+                                const data = await res.json();
+                                if (data > 0) {
+                                    setLives(data);
+                                    setIsOutOfLives(false);
+                                    setLevelLocked(false);
+                                } else {
+                                    fetchTimeLeft();
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Error checking lives:', error);
+                        }
+                    };
+                    checkLives();
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+      
+        return () => clearInterval(interval);
+    }, [timeLeft, currentUsername, currentToken]);
+    
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
 
     useEffect(() => {
         if (cameraActive && canTryAgain) {
@@ -150,37 +213,58 @@ function Lesson3() {
                 fetch('http://127.0.0.1:5001/detect_gesture')
                     .then(response => response.json())
                     .then(data => {
-                        if (!levelCompleted) { // 👈 זה התנאי החדש
+                        if (!levelCompleted) {
                             setGesture(data.gesture);
-    
+
                             if (!isLocked) {
                                 if (data.gesture === currentWord[currentLetterIndex]) {
+                                    // Correct gesture
                                     setCorrectLetters(prev => prev + currentWord[currentLetterIndex]);
                                     setCurrentLetterIndex(prevIndex => prevIndex + 1);
+                                    // Reset mistake states on correct answer
+                                    setFirstMistake(false);
+                                    setIsSecondChance(false);
                                 } else if (data.gesture !== 'Nothing' && data.gesture !== currentWord[currentLetterIndex - 1]) {
-                                    setIncorrectLetter(true);
-                                    setLives(prev => {
-                                        const newLives = prev - 1;
-                                        if (newLives <= 0) {
-                                            setIsOutOfLives(true);
-                                            setCameraActive(false);
-                                            setErrorMessage("💀 You're out of lives! Please try again later.");
-                                        } else {
-                                            setErrorMessage(`❌ Incorrect! Try signing '${levels[currentLevel]}' again.`);
-                                        }
-                                        updateLives(newLives);
-        
-                                        return newLives;
-                                    });
-                                    setIsLocked(true);
-                                    setCanTryAgain(false);
+                                    // Wrong gesture detected
+                                    if (!firstMistake && !isSecondChance) {
+                                        // First mistake - show demo and give second chance
+                                        setFirstMistake(true);
+                                        setShowCorrectSignDemo(true);
+                                        setIsLocked(true);
+                                        setCanTryAgain(false);
+                                        setErrorMessage(`❌ Try again!`);
+                                    } else {
+                                        // Second mistake - lose life and restart level
+                                        setIncorrectLetter(true);
+                                        setIsLocked(true);
+                                        setCanTryAgain(false);
+                                        setFirstMistake(false);
+                                        setIsSecondChance(false);
+                                        
+                                        setLives(prev => {
+                                            const newLives = prev - 1;
+                                            if (newLives <= 0) {
+                                                setIsOutOfLives(true);
+                                                setCameraActive(false);
+                                                setErrorMessage("💀 You're out of lives! Please try again later.");
+                                            } else {
+                                                // Restart the level from the beginning
+                                                setCurrentLetterIndex(0);
+                                                setCorrectLetters('');
+                                                // Don't automatically show sign image - wait for user to click restart
+                                                setErrorMessage(`❤️ Life lost! Click below to restart level ${currentLevel + 1}.`);
+                                            }
+                                            updateLives(newLives);
+                                            return newLives;
+                                        });
+                                    }
                                 }
                             }
-    
+
                             if (currentLetterIndex === currentWord.length) {
                                 setLevelCompleted(true);
                                 setShowConfetti(true);
-    
+
                                 setTimeout(() => {
                                     setShowConfetti(false);
                                     setTimeout(() => setShowConfetti(true), 500);
@@ -190,64 +274,32 @@ function Lesson3() {
                     })
                     .catch(error => console.error('Error fetching gesture:', error));
             }, 100);
-    
+
             return () => clearInterval(interval);
         }
-    }, [cameraActive, currentLetterIndex, canTryAgain, currentWord, isLocked, levelCompleted]);
-     useEffect(() => {
-                const fetchLives = async () => {
-                    try {
-                        const res = await fetch(`http://localhost:5000/api/users/lives/${currentUsername}`, {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                authorization: `bearer ${currentToken}`,
-                            },
-                        });
-                        if (res.ok) {
-                            const data = await res.json();
-                            setLives(data); 
-                            if (data <= 0) {
-                                setIsOutOfLives(true);
-                                setLevelLocked(true);
-                                fetchTimeLeft(); // Get time until next life
-                            }// הנחת שיש שדה "lives" ב־response
-                        } else {
-                            throw new Error('Failed to fetch lives');
-                        }
-                    } catch (error) {
-                        console.error('Error fetching lives:', error);
-                    }
-                };
-            
-                fetchLives();
-            }, [currentUsername, currentToken]);
-               useEffect(() => {
-                    console.log('Lives:', lives);  // תוסיף כאן
-                    if (lives < 0 || isNaN(lives)) {
-                        setLives(0);  // תיקון אם מספר החיים לא תקין
-                    }
-                }, [lives]);
-                const updateLives = async (newLives) => {
-                    try {
-                        const res = await fetch(`http://localhost:5000/api/users/lose-life/${currentUsername}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                authorization: `bearer ${currentToken}`,
-                            },
-                            body: JSON.stringify({ lives: newLives }),
-                        });
-                
-                        if (res.ok) {
-                            console.log('Lives updated successfully');
-                        } else {
-                            throw new Error('Failed to update lives');
-                        }
-                    } catch (error) {
-                        console.error('Error updating lives:', error);
-                    }
-                };
+    }, [cameraActive, currentLetterIndex, canTryAgain, currentWord, isLocked, levelCompleted, firstMistake, isSecondChance]);
+    
+    const updateLives = async (newLives) => {
+        try {
+            const res = await fetch(`http://localhost:5000/api/users/lose-life/${currentUsername}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `bearer ${currentToken}`,
+                },
+                body: JSON.stringify({ lives: newLives }),
+            });
+
+            if (res.ok) {
+                console.log('Lives updated successfully');
+            } else {
+                throw new Error('Failed to update lives');
+            }
+        } catch (error) {
+            console.error('Error updating lives:', error);
+        }
+    };
+    
     const fetchData = async () => {
         try {
             console.log("Fetching points for user:", currentUsername);
@@ -299,6 +351,7 @@ function Lesson3() {
             console.error("Error updating points:", error);
         }
     };
+    
     useEffect(() => {
         const storedPoints = localStorage.getItem('userPoints');
         if (storedPoints) {
@@ -318,6 +371,7 @@ function Lesson3() {
         setShowSignImage(false);
         setCameraActive(true);
     };
+    
     console.log("wwwww", currentLevel)
     console.log("Completed Levels from state:", completedLevels);
     console.log("Current Level:", levels[currentLevel]);
@@ -326,9 +380,7 @@ function Lesson3() {
     const nextLevel = () => {
         setCanTryAgain(false);
         if (levelCompleted) {
-    
-            // בדיקה אם המשתמש כבר סיים את השלב הזה
-            if (userPoints <= currentLevel + 52) {
+            if (userPoints <= currentLevel + 26) {
                 const newPoints = userPoints + 1;
                 const newCompletedLevels = [...completedLevels, levels[currentLevel]];
                 localStorage.setItem('completedLevels', JSON.stringify(newCompletedLevels));
@@ -353,7 +405,7 @@ function Lesson3() {
                     console.error('Error updating points:', error);
                 });
             }
-    
+
             if (currentLevel < levels.length - 1) {
                 setCurrentLevel(currentLevel + 1);
                 setLevelCompleted(false);
@@ -363,20 +415,23 @@ function Lesson3() {
                 setCorrectLetters('');
                 setIncorrectLetter(false);
                 setIsLocked(false);
+                // Reset mistake states for new level
+                setFirstMistake(false);
+                setIsSecondChance(false);
+                setShowCorrectSignDemo(false);
             }
-    
+
             navigate('/level3', { 
                 state: { 
                     currentUserImg, 
                     currentUsername, 
                     currentDisplayName, 
                     currentToken, 
-                    currentPoints: userPoints > currentLevel + 52 ? userPoints : userPoints + 1 
+                    currentPoints: userPoints > currentLevel + 26 ? userPoints : userPoints + 1 
                 } 
             });
         }
     };
-    
 
     return (
         <>
@@ -387,34 +442,35 @@ function Lesson3() {
                 navigate={navigate} 
                 token={currentToken} 
             />
-      
+
             <div className="cc-container">
-            {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
-          <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }}/>
+                {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+                <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }}/>
         
-      
-            <h1 className="lesson-title">
+                <h1 className="lesson-title">
                     Level {currentLevel + 1} - Word: {currentWord.split('').map((letter, index) => (
                         <span key={index} className="text-lg font-bold">{letter} </span>
                     ))}
                 </h1>
+                
                 <div className="stats-container">
-              <div className="points-box">
-                <p className="points-label">Points:</p>
-                <p className="points-value">{userPoints}</p>
-              </div>
-      
-              <div className="lives-box">
-                <div className="lives-icons">
-                  {Array.from({ length: lives }).map((_, i) => (
-                    <span key={i} className="heart">❤️</span>
-                  ))}
-                  {Array.from({ length: 3 - lives }).map((_, i) => (
-                    <span key={`empty-${i}`} className="heart-empty">🤍</span>
-                  ))}
+                    <div className="points-box">
+                        <p className="points-label">Points:</p>
+                        <p className="points-value">{userPoints}</p>
+                    </div>
+          
+                    <div className="lives-box">
+                        <div className="lives-icons">
+                            {Array.from({ length: lives }).map((_, i) => (
+                                <span key={i} className="heart">❤️</span>
+                            ))}
+                            {Array.from({ length: 3 - lives }).map((_, i) => (
+                                <span key={`empty-${i}`} className="heart-empty">🤍</span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
+                
                 {showSignImage ? (
                     <div className="text-center mb-8">
                         <div className="flex justify-center items-center space-x-2">
@@ -423,82 +479,114 @@ function Lesson3() {
                                     key={index}
                                     src={signImages[letter]}
                                     alt={`Sign for ${letter}`}
-                                     className="sign-image"
+                                    className="sign-image"
                                 />
                             ))}
                         </div>
                         <button onClick={startCamera} className="btn-primary">
-                  TRY IT YOURSELF
-                </button>
+                            TRY IT YOURSELF
+                        </button>
                     </div>
                 ) : cameraActive ? (
                     <div className="camera-container">
-                    <div className="left-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <img 
-                      src="http://127.0.0.1:5001/video_feed" 
-                      alt="Camera Feed" 
-                      className="camera-feed"
-                  />
-                  <div className="text-center w-full mt-4">
-                  <div className="gesture-display">
-            <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
-          </div>
-          </div>
-                  </div>
-                  
-<div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <div className="mt-4">
-<p className="signed-count">
-   Signed so far: {correctLetters}
-</p>
-<p className="text-lg text-gray-600 sign-instruction">
-  {isLocked ? "" : `Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
-</p>
-
-
-                  </div>
-                  {incorrectLetter && (
-<div className="error-msg-box">
-<p className="error-text">{errorMessage}</p>
-{!isOutOfLives && <button onClick={retryGesture} className="start-button">Try Again</button>}
-</div>
-)}
-
+                        <div className="left-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <img 
+                                src="http://127.0.0.1:5001/video_feed" 
+                                alt="Camera Feed" 
+                                className="camera-feed"
+                            />
+                            <div className="text-center w-full mt-4">
+                                <div className="gesture-display">
+                                    <span className="gesture-text">{gesture === 'Nothing' ? '-' : gesture}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="right-side" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <div className="mt-4">
+                                <p className="text-lg text-gray-600 sign-instruction">
+                                    {isLocked ? "" : `Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
+                                </p>
+                                <p className="signed-count">
+                                    Signed so far: {correctLetters}
+                                </p>
+                            </div>
+                            
+                            {showCorrectSignDemo && (
+                                <div className="demo-container">
+                                    <div className="error-msg-box">
+                                        <p className="error-text">{errorMessage}</p>
+                                        <div className="correct-sign-demo">
+                                            <p className="demo-text">📚 Watch how to sign '{currentWord[currentLetterIndex]}':</p>
+                                            <img
+                                                src={signImages[currentWord[currentLetterIndex]]}
+                                                alt={`Correct sign for ${currentWord[currentLetterIndex]}`}
+                                                className="demo-sign-image"
+                                                style={{
+                                                    width: '170px',
+                                                    height: '170px',
+                                                    objectFit: 'contain',
+                                               
+                                                    borderRadius: '10px',
+                                                    animation: 'pulse 2s infinite'
+                                                }}
+                                            />
+                                        </div>
+                                        <button onClick={continueAfterDemo} className="start-button">
+                                            🔄 Try Again (Second Chance)
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                            
+                            {incorrectLetter && !showCorrectSignDemo && (
+                                <div className="error-msg-box">
+                                    <p className="error-text">{errorMessage}</p>
+                                    {!isOutOfLives && (
+                                        <button 
+                                            onClick={retryGesture} 
+                                            className="start-button"
+                                        >
+                                            {correctLetters === '' ? 'Start Level Again' : 'Try Again'}
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+                            
+                            {levelCompleted && (
+                                <div className="success-msg-box">
+                                    <p className="success-text">
+                                        ✅ Correct! You signed {levels[currentLevel]}.
+                                    </p>
+                                    <button onClick={nextLevel} className="start-button">
+                                        {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
+                                    </button>
+                                </div>
+                            )}
+                        </div>  
+                    </div> 
+                ) : null}
+            </div>
             
-         
-          {levelCompleted && (
-               <div className="success-msg-box">
-                  <p className="success-text">
-                      ✅ Correct! You signed {levels[currentLevel]}.
-                  </p>
-                  <button onClick={nextLevel} className="start-button">
-                      {currentLevel < levels.length - 1 ? 'Next Level' : 'Finish'}
-                  </button>
-                  
-              </div>
-          )}
-          </div>  
-      </div> ) : null}
-       </div>
             <dialog id="outOfLivesDialog" className="dialog-box">
-            <h2 className="dialog-title">Out of Lives 💀</h2>
-            <p className="dialog-msg">You've run out of lives. Please come back later or try a different level.</p>
-            <form method="dialog">
-              <button
-                className="btn-primary"
-                onClick={() => navigate("/home", {
-                  state: {
-                    username: currentUsername,
-                    displayName: currentDisplayName,
-                    userImg: currentUserImg,
-                    token: currentToken
-                  }
-                })}
-              >
-                Go Home
-              </button>
-            </form>
-          </dialog>
+                <h2 className="dialog-title">Out of Lives 💀</h2>
+                <p className="dialog-msg">You've run out of lives. Please come back later or try a different level.</p>
+                <form method="dialog">
+                    <button
+                        className="btn-primary"
+                        onClick={() => navigate("/home", {
+                            state: {
+                                username: currentUsername,
+                                displayName: currentDisplayName,
+                                userImg: currentUserImg,
+                                token: currentToken
+                            }
+                        })}
+                    >
+                        Go Home
+                    </button>
+                </form>
+            </dialog>
             <Footer />
         </>
     );
