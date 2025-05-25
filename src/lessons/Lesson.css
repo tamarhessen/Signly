@@ -212,8 +212,10 @@ min-height: 86%;
   }
   
   .camera-feed {
+
     width: 800px;
     height: 550px;
+
     object-fit: cover;
     border-radius: 0.5rem;
   }

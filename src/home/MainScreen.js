@@ -7,7 +7,7 @@ import TopPanel from './TopPanel';
 import Footer from './Footer';
 import { User } from 'lucide-react';
 
-function MainScreen({ setLoggedIn, username, displayName, userImg, mode, token }) {
+function MainScreen({  username, displayName, userImg, token }) {
   const navigate = useNavigate();
   const [points, setPoints] = useState(0);
   const [level, setLevel] = useState(1);
