@@ -105,7 +105,11 @@ console.log(currentUsername+"sss");
       <div className="cc-container">
         {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
         <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }} />
-
+        <h1 className="lesson-title">
+                   Word:  {currentWord.split().map((letter, index) => (
+                        <span key={index} className="text-lg font-bold">{letter} </span>
+                    ))}
+                </h1>
         {showSignImage ? (
           <div className="text-center mb-8">
             <div className="flex justify-center items-center space-x-2">
@@ -135,10 +139,10 @@ console.log(currentUsername+"sss");
               </div>
             </div>
             <div className="mt-4">
-              <p className="text-xl font-semibold text-gray-700" style={{ fontSize: '2rem' }}>
+              <p className="signed-count" style={{ fontSize: '2rem' }}>
                 Signed so far: {correctLetters}
               </p>
-              <p className="text-lg text-gray-600" style={{ fontSize: '2rem' }}>
+              <p className="text-lg text-gray-600 sign-instruction" style={{ fontSize: '2rem' }}>
                 {isLocked ? "" : `Sign the letter: ${currentWord[currentLetterIndex] || ''}`}
               </p>
             </div>

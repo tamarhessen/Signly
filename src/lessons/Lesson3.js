@@ -448,7 +448,7 @@ function Lesson3() {
                 <div className="background-bll" style={{ backgroundImage: `url(/background.png)` }}/>
         
                 <h1 className="lesson-title">
-                    Level {currentLevel + 1} - Word: {currentWord.split('').map((letter, index) => (
+                    Level {currentLevel + 1} - Word: {currentWord.split().map((letter, index) => (
                         <span key={index} className="text-lg font-bold">{letter} </span>
                     ))}
                 </h1>
