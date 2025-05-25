@@ -87,7 +87,9 @@ console.log(currentUsername+"sss");
   };
  
   const goBackToSearch = () => {
+
     navigate('/home', { state: { username: currentUsername, displayName:currentDisplayName, profilePictureURL: currentUserImg, token: currentToken } });
+
   };
 
   return (
