@@ -1,4 +1,4 @@
-const { User, Friends} = require('../models/user');
+const { User} = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 async function generateToken(user) {
@@ -31,77 +31,18 @@ async function registerUser(userData) {
     if (existingUser) {
         return null;
     }
-    userData.friends = new Friends({
-        FriendList: [],
-        PendingList: []
-    })
+
     const user = new User(userData);
     await user.save();
     return user;
 }
 
 async function getUserByUsername(username) {
-    const user = await User.findOne({username: username}, 'username displayName profilePic friends');
+    const user = await User.findOne({username: username}, 'username displayName profilePic ');
     return user || null;
 }
 
 
-async function getFriendsListByUserId(userId) {
-    const user = await User.findOne({username: userId});
-    if (!user) {
-        console.log('couldn\'t find user');
-    }
-    console.log(user.friends);
-    return user.friends;
-}
-
-async function askToBeFriendOfUser(userId, username) {
-    const user = await User.findOne({username: userId});
-    if (!user) {
-        console.log('couldn\'t find user');
-        return null
-    }
-    if (user.friends.PendingList.includes(username) || user.friends.FriendList.includes(username)) {
-        console.log('already asked');
-        return null
-    }
-    console.log(user.friends.PendingList);
-    user.friends.PendingList = [...user.friends.PendingList, username]
-    await user.save();
-    return user.friends;
-}
-
-async function acceptFriendRequest(userId, friendId) {
-    const user = await User.findOne({username: userId});
-    if (!user) {
-        console.log('couldn\'t find user');
-        return null
-    }
-    if (!user.friends.PendingList.includes(friendId)) {
-        console.log('friend didn\'t ask');
-        return null
-    }
-    user.friends.PendingList = user.friends.PendingList.filter(element => element !== friendId);
-    user.friends.FriendList = [...user.friends.FriendList, friendId];
-    await user.save();
-    return user.friends;
-}
-
-async function deleteFriend(userId, friendId) {
-    const user = await User.findOne({username: userId});
-    if (!user) {
-        console.log('couldn\'t find user');
-        return null
-    }
-    if (!user.friends.PendingList.includes(friendId) && !user.friends.FriendList.includes(friendId)) {
-        console.log('user didn\'t ask and isn\'t your friend');
-        return null
-    }
-    user.friends.PendingList = user.friends.PendingList.filter(element => element !== friendId);
-    user.friends.FriendList = user.friends.FriendList.filter(element => element !== friendId);
-    await user.save();
-    return user.friends;
-}
 
 
 
@@ -130,27 +71,6 @@ async function updateUserById(userId, newUsername, newImg, newDisplayName, newPa
             await users.forEach(async (user) => {
                 console.log(user);
                 if (user !== userId) {
-                    let newList = [];
-                    user.friends.FriendList.forEach((friend) => {
-                        if (friend == userId) {
-                            newList.push(newUsername)
-                        } else {
-                            newList.push(friend)
-                        }
-
-                    })
-                    user.friends.FriendList = newList;
-                    console.log("after", user)
-                    let newList2 = [];
-                    user.friends.PendingList.forEach((friend) => {
-                        if (friend == userId) {
-                            newList2.push(newUsername)
-                        } else {
-                            newList2.push(friend)
-                        }
-
-                    })
-                    user.friends.PendingList = newList2;
                     console.log(user);
                     await user.save();
                 }
@@ -285,10 +205,7 @@ module.exports = {
     generateToken,
     registerUser,
     getUserByUsername,
-    getFriendsListByUserId,
-    askToBeFriendOfUser,
-    acceptFriendRequest,
-    deleteFriend,
+  
     deleteUserById,
     updateUserById,
     updateUserPoints,

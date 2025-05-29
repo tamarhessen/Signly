@@ -162,10 +162,6 @@ html {
     margin-left: auto;
 }
 
-.FriendProfile {
-    display: flex;
-    flex: 5;
-}
 
 .name {
     -ms-transform: translateY(50%);

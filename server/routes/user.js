@@ -45,10 +45,6 @@ router.put('/api/users/:id', authenticateToken, userController.updateUserById);
 router.patch('/api/users/:id', authenticateToken, userController.updateUserById);
 router.delete('/api/users/:id', authenticateToken, userController.deleteUserById);
 
-router.get('/api/users/:id/friends', authenticateToken, userController.getFriendsListByUserId);
-router.post('/api/users/:id/friends', authenticateToken, userController.askToBeFriendOfUser);
-router.patch('/api/users/:id/friends/:fid', authenticateToken, userController.acceptFriendRequest);
-router.delete('/api/users/:id/friends/:fid', authenticateToken, userController.deleteFriend);
 
 router.get('/api/users/:id/points', authenticateToken, userController.getPoints);
 router.get('/leaderboard/:id', userController.getLeaderboard);
