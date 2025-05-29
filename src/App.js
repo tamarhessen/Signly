@@ -13,7 +13,7 @@ import { LoggedIn } from './loggedIn';
 import MyProfilePage from './home/MyProfilePage';
 import AlphabetImage from './home/AlphabetImage';
 import ContactUs from './home/ContactUs';
-import FriendPage from './home/FriendPage';
+
 import MainScreen from './home/MainScreen'; // Import MainScreen (updated path)
 import Lesson from './lessons/Lesson'; 
 import Levels from './lessons/Levels.js'; 
@@ -70,14 +70,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/FriendPage"
-          element={
-            <ProtectedRoute>
-              <FriendPage />
-            </ProtectedRoute>
-          }
-        />
+       
         <Route
           path="/home"
           element={

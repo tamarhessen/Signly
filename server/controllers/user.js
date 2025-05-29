@@ -30,33 +30,8 @@ async function getUserByUsername(req, res) {
 }
 
 
-async function getFriendsListByUserId(req, res) {
-    let userId = req.params.id;
-    const friendsList = await userService.getFriendsListByUserId(userId);
-    console.log("2", friendsList);
-    res.json(friendsList)
-}
 
-async function askToBeFriendOfUser(req, res) {
-    let userId = req.params.id;
-    console.log("hola")
-    const result = await userService.askToBeFriendOfUser(userId, req.user.username);
-    res.json(result);
-}
 
-async function acceptFriendRequest(req, res) {
-    let userId = req.params.id;
-    let friendId = req.params.fid;
-    const result = await userService.acceptFriendRequest(userId, friendId);
-    res.json(result);
-}
-
-async function deleteFriend(req, res) {
-    let userId = req.params.id;
-    let friendId = req.params.fid;
-    const result = await userService.deleteFriend(userId, friendId);
-    res.json(result)
-}
 
 
 
@@ -164,10 +139,7 @@ module.exports = {
     generateToken,
     registerUser,
     getUserByUsername,
-    getFriendsListByUserId,
-    askToBeFriendOfUser,
-    acceptFriendRequest,
-    deleteFriend,
+    
     deleteUserById,
     updateUserById,
     updatePoints,

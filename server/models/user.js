@@ -3,16 +3,6 @@ const { Schema } = mongoose;
 
 
 
-const FriendsSchema = new Schema({
-    FriendList: [{
-        type: String,
-        nullable: true
-    }],
-    PendingList: [{
-        type:String,
-        nullable: true
-    }]
-});
 
 const UserSchema = new Schema({
     username: {
@@ -31,10 +21,7 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    friends: {
-        type: FriendsSchema,
-        nullable: true
-    },
+  
     points: {
         type: Number,
         default: 0
@@ -52,6 +39,6 @@ const UserSchema = new Schema({
 
 
 const User = mongoose.model('User', UserSchema);
-const Friends = mongoose.model('Friends', FriendsSchema);
 
-module.exports = {  User, Friends };
+
+module.exports = {  User};
