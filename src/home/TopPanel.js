@@ -23,10 +23,20 @@ function TopPanel({ userImg, username, displayName, token }) {
   }, [currentUsername, currentDisplayName, currentUserImg, currentToken]);
 
   const handleSearch = () => {
-    if (searchQuery.trim() !== "") {
+    const trimmedQuery = searchQuery.trim();
+  
+    // בדיקה שהתווים הם רק אותיות באנגלית
+    const isValidEnglishWord = /^[a-zA-Z]+$/.test(trimmedQuery);
+  
+    if (!isValidEnglishWord) {
+      alert("Please enter a word using English letters only, without spaces or special characters.");
+      return;
+    }
+  
+    if (trimmedQuery !== "") {
       navigate("/sign-word", {
         state: {
-          word: searchQuery.trim(),
+          word: trimmedQuery,
           username: currentUsername,
           displayName: currentDisplayName,
           userImg: currentUserImg,
@@ -35,6 +45,7 @@ function TopPanel({ userImg, username, displayName, token }) {
       });
     }
   };
+  
 
   return (
     <header className="header">

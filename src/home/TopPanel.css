@@ -8,6 +8,8 @@ body {
   padding: 0;
 }
 
+
+
 /* Header section */
 .header {
   display: flex;
@@ -15,6 +17,8 @@ body {
   padding: 5px 5px;
   background-color: #e6cccc;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 /* Logo + Search container */
@@ -125,10 +129,20 @@ body {
 .search-container {
   display: inline-flex;
   align-items: center;
-  felx-direction: row;
+  
 
 }
-
+.error-messagee {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 2px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  white-space: nowrap;
+}
 .search-input {
   height: 40px;
   width: 250px; /* תגדירי את הרוחב שרוצים */
