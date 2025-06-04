@@ -1,54 +1,109 @@
 # Signly
 
-## This project is the front end of the web application of signly.
+## Overview
 
-### Made by: Tamar Hessen and Sapir Yanai
+**Signly** is the front-end web application for learning and practicing sign language interactively. The platform aims to make sign language education accessible and engaging for everyone. Users can sign in, progress through lessons, and receive instant feedback on their signing accuracy using camera recognition technology. 
 
+### Authors
 
-## Run:
+- Tamar Hessen
+- Sapir Yanai
+
+---
+
+## Features
+
+- **Interactive Lessons:** Practice sign language by performing gestures in front of your camera. The app provides instant feedback and tracks your progress.
+- **Gamification:** Earn points, level up, and track your achievements as you complete lessons and quizzes.
+- **User Management:** Sign up, log in, and manage your profile, including display name and profile picture.
+- **FAQ and About:** Access helpful resources and details about the platform.
+
+---
+
+## Getting Started
+
+### Quick Start
+
+To run the server, front end, and camera integration, simply execute:
+
+```bash
+./start-signly.ps1
 ```
-npm install
+
+This script will handle all necessary startup procedures for both the backend and frontend components.
+
+---
+
+### Manual Installation & Startup
+
+If you prefer to run everything manually (instead of using the script), you must start three services in separate terminals/windows:
+
+> **Note:** Make sure you have installed all dependencies first:  
+> - For Python: `pip install -r requirements.txt` (or as required)  
+> - For Node.js back end and front end: Run `npm install` in both `/server` and root directories as needed.
+
+#### 1. Start the Camera/Flask Server (Python)
+From the project root:
+```bash
+python -u python/camera.py
+```
+
+#### 2. Start the Node.js Backend
+From the project root:
+```bash
+cd server
+npm run server
+```
+
+#### 3. Start the React Frontend
+From the project root:
+```bash
 npm start
 ```
 
-## App.js:
-This file is the base of the app and present the page depending on the path.
+The application will run in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-If / then it will show the login page.
+> You can refer to the `start-signly.ps1` script for the exact startup process:
+> ```
+> # Start Flask (Python) in new window
+> $projectRoot = Get-Location
+> Start-Process powershell -ArgumentList '-NoExit', '-Command', "python -u `"$projectRoot\python\camera.py`""
+> # Start Node.js backend in new window
+> Start-Process powershell -ArgumentList '-NoExit', '-Command', 'cd server; npm run server'
+> # Start React frontend in new window
+> Start-Process powershell -ArgumentList '-NoExit', '-Command', 'npm start'
+> ```
 
-If /home and the user is logged in then it will show the feed page.
+---
 
-If /home and the user isn't logged in then it will redirect to /.
+## Code Structure
 
-Otherwise, it will redirect to /.
+- **App.js:** The main entry point. Routes users based on authentication and the current path.
+- **Login.js:** Handles the login screen and navigation to sign-up.
+- **Signup.js:** Contains logic for user registration, including validation rules:
+  - Username must be unique.
+  - Password must be at least 8 characters and confirmed.
+  - No limits on display name or profile picture.
+- **Users.js:** Stores and manages user data, including checks for login and signup.
+- **App/Login/signup.css:** Controls the visual styling for app, login, and signup pages.
+- **src/home/MainScreen.js:** The main hub after login, showing user stats, lessons, fun facts, and navigation links.
+- **src/home/RightPanel.js:** Shows user lives, points, and cooldown timers.
+- **src/FAQ.js:** Frequently Asked Questions component.
+- **src/About.js:** Platform introduction and feature explanations.
+- **src/lessons/Lesson3.js:** Example lesson logic, including points and lives management.
 
-## Login.js:
-If the path of the url is / then this file will be called.
+---
 
-In this file we show the starting screen.
+## Example Workflow
 
-When pressing on new account it will show the Sign-up modal.
+1. **Sign Up:** Create a new account with a unique username and secure password.
+2. **Log In:** Access your personalized learning dashboard.
+3. **Start Lessons:** Practice signs using your camera and receive feedback.
+4. **Level Up:** Earn points, advance levels, and unlock achievements.
+5. **View Progress:** Check your stats, lives, and next goals in the dashboard.
 
-When pressing on Log in it will send to the correct feed page.
+---
 
-## Signup.js
-In this file we hold the code for the sign-up modal.
+## Contact
 
-The user enters a username (must be different from any other username), password (has to be at least 8 letters), confirm password (=== password), display name (no limit), profile picture (no limit).
-
-If all the limits are met, the user can log in using this account.
-
-## Users.js
-We hold the entire data of the users in Users.js
-
-All the function that check the users data in login and signup is checked there.
-
-## App/Login/signup.css
-All the visualization of the pages of app, login, and signup happens in those files.
-
-
-## LightModeFeed/NightModeFeed.css
-
-These files hold the visualization of the feed depending on which mode is now active.
-
-
+Have questions or suggestions? See the FAQ or open an issue!
