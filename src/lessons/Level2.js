@@ -15,7 +15,7 @@ function Levels() {
     const [initialized, setInitialized] = useState(false);
 
     const levels = [
-        'dad', 'dog', 'bat', 'rat', 'mat', 'hat', 'pat', 'sat', 'fat', 'dada',
+        'dad', 'dog', 'bat', 'rat', 'mat', 'hat', 'pat', 'sat', 'fat', 'vat',
         'lap', 'map', 'tap', 'cap', 'nap', 'zap', 'sap', 'gap', 'wrap',
         'trap', 'flap', 'clap', 'slap', 'snap', 'stap','love'
     ];

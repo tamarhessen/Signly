@@ -1,14 +1,13 @@
-import InfoBar from "./InfoBar";
+
 import MainScreen from "./MainScreen";
 import { useState } from "react";
-import './LightModeFeed.css';
-import './NightModeFeed.css';
+
 import { useLocation } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 import RightPanel from './RightPanel';
 import TopPanel from './TopPanel';
 
-import Navigation from './Navigation';
+
 
 function HomeScreen({setLoggedIn}) {
     const [mode, setMode] = useState(true);
