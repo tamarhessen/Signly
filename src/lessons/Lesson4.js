@@ -5,7 +5,7 @@ import Footer from '../home/Footer';
 import Confetti from "react-confetti";
 
 const levels = [
-    'Dad ca dac', 'The rocket flies', 'We love the jungle', 'Flowers in the garden', 'The castle is big'
+    'Dad and mom', 'The rocket flies', 'We love the jungle', 'Flowers in the garden', 'The castle is big'
 ];
 
 const signImages = {
@@ -64,7 +64,19 @@ function Lesson4() {
         const secs = seconds % 60;
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     };   
-
+   // useEffect לעדכון השלב על בסיס המשפט
+   useEffect(() => {
+    if (word) {
+        const levelIndex = levels.indexOf(word);
+        if (levelIndex !== -1) {
+            setCurrentLevel(levelIndex);
+            setCurrentSentence(word);
+            console.log(`Found sentence "${word}" at level index: ${levelIndex}`);
+        } else {
+            console.warn(`Sentence "${word}" not found in levels array`);
+        }
+    }
+}, [word]);
     const words = currentSentence.split(' ');
     const currentWord = words[currentWordIndex];
     const letters = currentWord.split('');
@@ -89,7 +101,7 @@ function Lesson4() {
         setLostLife(false);
         setErrorMessage('');
     };
-
+ 
     const retryGesture = () => {
         setIncorrectLetter(false);
         setIsLocked(false);
@@ -397,7 +409,7 @@ function Lesson4() {
             });
         }
     };
-
+    console.log(currentLevel+"sss");
     return (
         <>
             <TopPanel userImg={currentUserImg} username={currentUsername} navigate={navigate} token={currentToken} />
