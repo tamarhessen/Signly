@@ -52,7 +52,7 @@ python -u python/camera.py
 From the project root:
 ```bash
 cd server
-npm run server
+npm run windows
 ```
 
 #### 3. Start the React Frontend
