@@ -22,18 +22,6 @@
 
 ## Getting Started
 
-### Quick Start
-
-To run the server, front end, and camera integration, simply execute:
-
-```bash
-./start-signly.ps1
-```
-
-This script will handle all necessary startup procedures for both the backend and frontend components.
-
----
-
 ### Manual Installation & Startup
 
 If you prefer to run everything manually (instead of using the script), you must start three services in separate terminals/windows:
@@ -63,16 +51,6 @@ npm start
 
 The application will run in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-> You can refer to the `start-signly.ps1` script for the exact startup process:
-> ```
-> # Start Flask (Python) in new window
-> $projectRoot = Get-Location
-> Start-Process powershell -ArgumentList '-NoExit', '-Command', "python -u `"$projectRoot\python\camera.py`""
-> # Start Node.js backend in new window
-> Start-Process powershell -ArgumentList '-NoExit', '-Command', 'cd server; npm run server'
-> # Start React frontend in new window
-> Start-Process powershell -ArgumentList '-NoExit', '-Command', 'npm start'
-> ```
 
 ---
 
