@@ -1,5 +1,5 @@
 .main-content {
-
+height: 100vh;
   justify-content: center;
   background-color: #faf5f5; /* כמו שהגדרת */
   width: 100%;
@@ -7,17 +7,7 @@
  
 }
 
-. {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 30px;
 
-  width: 100%;
-  box-sizing: border-box;
-
-}
 
 .left-panel {
 
@@ -54,7 +44,7 @@
   background-position: center;
   background-repeat: no-repeat;
   width: 100%;
-  min-height: 60vh; /* כדי שיכסה את כל גובה הדף */
+  min-height: 68vh; /* כדי שיכסה את כל גובה הדף */
   clip-path: path("M0,0 L0,250 Q50% 350 100% 250 L100% 0 Z");
   display: flex;
   flex-direction: column;
@@ -113,7 +103,7 @@ h1 {
   transform: scale(1.05);
 }
 .background-layer {
-  background-image: url('mainback.png');
+
   background-size: cover;
   background-position: center;
   width: 100%;
@@ -218,6 +208,7 @@ button:active {
   font-size: 16px;
   color: #ffffff;
   box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+  margin-bottom: 60px;
 }
 
 .useful-links {
@@ -427,9 +418,10 @@ button:active {
   text-decoration: none;
   font-weight: 700;
   font-size: 18px; /* טקסט גדול יותר */
-  margin: 60px 20px 40px 20px; /* רווח: למעלה, ימין, למטה, שמאל */
+  margin: 100px 20px; /* למעלה ולמטה 60px, ימין ושמאל 20px */
   transition: background-color 0.3s, transform 0.3s;
   animation: fadeIn 1.2s ease-in-out;
+ 
 }
 
 .link-button:hover {
