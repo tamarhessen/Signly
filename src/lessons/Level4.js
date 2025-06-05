@@ -15,7 +15,7 @@ function Level4() {
     const [initialized, setInitialized] = useState(false);
 
     const levels = [
-        'Dad ca dac', 'The rocket flies', 'We love the jungle', 'Flowers in the garden', 'The castle is big',
+        'Dad and mom', 'The rocket flies', 'We love the jungle', 'Flowers in the garden', 'The castle is big',
         'Birds in the forest', 'A butterfly lands', 'The diamond shines', 'The sunshine is bright', 'A rainbow appears',
         'Climb the mountain', 'Friendship is strong', 'Use the computer', 'An elephant walks', 'The building is tall',
         'Fireworks explode', 'Pack the backpack', 'Find the treasure', 'Enjoy the vacation', 'Adventure awaits',
