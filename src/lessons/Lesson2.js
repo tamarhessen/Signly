@@ -568,7 +568,7 @@ function Lesson2() {
             
             <dialog id="outOfLivesDialog" className="dialog-box">
                 <h2 className="dialog-title">Out of Lives 💀</h2>
-                <p className="dialog-msg">You've run out of lives. Please come back later or try a different level.</p>
+                <p className="dialog-msg">You've run out of lives. Please come back later.</p>
                 <form method="dialog">
                     <button
                         className="btn-primary"

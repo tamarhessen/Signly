@@ -380,7 +380,7 @@ function Lesson3() {
     const nextLevel = () => {
         setCanTryAgain(false);
         if (levelCompleted) {
-            if (userPoints <= currentLevel + 26) {
+            if (userPoints <= currentLevel + 52) {
                 const newPoints = userPoints + 1;
                 const newCompletedLevels = [...completedLevels, levels[currentLevel]];
                 localStorage.setItem('completedLevels', JSON.stringify(newCompletedLevels));
@@ -570,7 +570,7 @@ function Lesson3() {
             
             <dialog id="outOfLivesDialog" className="dialog-box">
                 <h2 className="dialog-title">Out of Lives 💀</h2>
-                <p className="dialog-msg">You've run out of lives. Please come back later or try a different level.</p>
+                <p className="dialog-msg">You've run out of lives. Please come back later </p>
                 <form method="dialog">
                     <button
                         className="btn-primary"
